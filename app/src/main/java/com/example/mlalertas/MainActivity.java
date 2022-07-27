@@ -10,10 +10,19 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import mlconsulta.Articulo;
+import mlconsulta.MLBuscar;
+import mlconsulta.MLSitio;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -69,6 +78,41 @@ public class MainActivity extends AppCompatActivity {
     public void agregarBusqueda() {
         Intent data = new Intent(this, BusquedaActivity.class);
         agregarBusquedaLauncher.launch(data);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+
+                //Background work here
+                try {
+                    MLSitio mlsitio = new MLSitio();
+                    System.out.print(mlsitio.getNombreSitio(MLSitio.IDSitio.MLA) + "\n");
+                    MLBuscar mlbuscar = new MLBuscar();
+                    mlbuscar.setSitio(MLSitio.IDSitio.MLA);
+                    String[] palabrasClave = { "MSX", "talent" };
+                    mlbuscar.setPalabrasClave(palabrasClave);
+                    mlbuscar.setFiltrado(true);
+                    mlbuscar.BuscarProducto();
+                    for (Articulo articulo : mlbuscar.getArticulos()) {
+                        System.out.print(articulo.permalink + "\n");
+                    }
+                    System.out.print(mlbuscar.getArticulos().size() + "\n");
+
+                } catch (Exception e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //UI Thread work here
+                    }
+                });
+            }
+        });
     }
 
     public void agregarBusquedaResult(int result, Intent data) {
