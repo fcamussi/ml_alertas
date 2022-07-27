@@ -1,6 +1,7 @@
 package mlconsulta;
 
 import java.net.URLEncoder;
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,19 +15,21 @@ import mlconsulta.MLSitio.IDSitio;
 
 public class MLBuscar {
 
+	/* Variables privadas */
+	private String sitio;
+	private String estado; // provincias
+	private ArrayList<String> palabrasList;
+	private boolean filtrado = true;
+	private ArrayList<Articulo> articulosList;
+
 	/**
 	 * Constructor
 	 */
-	public MLBuscar() {
-		articulos = new ListaArticulo();
+	public MLBuscar()
+	{
+		palabrasList = new ArrayList<>();
+		articulosList = new ArrayList<>();
 	}
-
-	/* Variables privadas */
-	private String sitio;
-	private String estado;
-	private String[] palabrasClave;
-	private boolean filtrado = true;
-	private ListaArticulo articulos;
 
 	/**
 	 * Setea el sitio donde se realiza la búsqueda: MLA, MLB, etc.
@@ -45,19 +48,20 @@ public class MLBuscar {
 	}
 	
 	/**
-	 * Setea las palabras clave a buscar
-	 * @param palabrasClave Palabras clave, un array de String
+	 * Setea las palabras a buscar
+	 * @param palabras Un String con las palabras separadas por un espacio
 	 */
-	public void setPalabrasClave(String[] palabrasClave) {
-		for (int c = 0; c < palabrasClave.length; c++) {
-			palabrasClave[c] = palabrasClave[c].toLowerCase();
+	public void setPalabras(String palabras) {
+		this.palabrasList.clear();
+		String palabrasSplited [] = palabras.split("\\s+");
+		for (String palabra : palabrasSplited) {
+			this.palabrasList.add(palabra.toLowerCase());
 		}
-		this.palabrasClave = palabrasClave;
 	}
 	
 	/**
 	 * Setea si se hace un filtrado para que el título del artículo contenga
-	 * todas las palabras claves
+	 * todas las palabras
 	 * @param filtrado true para que se filtre, false para que no. Por defecto es true
 	 */
 	public void setFiltrado(boolean filtrado) {
@@ -74,7 +78,7 @@ public class MLBuscar {
 		int limit = jsonObj.getJSONObject("paging").getInt("limit");
 		int total = jsonObj.getJSONObject("paging").getInt("total");
 
-		this.articulos.clear();
+		this.articulosList.clear();
 		this.cargarRegistros(jsonObj.getJSONArray("results"));
 		for (int offset = limit; offset < total; offset += limit) {
 			resultado = ConsultaURL.consultar(this.construirURLStr(offset));
@@ -87,8 +91,8 @@ public class MLBuscar {
 	 * Obtiene la lista de artículos encontrados
 	 * @return lista de artículos de tipo ListaArticulo
 	 */
-	public ListaArticulo getArticulos() {
-		return articulos;
+	public ArrayList<Articulo> getArticulos() {
+		return articulosList;
 	}
 
 
@@ -103,23 +107,23 @@ public class MLBuscar {
 			if (this.filtrado) {
 				/* Chequea que cada palabra clave esté contenido en el título del artículo */
 				boolean coincide = true;
-				for (String pc : this.palabrasClave) {
+				for (String pc : this.palabrasList) {
 					if (!articulo.title.contains(pc)) {
 						coincide = false;
 					}
 				}
-				if (coincide) articulos.add(articulo);
+				if (coincide) articulosList.add(articulo);
 			} else {
-				articulos.add(articulo);
+				articulosList.add(articulo);
 			}
 		}
 	}
 
 	private String construirURLStr(int offset) throws Exception {
 		String url_str = "https://api.mercadolibre.com/sites/" + this.sitio + "/search?q=";
-		String producto = this.palabrasClave[0];
-		for (int c = 1; c < this.palabrasClave.length; c++) {
-			producto = producto + " " + this.palabrasClave[c];
+		String producto = this.palabrasList.get(0);
+		for (int c = 1; c < this.palabrasList.size(); c++) {
+			producto = producto + " " + this.palabrasList.get(c);
 		}
 		producto = URLEncoder.encode(producto, "UTF-8");
 		url_str = url_str + producto;
