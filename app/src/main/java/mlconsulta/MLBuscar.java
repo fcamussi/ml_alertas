@@ -49,16 +49,15 @@ public class MLBuscar {
 	
 	/**
 	 * Setea las palabras a buscar
-	 * @param palabras Un String con las palabras separadas por un espacio
+	 * @param palabrasList Un ArrayList de String con las palabras
 	 */
-	public void setPalabras(String palabras) {
+	public void setPalabras(ArrayList<String> palabrasList) {
 		this.palabrasList.clear();
-		String palabrasSplited [] = palabras.split("\\s+");
-		for (String palabra : palabrasSplited) {
+		for (String palabra : palabrasList) {
 			this.palabrasList.add(palabra.toLowerCase());
 		}
 	}
-	
+
 	/**
 	 * Setea si se hace un filtrado para que el título del artículo contenga
 	 * todas las palabras
@@ -89,7 +88,7 @@ public class MLBuscar {
 
 	/**
 	 * Obtiene la lista de artículos encontrados
-	 * @return lista de artículos de tipo ListaArticulo
+	 * @return lista de artículos de tipo ArrayList<Articulo>
 	 */
 	public ArrayList<Articulo> getArticulos() {
 		return articulosList;
@@ -100,15 +99,15 @@ public class MLBuscar {
 	
 	private void cargarRegistros(JSONArray jsonArr) throws Exception {
 		for (int c = 0; c < jsonArr.length(); c++) {
-			Articulo articulo = new Articulo();
-			articulo.id = jsonArr.getJSONObject(c).get("id").toString();
-			articulo.title = jsonArr.getJSONObject(c).get("title").toString().toLowerCase();
-			articulo.permalink = jsonArr.getJSONObject(c).get("permalink").toString();
+			String id = jsonArr.getJSONObject(c).get("id").toString();
+			String title = jsonArr.getJSONObject(c).get("title").toString().toLowerCase();
+			String permalink = jsonArr.getJSONObject(c).get("permalink").toString();
+			Articulo articulo = new Articulo(id, title, permalink);
 			if (this.filtrado) {
-				/* Chequea que cada palabra clave esté contenido en el título del artículo */
+				/* Chequea que cada palabra esté contenida en el título del artículo */
 				boolean coincide = true;
-				for (String pc : this.palabrasList) {
-					if (!articulo.title.contains(pc)) {
+				for (String palabra : this.palabrasList) {
+					if (!articulo.getTitle().contains(palabra)) {
 						coincide = false;
 					}
 				}

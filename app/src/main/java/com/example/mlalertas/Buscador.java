@@ -11,9 +11,14 @@ import mlconsulta.MLSitio;
 public class Buscador {
 
     BaseDatos baseDatos;
+    MLBuscar mlBuscar;
+    MLSitio mlSitio;
 
     public Buscador(BaseDatos baseDatos) {
         this.baseDatos = baseDatos;
+        mlSitio = new MLSitio();
+        mlBuscar = new MLBuscar();
+        // set Agente
     }
 
     public void iniciar() {
@@ -32,30 +37,23 @@ public class Buscador {
     private void buscarArticulos() {
         ArrayList<Busqueda> busquedas = baseDatos.getBusquedas();
         for (Busqueda busqueda: busquedas) {
-            String palabras = busqueda.getPalabras();
-            buscarArticulo(palabras);
+            buscarArticulo(busqueda.getPalabras());
         }
     }
 
-    private void buscarArticulo(String palabras) {
+    private void buscarArticulo(ArrayList<String> palabras) {
         try {
-            MLSitio mlsitio = new MLSitio();
-            System.out.print(mlsitio.getNombreSitio(MLSitio.IDSitio.MLA) + "\n");
-            MLBuscar mlbuscar = new MLBuscar();
-            mlbuscar.setSitio(MLSitio.IDSitio.MLA);
-            mlbuscar.setPalabras(palabras);
-            mlbuscar.setFiltrado(true);
-            mlbuscar.BuscarProducto();
-            for (Articulo articulo : mlbuscar.getArticulos()) {
-                System.out.print(articulo.permalink + "\n");
-            }
-            System.out.print(mlbuscar.getArticulos().size() + "\n");
+            mlBuscar.setSitio(MLSitio.IDSitio.MLA);
+            mlBuscar.setPalabras(palabras);
+            mlBuscar.BuscarProducto();
 
+            for (Articulo articulo : mlBuscar.getArticulos()) {
+                System.out.print(articulo.getPermalink() + "\n");
+            }
+            System.out.print(mlBuscar.getArticulos().size() + "\n");
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
 
 }

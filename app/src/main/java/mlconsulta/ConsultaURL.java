@@ -11,7 +11,7 @@ class ConsultaURL {
 	static public String consultar(String url_str) throws Exception {
 		URL url = new URL(url_str);
 		URLConnection urlConn = url.openConnection();
-		urlConn.setRequestProperty("Agent", "Mercado Alertas Libre");	
+		urlConn.setRequestProperty("Agent", "ML Alertas");
 		urlConn.setRequestProperty("Accept", "");	
 		BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
 		StringBuffer stringBuffer = new StringBuffer();

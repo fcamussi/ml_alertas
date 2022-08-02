@@ -14,6 +14,7 @@ public class BaseDatos {
     public BaseDatos(Context context) {
         AdminSQLiteOpenHelper admin;
 
+        // admin no deberia crearse aca si hago 2 instancias de basedatos
         admin = new AdminSQLiteOpenHelper(context, "BD", null, 1);
         BD = admin.getWritableDatabase();
     }
@@ -43,7 +44,7 @@ public class BaseDatos {
 
     public void addBusqueda(Busqueda busqueda) {
         ContentValues registro = new ContentValues();
-        registro.put("PALABRAS", busqueda.getPalabras());
+        registro.put("PALABRAS", busqueda.getPalabrasAsString());
         registro.put("ARTICULO_NUEVO", busqueda.isArticuloNuevo());
         BD.insert("BUSQUEDAS", null, registro);
     }
@@ -51,6 +52,13 @@ public class BaseDatos {
     public void eliminarBusqueda() {
 
     }
+
+/*    public Cursor getCursorArticulos(id) {
+        Cursor cursor;
+        cursor = BD.rawQuery("SELECT _id,PALABRAS,ARTICULO_NUEVO FROM BUSQUEDAS", null);
+        return cursor;
+    }
+*/
 
     public long agregarArticulo(String id) {
 /*puede agregar los existentes solamente usando otra tabla e informar si hay nuevos o usar
