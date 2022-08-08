@@ -5,8 +5,6 @@ import android.content.Context;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import java.util.Map;
-
 public class BuscadorWorker extends Worker {
 
     public final static String ARTICULO_NUEVO = "com.example.mlalertas.ARTICULO_NUEVO";

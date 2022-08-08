@@ -3,44 +3,44 @@ package mlconsulta;
 
 public class Articulo {
 
-	private String id;
-	private String title;
-	private String permalink;
+    private String id;
+    private String title;
+    private String permalink;
 
-	public Articulo() {
-		id = "";
-		title = "";
-		permalink = "";
-	}
+    public Articulo() {
+        id = "";
+        title = "";
+        permalink = "";
+    }
 
-	public Articulo(String id, String title, String permalink) {
-		this.id = id;
-		this.title = title;
-		this.permalink = permalink;
-	}
+    public Articulo(String id, String title, String permalink) {
+        this.id = id;
+        this.title = title;
+        this.permalink = permalink;
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	public String getPermalink() {
-		return permalink;
-	}
+    public String getPermalink() {
+        return permalink;
+    }
 
-	public void setPermalink(String permalink) {
-		this.permalink = permalink;
-	}
+    public void setPermalink(String permalink) {
+        this.permalink = permalink;
+    }
 
 }

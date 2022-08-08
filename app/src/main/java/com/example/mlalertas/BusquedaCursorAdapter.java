@@ -11,12 +11,12 @@ import android.widget.TextView;
 
 public class BusquedaCursorAdapter extends CursorAdapter {
 
+    TextView tvPalabras;
+    TextView tvDetalles;
+
     public BusquedaCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
     }
-
-    TextView tvPalabras;
-    TextView tvDetalles;
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {

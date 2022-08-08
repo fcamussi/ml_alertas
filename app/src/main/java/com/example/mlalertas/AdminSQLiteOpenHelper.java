@@ -13,15 +13,15 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase BD) {
         BD.execSQL("CREATE TABLE IF NOT EXISTS BUSQUEDAS(" +
-                    "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "PALABRAS TEXT," +
-                    "ARTICULO_NUEVO INTEGER)");
+                "_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "PALABRAS TEXT," +
+                "ARTICULO_NUEVO INTEGER)");
         BD.execSQL("CREATE TABLE IF NOT EXISTS ARTICULOS(" +
-                    "_id INTEGER," +
-                    "ID TEXT," +
-                    "TITLE TEXT," +
-                    "PERMALINK TEXT," +
-                    "FOREIGN KEY(_id) REFERENCES BUSQUEDAS(_id))");
+                "_id INTEGER," +
+                "ID TEXT," +
+                "TITLE TEXT," +
+                "PERMALINK TEXT," +
+                "FOREIGN KEY(_id) REFERENCES BUSQUEDAS(_id))");
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.example.mlalertas;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import mlconsulta.Articulo;
 import mlconsulta.MLBuscar;
@@ -15,13 +15,13 @@ public class Buscador {
     }
 
     public void buscarArticulos() {
-        ArrayList<Busqueda> busquedas = baseDatos.getBusquedas();
+        List<Busqueda> busquedas = baseDatos.getBusquedas();
         for (Busqueda busqueda : busquedas) {
             buscarArticulo(busqueda.getPalabrasList());
         }
     }
 
-    private void buscarArticulo(ArrayList<String> palabrasList) {
+    private void buscarArticulo(List<String> palabrasList) {
         MLBuscar mlBuscar = new MLBuscar();
         // set Agente
         mlBuscar.setSitio(MLSitio.IDSitio.MLA);

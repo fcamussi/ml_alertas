@@ -1,17 +1,21 @@
 package com.example.mlalertas;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Busqueda {
 
-    private int id = -1;
-    private ArrayList<String> palabrasList = null;
-    private boolean articuloNuevo = false;
+    private int id;
+    private List<String> palabrasList;
+    private boolean articuloNuevo;
 
     public Busqueda() {
+        int id = -1;
+        List<String> palabrasList = null;
+        boolean articuloNuevo = false;
     }
 
-    public Busqueda(int id, ArrayList<String> palabrasList, boolean articuloNuevo) {
+    public Busqueda(int id, List<String> palabrasList, boolean articuloNuevo) {
         this.id = id;
         this.palabrasList = palabrasList;
         this.articuloNuevo = articuloNuevo;
@@ -25,11 +29,11 @@ public class Busqueda {
         this.id = id;
     }
 
-    public ArrayList<String> getPalabrasList() {
+    public List<String> getPalabrasList() {
         return palabrasList;
     }
 
-    public void setPalabrasList(ArrayList<String> palabrasList) {
+    public void setPalabrasList(List<String> palabrasList) {
         this.palabrasList = palabrasList;
     }
 
@@ -51,7 +55,7 @@ public class Busqueda {
 
     public void setPalabras(String palabras) {
         palabrasList = new ArrayList<>();
-        String palabrasSplited[] = palabras.split("\\s+");
+        String[] palabrasSplited = palabras.split("\\s+");
         for (String palabra : palabrasSplited) {
             palabrasList.add(palabra);
         }

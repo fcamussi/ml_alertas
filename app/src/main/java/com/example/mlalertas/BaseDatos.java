@@ -5,15 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import mlconsulta.Articulo;
 
 public class BaseDatos {
 
     private static AdminSQLiteOpenHelper admin = null;
-    private SQLiteDatabase BD;
+    private final SQLiteDatabase BD;
 
     public BaseDatos(Context context) {
         if (admin == null) {
@@ -28,8 +28,8 @@ public class BaseDatos {
         return cursor;
     }
 
-    public ArrayList<Busqueda> getBusquedas() {
-        ArrayList<Busqueda> busquedasList = new ArrayList<>();
+    public List<Busqueda> getBusquedas() {
+        List<Busqueda> busquedasList = new ArrayList<>();
 
         Cursor cursor = getCursorBusquedas();
         if (cursor.moveToFirst()) {
@@ -60,12 +60,12 @@ public class BaseDatos {
     public Cursor getCursorArticulos(int id_busqueda) {
         Cursor cursor;
         String _id = String.valueOf(id_busqueda);
-        cursor = BD.rawQuery("SELECT _id,ID,TITLE,PERMALINK FROM ARTICULOS WHERE _id="+_id, null);
+        cursor = BD.rawQuery("SELECT _id,ID,TITLE,PERMALINK FROM ARTICULOS WHERE _id=" + _id, null);
         return cursor;
     }
 
-    public ArrayList<Articulo> getArticulos(int id_busqueda) {
-        ArrayList<Articulo> articulosList = new ArrayList<>();
+    public List<Articulo> getArticulos(int id_busqueda) {
+        List<Articulo> articulosList = new ArrayList<>();
 
         Cursor cursor = getCursorArticulos(id_busqueda);
         if (cursor.moveToFirst()) {
