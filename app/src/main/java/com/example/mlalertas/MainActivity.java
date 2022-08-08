@@ -1,9 +1,5 @@
 package com.example.mlalertas;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,14 +9,23 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+
+import java.util.concurrent.TimeUnit;
+
 public class MainActivity extends AppCompatActivity {
 
-    private ListView lvBusquedas;
-    private BusquedaCursorAdapter adapter;
     ActivityResultLauncher<Intent> agregarBusquedaLauncher;
     BaseDatos baseDatos;
     Buscador buscador;
     Cursor cursor;
+    private ListView lvBusquedas;
+    private BusquedaCursorAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +45,11 @@ public class MainActivity extends AppCompatActivity {
                     agregarBusquedaResult(result.getResultCode(), data);
                 });
 
-        // si no existe el worker lanzarlo
-        //buscador.iniciar();
+        PeriodicWorkRequest work = new PeriodicWorkRequest.Builder(BuscadorWorker.class,
+                15, TimeUnit.MINUTES).build();
+        // ExistingPeriodicWorkPolicy.KEEP: conserva el trabajo existente e ignora el nuevo
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("Buscador",
+                ExistingPeriodicWorkPolicy.REPLACE, work);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

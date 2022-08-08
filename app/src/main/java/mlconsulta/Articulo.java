@@ -7,6 +7,12 @@ public class Articulo {
 	private String title;
 	private String permalink;
 
+	public Articulo() {
+		id = "";
+		title = "";
+		permalink = "";
+	}
+
 	public Articulo(String id, String title, String permalink) {
 		this.id = id;
 		this.title = title;
@@ -25,8 +31,16 @@ public class Articulo {
 		return title;
 	}
 
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	public String getPermalink() {
 		return permalink;
+	}
+
+	public void setPermalink(String permalink) {
+		this.permalink = permalink;
 	}
 
 }

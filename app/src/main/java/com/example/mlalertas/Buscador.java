@@ -24,9 +24,9 @@ public class Buscador {
     private void buscarArticulo(ArrayList<String> palabrasList) {
         MLBuscar mlBuscar = new MLBuscar();
         // set Agente
+        mlBuscar.setSitio(MLSitio.IDSitio.MLA);
+        mlBuscar.setPalabras(palabrasList);
         try {
-            mlBuscar.setSitio(MLSitio.IDSitio.MLA);
-            mlBuscar.setPalabras(palabrasList);
             mlBuscar.BuscarProducto();
             for (Articulo articulo : mlBuscar.getArticulos()) {
                 System.out.print(articulo.getPermalink() + "\n");

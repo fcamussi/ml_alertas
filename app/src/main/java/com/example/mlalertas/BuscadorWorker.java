@@ -17,8 +17,7 @@ public class BuscadorWorker extends Worker {
 
     @Override
     public Result doWork() {
-        Map<String,Object> map = getInputData().getKeyValueMap();
-        BaseDatos baseDatos = (BaseDatos)map.get("baseDatos");
+        BaseDatos baseDatos = new BaseDatos(getApplicationContext());
         Buscador buscador = new Buscador(baseDatos);
         buscador.buscarArticulos();
         return Result.success();

@@ -5,7 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+
+import mlconsulta.Articulo;
 
 public class BaseDatos {
 
@@ -51,21 +54,41 @@ public class BaseDatos {
     }
 
     public void eliminarBusqueda() {
-
     }
 
-/*    public Cursor getCursorArticulos(id) {
+
+    public Cursor getCursorArticulos(int id_busqueda) {
         Cursor cursor;
-        cursor = BD.rawQuery("SELECT _id,PALABRAS,ARTICULO_NUEVO FROM BUSQUEDAS", null);
+        String _id = String.valueOf(id_busqueda);
+        cursor = BD.rawQuery("SELECT _id,ID,TITLE,PERMALINK FROM ARTICULOS WHERE _id="+_id, null);
         return cursor;
     }
-*/
 
-    public long agregarArticulo(String id) {
-/*puede agregar los existentes solamente usando otra tabla e informar si hay nuevos o usar
-otra funcion que diga cantidad para comparar
- */
-        return 0;
+    public ArrayList<Articulo> getArticulos(int id_busqueda) {
+        ArrayList<Articulo> articulosList = new ArrayList<>();
+
+        Cursor cursor = getCursorArticulos(id_busqueda);
+        if (cursor.moveToFirst()) {
+            do {
+                Articulo articulo = new Articulo();
+                articulo.setId(cursor.getString(0));
+                articulo.setTitle(cursor.getString(1));
+                articulo.setPermalink(cursor.getString(2));
+                articulosList.add(articulo);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return articulosList;
+    }
+
+    public void addArticulo(int id_busqueda, Articulo articulo) {
+        ContentValues registro = new ContentValues();
+        registro.put("_id", String.valueOf(id_busqueda));
+        registro.put("ID", articulo.getId());
+        registro.put("TITLE", articulo.getTitle());
+        registro.put("PERMALINK", articulo.getPermalink());
+        BD.insert("ARTICULOS", null, registro);
     }
 
 }

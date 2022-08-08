@@ -8,6 +8,15 @@ public class Busqueda {
     private ArrayList<String> palabrasList = null;
     private boolean articuloNuevo = false;
 
+    public Busqueda() {
+    }
+
+    public Busqueda(int id, ArrayList<String> palabrasList, boolean articuloNuevo) {
+        this.id = id;
+        this.palabrasList = palabrasList;
+        this.articuloNuevo = articuloNuevo;
+    }
+
     public int getId() {
         return id;
     }
