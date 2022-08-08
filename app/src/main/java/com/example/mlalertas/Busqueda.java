@@ -4,23 +4,35 @@ import java.util.ArrayList;
 
 public class Busqueda {
 
-    private ArrayList<String> palabrasList;
+    private int id = -1;
+    private ArrayList<String> palabrasList = null;
     private boolean articuloNuevo = false;
 
-    public Busqueda(String palabras, boolean articuloNuevo) {
-        palabrasList = new ArrayList<>();
-        String palabrasSplited [] = palabras.split("\\s+");
-        for (String palabra : palabrasSplited) {
-            palabrasList.add(palabra);
-        }
-        this.articuloNuevo = articuloNuevo;
+    public int getId() {
+        return id;
     }
 
-    public ArrayList<String> getPalabras() {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public ArrayList<String> getPalabrasList() {
         return palabrasList;
     }
 
-    public String getPalabrasAsString() {
+    public void setPalabrasList(ArrayList<String> palabrasList) {
+        this.palabrasList = palabrasList;
+    }
+
+    public boolean isArticuloNuevo() {
+        return articuloNuevo;
+    }
+
+    public void setArticuloNuevo(boolean articuloNuevo) {
+        this.articuloNuevo = articuloNuevo;
+    }
+
+    public String getPalabras() {
         String palabras = palabrasList.get(0);
         for (int c = 1; c < palabrasList.size(); c++) {
             palabras = palabras + " " + palabrasList.get(c);
@@ -28,8 +40,12 @@ public class Busqueda {
         return palabras;
     }
 
-    public boolean isArticuloNuevo() {
-        return articuloNuevo;
+    public void setPalabras(String palabras) {
+        palabrasList = new ArrayList<>();
+        String palabrasSplited[] = palabras.split("\\s+");
+        for (String palabra : palabrasSplited) {
+            palabrasList.add(palabra);
+        }
     }
 
 }

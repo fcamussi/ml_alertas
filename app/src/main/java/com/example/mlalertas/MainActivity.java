@@ -5,7 +5,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -41,14 +40,8 @@ public class MainActivity extends AppCompatActivity {
                     agregarBusquedaResult(result.getResultCode(), data);
                 });
 
-        buscador = new Buscador(baseDatos);
-        buscador.iniciar();
-    }
-
-    private void actualizarCursor() {
-        cursor = baseDatos.getCursorBusquedas();
-        if (adapter != null) {
-        }
+        // si no existe el worker lanzarlo
+        //buscador.iniciar();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -74,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
     public void agregarBusquedaResult(int result, Intent data) {
         if (result == Activity.RESULT_OK) {
             String palabras = data.getStringExtra("palabras");
-            Busqueda busqueda = new Busqueda(palabras, false);
+            Busqueda busqueda = new Busqueda();
+            busqueda.setPalabras(palabras);
             baseDatos.addBusqueda(busqueda);
             cursor = baseDatos.getCursorBusquedas();
             adapter.changeCursor(cursor);

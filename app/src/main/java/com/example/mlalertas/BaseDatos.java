@@ -9,13 +9,13 @@ import java.util.ArrayList;
 
 public class BaseDatos {
 
+    private static AdminSQLiteOpenHelper admin = null;
     private SQLiteDatabase BD;
 
     public BaseDatos(Context context) {
-        AdminSQLiteOpenHelper admin;
-
-        // admin no deberia crearse aca si hago 2 instancias de basedatos
-        admin = new AdminSQLiteOpenHelper(context, "BD", null, 1);
+        if (admin == null) {
+            admin = new AdminSQLiteOpenHelper(context, "BD", null, 1);
+        }
         BD = admin.getWritableDatabase();
     }
 
@@ -31,9 +31,10 @@ public class BaseDatos {
         Cursor cursor = getCursorBusquedas();
         if (cursor.moveToFirst()) {
             do {
-                String palabras = cursor.getString(1);
-                boolean articuloNuevo = cursor.getInt(2) > 0;
-                Busqueda busqueda = new Busqueda(palabras, articuloNuevo);
+                Busqueda busqueda = new Busqueda();
+                busqueda.setId(cursor.getInt(0));
+                busqueda.setPalabras(cursor.getString(1));
+                busqueda.setArticuloNuevo(cursor.getInt(2) > 0);
                 busquedasList.add(busqueda);
             } while (cursor.moveToNext());
         }
@@ -44,7 +45,7 @@ public class BaseDatos {
 
     public void addBusqueda(Busqueda busqueda) {
         ContentValues registro = new ContentValues();
-        registro.put("PALABRAS", busqueda.getPalabrasAsString());
+        registro.put("PALABRAS", busqueda.getPalabras());
         registro.put("ARTICULO_NUEVO", busqueda.isArticuloNuevo());
         BD.insert("BUSQUEDAS", null, registro);
     }
