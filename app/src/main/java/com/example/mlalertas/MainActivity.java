@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                lvBusquedas.setEnabled(false);
                 pbBusquedas.setVisibility(View.VISIBLE);
             }
         };
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                lvBusquedas.setEnabled(true);
                 pbBusquedas.setVisibility(View.GONE);
             }
         };
