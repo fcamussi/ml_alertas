@@ -17,7 +17,7 @@ public class BuscadorWorker extends Worker {
     public Result doWork() {
         BaseDatos baseDatos = new BaseDatos(getApplicationContext());
         Buscador buscador = new Buscador(baseDatos);
-        buscador.buscarArticulos();
+        buscador.buscar();
         return Result.success();
     }
 

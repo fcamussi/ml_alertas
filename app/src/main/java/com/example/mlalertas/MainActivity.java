@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         baseDatos = new BaseDatos(this);
         lvBusquedas = findViewById(R.id.lvBusquedas);
-        cursor = baseDatos.getCursorBusquedas();
+        cursor = baseDatos.getCursorForAdapterBusquedas();
         adapter = new BusquedaCursorAdapter(this, cursor);
         lvBusquedas.setAdapter(adapter);
 
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
             Busqueda busqueda = new Busqueda();
             busqueda.setPalabras(palabras);
             baseDatos.addBusqueda(busqueda);
-            cursor = baseDatos.getCursorBusquedas();
+            cursor = baseDatos.getCursorForAdapterBusquedas();
             adapter.changeCursor(cursor);
             Toast.makeText(this, "Búsqueda agregada", Toast.LENGTH_SHORT).show();
         }

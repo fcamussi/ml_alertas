@@ -22,16 +22,17 @@ public class BaseDatos {
         BD = admin.getWritableDatabase();
     }
 
-    public Cursor getCursorBusquedas() {
+    public Cursor getCursorForAdapterBusquedas() { // ACA PUEDO PONER ORDER!
         Cursor cursor;
-        cursor = BD.rawQuery("SELECT _id,PALABRAS,ARTICULO_NUEVO FROM BUSQUEDAS", null);
+        cursor = BD.rawQuery("SELECT id_busqueda AS _id,palabras,nuevo FROM busquedas", null);
         return cursor;
     }
 
     public List<Busqueda> getBusquedas() {
         List<Busqueda> busquedasList = new ArrayList<>();
 
-        Cursor cursor = getCursorBusquedas();
+        Cursor cursor;
+        cursor = BD.rawQuery("SELECT id_busqueda,palabras,nuevo FROM busquedas", null);
         if (cursor.moveToFirst()) {
             do {
                 Busqueda busqueda = new Busqueda();
@@ -48,47 +49,47 @@ public class BaseDatos {
 
     public void addBusqueda(Busqueda busqueda) {
         ContentValues registro = new ContentValues();
-        registro.put("PALABRAS", busqueda.getPalabras());
-        registro.put("ARTICULO_NUEVO", busqueda.isArticuloNuevo());
-        BD.insert("BUSQUEDAS", null, registro);
+        registro.put("palabras", busqueda.getPalabras());
+        registro.put("nuevo", busqueda.isArticuloNuevo());
+        BD.insert("busquedas", null, registro);
     }
 
-    public void eliminarBusqueda() {
-    }
-
-
-    public Cursor getCursorArticulos(int id_busqueda) {
+    public Cursor getCursorForAdapterArticulos(int id_busqueda) {
         Cursor cursor;
         String _id = String.valueOf(id_busqueda);
-        cursor = BD.rawQuery("SELECT _id,ID,TITLE,PERMALINK FROM ARTICULOS WHERE _id=" + _id, null);
+        cursor = BD.rawQuery("SELECT articulo_id AS _id,title,permalink FROM articulos WHERE id_busqueda=" + id_busqueda, null);
         return cursor;
     }
 
-    public List<Articulo> getArticulos(int id_busqueda) {
-        List<Articulo> articulosList = new ArrayList<>();
+    public int addArticulos(int id_busqueda, List<Articulo> articuloList) {
+        BD.execSQL("DELETE FROM articulos_tmp");
+        for (Articulo articulo : articuloList) {
+            ContentValues registro = new ContentValues();
+            registro.put("id_busqueda", id_busqueda);
+            registro.put("id_articulo", articulo.getId());
+            registro.put("title", articulo.getTitle());
+            registro.put("permalink", articulo.getPermalink());
+            registro.put("nuevo", false);
+            BD.insert("articulos_tmp", null, registro);
+        }
 
-        Cursor cursor = getCursorArticulos(id_busqueda);
+        Cursor cursor;
+        cursor = BD.rawQuery("SELECT * FROM articulos_tmp " +
+                "WHERE id_articulo NOT IN (SELECT id_articulo FROM articulos)", null);
         if (cursor.moveToFirst()) {
             do {
-                Articulo articulo = new Articulo();
-                articulo.setId(cursor.getString(0));
-                articulo.setTitle(cursor.getString(1));
-                articulo.setPermalink(cursor.getString(2));
-                articulosList.add(articulo);
+                ContentValues registro = new ContentValues();
+                registro.put("id_busqueda", id_busqueda);
+                registro.put("id_articulo", cursor.getString(1));
+                registro.put("title", cursor.getString(2));
+                registro.put("permalink", cursor.getString(3));
+                registro.put("nuevo", true);
+                BD.insert("articulos", null, registro);
+                System.out.print(cursor.getString(1) + "\n");
             } while (cursor.moveToNext());
         }
         cursor.close();
-
-        return articulosList;
-    }
-
-    public void addArticulo(int id_busqueda, Articulo articulo) {
-        ContentValues registro = new ContentValues();
-        registro.put("_id", String.valueOf(id_busqueda));
-        registro.put("ID", articulo.getId());
-        registro.put("TITLE", articulo.getTitle());
-        registro.put("PERMALINK", articulo.getPermalink());
-        BD.insert("ARTICULOS", null, registro);
+        return cursor.getCount();
     }
 
 }

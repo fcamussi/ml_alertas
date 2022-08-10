@@ -27,7 +27,7 @@ public class BusquedaCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         tvPalabras = view.findViewById(R.id.tvPalabras);
         tvDetalles = view.findViewById(R.id.tvDetalles);
-        String palabras = cursor.getString(cursor.getColumnIndexOrThrow("PALABRAS"));
+        String palabras = cursor.getString(cursor.getColumnIndexOrThrow("palabras"));
         String detalles = "";
         tvPalabras.setText(palabras);
         tvDetalles.setText(detalles);
