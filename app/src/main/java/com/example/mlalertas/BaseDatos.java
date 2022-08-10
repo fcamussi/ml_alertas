@@ -28,17 +28,30 @@ public class BaseDatos {
         return cursor;
     }
 
+    public Busqueda getBusqueda(int id_busqueda) {
+        Busqueda busqueda = new Busqueda();
+        Cursor cursor;
+        cursor = BD.rawQuery("SELECT * FROM busquedas WHERE id_busqueda=" + id_busqueda, null);
+        if (cursor.moveToFirst()) {
+            busqueda.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id_busqueda")));
+            busqueda.setPalabras(cursor.getString(cursor.getColumnIndexOrThrow("palabras")));
+            busqueda.setArticuloNuevo(cursor.getInt(cursor.getColumnIndexOrThrow("nuevo")) > 0);
+        }
+        cursor.close();
+        return busqueda;
+    }
+
     public List<Busqueda> getBusquedas() {
         List<Busqueda> busquedasList = new ArrayList<>();
 
         Cursor cursor;
-        cursor = BD.rawQuery("SELECT id_busqueda,palabras,nuevo FROM busquedas", null);
+        cursor = BD.rawQuery("SELECT * FROM busquedas", null);
         if (cursor.moveToFirst()) {
             do {
                 Busqueda busqueda = new Busqueda();
-                busqueda.setId(cursor.getInt(0));
-                busqueda.setPalabras(cursor.getString(1));
-                busqueda.setArticuloNuevo(cursor.getInt(2) > 0);
+                busqueda.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id_busqueda")));
+                busqueda.setPalabras(cursor.getString(cursor.getColumnIndexOrThrow("palabras")));
+                busqueda.setArticuloNuevo(cursor.getInt(cursor.getColumnIndexOrThrow("nuevo")) > 0);
                 busquedasList.add(busqueda);
             } while (cursor.moveToNext());
         }
@@ -73,14 +86,14 @@ public class BaseDatos {
         }
         Cursor cursor;
         cursor = BD.rawQuery("SELECT * FROM articulos_tmp " +
-                "WHERE id_articulo NOT IN (SELECT id_articulo FROM articulos)", null);
+                "WHERE id_articulo NOT IN (SELECT id_articulo FROM articulos WHERE id_busqueda=" + id_busqueda + ")", null);
         if (cursor.moveToFirst()) {
             do {
                 ContentValues registro = new ContentValues();
                 registro.put("id_busqueda", id_busqueda);
-                registro.put("id_articulo", cursor.getString(1));
-                registro.put("title", cursor.getString(2));
-                registro.put("permalink", cursor.getString(3));
+                registro.put("id_articulo", cursor.getString(cursor.getColumnIndexOrThrow("id_articulo")));
+                registro.put("title", cursor.getString(cursor.getColumnIndexOrThrow("title")));
+                registro.put("permalink", cursor.getString(cursor.getColumnIndexOrThrow("permalink")));
                 registro.put("nuevo", nuevo);
                 BD.insert("articulos", null, registro);
             } while (cursor.moveToNext());

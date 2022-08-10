@@ -1,7 +1,10 @@
 package com.example.mlalertas;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private BaseDatos baseDatos;
     private Buscador buscador;
     private Cursor cursor;
+    private ProgressBar pbBusquedas;
     private ListView lvBusquedas;
     private BusquedaCursorAdapter adapter;
 
@@ -35,10 +40,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         baseDatos = new BaseDatos(this);
+        pbBusquedas = findViewById(R.id.pbBusquedas);
+        pbBusquedas.setIndeterminate(true);
+        pbBusquedas.setVisibility(View.GONE);
         lvBusquedas = findViewById(R.id.lvBusquedas);
         cursor = baseDatos.getCursorForAdapterBusqueda();
         adapter = new BusquedaCursorAdapter(this, cursor);
         lvBusquedas.setAdapter(adapter);
+
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                pbBusquedas.setVisibility(View.VISIBLE);
+            }
+        };
+        IntentFilter filter = new IntentFilter(BuscadorWorker.BUSCANDO);
+        this.registerReceiver(broadcastReceiver, filter);
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                pbBusquedas.setVisibility(View.GONE);
+            }
+        };
+        filter = new IntentFilter(BuscadorWorker.BUSQUEDA_FINALIZADA);
+        this.registerReceiver(broadcastReceiver, filter);
 
         agregarBusquedaLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -50,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         lvBusquedas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                abrirArticulos(Integer.parseInt(view.getTag().toString()));
+                mostrarArticulos(Integer.parseInt(view.getTag().toString()));
             }
         });
 
@@ -93,8 +119,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void abrirArticulos(int id_busqueda) {
-        //Toast.makeText(this, view.getTag().toString(), Toast.LENGTH_LONG).show();
+    public void mostrarArticulos(int id_busqueda) {
         Intent intent = new Intent(this, ArticulosActivity.class);
         intent.putExtra("id_busqueda", id_busqueda);
         startActivity(intent);
