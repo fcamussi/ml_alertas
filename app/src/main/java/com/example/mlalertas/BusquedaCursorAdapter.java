@@ -25,10 +25,12 @@ public class BusquedaCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        tvPalabras = view.findViewById(R.id.tvPalabras);
-        tvDetalles = view.findViewById(R.id.tvDetalles);
+        tvPalabras = view.findViewById(R.id.tvTitulo);
+        tvDetalles = view.findViewById(R.id.tvPrecio);
+        int _id = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
         String palabras = cursor.getString(cursor.getColumnIndexOrThrow("palabras"));
         String detalles = "";
+        view.setTag(String.valueOf(_id));
         tvPalabras.setText(palabras);
         tvDetalles.setText(detalles);
     }

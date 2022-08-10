@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -20,10 +22,10 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    ActivityResultLauncher<Intent> agregarBusquedaLauncher;
-    BaseDatos baseDatos;
-    Buscador buscador;
-    Cursor cursor;
+    private ActivityResultLauncher<Intent> agregarBusquedaLauncher;
+    private BaseDatos baseDatos;
+    private Buscador buscador;
+    private Cursor cursor;
     private ListView lvBusquedas;
     private BusquedaCursorAdapter adapter;
 
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         baseDatos = new BaseDatos(this);
         lvBusquedas = findViewById(R.id.lvBusquedas);
-        cursor = baseDatos.getCursorForAdapterBusquedas();
+        cursor = baseDatos.getCursorForAdapterBusqueda();
         adapter = new BusquedaCursorAdapter(this, cursor);
         lvBusquedas.setAdapter(adapter);
 
@@ -44,6 +46,13 @@ public class MainActivity extends AppCompatActivity {
                     Intent data = result.getData();
                     agregarBusquedaResult(result.getResultCode(), data);
                 });
+
+        lvBusquedas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                abrirArticulos(Integer.parseInt(view.getTag().toString()));
+            }
+        });
 
         PeriodicWorkRequest work = new PeriodicWorkRequest.Builder(BuscadorWorker.class,
                 15, TimeUnit.MINUTES).build();
@@ -78,10 +87,17 @@ public class MainActivity extends AppCompatActivity {
             Busqueda busqueda = new Busqueda();
             busqueda.setPalabras(palabras);
             baseDatos.addBusqueda(busqueda);
-            cursor = baseDatos.getCursorForAdapterBusquedas();
+            cursor = baseDatos.getCursorForAdapterBusqueda();
             adapter.changeCursor(cursor);
             Toast.makeText(this, "Búsqueda agregada", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void abrirArticulos(int id_busqueda) {
+        //Toast.makeText(this, view.getTag().toString(), Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, ArticulosActivity.class);
+        intent.putExtra("id_busqueda", id_busqueda);
+        startActivity(intent);
     }
 
 }

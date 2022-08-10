@@ -22,7 +22,7 @@ public class BaseDatos {
         BD = admin.getWritableDatabase();
     }
 
-    public Cursor getCursorForAdapterBusquedas() { // ACA PUEDO PONER ORDER!
+    public Cursor getCursorForAdapterBusqueda() { // ACA PUEDO PONER ORDER!
         Cursor cursor;
         cursor = BD.rawQuery("SELECT id_busqueda AS _id,palabras,nuevo FROM busquedas", null);
         return cursor;
@@ -54,14 +54,13 @@ public class BaseDatos {
         BD.insert("busquedas", null, registro);
     }
 
-    public Cursor getCursorForAdapterArticulos(int id_busqueda) {
+    public Cursor getCursorForAdapterArticulo(int id_busqueda) {
         Cursor cursor;
-        String _id = String.valueOf(id_busqueda);
-        cursor = BD.rawQuery("SELECT articulo_id AS _id,title,permalink FROM articulos WHERE id_busqueda=" + id_busqueda, null);
+        cursor = BD.rawQuery("SELECT id_articulo AS _id,title,permalink FROM articulos WHERE id_busqueda=" + id_busqueda, null);
         return cursor;
     }
 
-    public int addArticulos(int id_busqueda, List<Articulo> articuloList) {
+    public int addArticulos(int id_busqueda, List<Articulo> articuloList, boolean nuevo) {
         BD.execSQL("DELETE FROM articulos_tmp");
         for (Articulo articulo : articuloList) {
             ContentValues registro = new ContentValues();
@@ -72,7 +71,6 @@ public class BaseDatos {
             registro.put("nuevo", false);
             BD.insert("articulos_tmp", null, registro);
         }
-
         Cursor cursor;
         cursor = BD.rawQuery("SELECT * FROM articulos_tmp " +
                 "WHERE id_articulo NOT IN (SELECT id_articulo FROM articulos)", null);
@@ -83,13 +81,13 @@ public class BaseDatos {
                 registro.put("id_articulo", cursor.getString(1));
                 registro.put("title", cursor.getString(2));
                 registro.put("permalink", cursor.getString(3));
-                registro.put("nuevo", true);
+                registro.put("nuevo", nuevo);
                 BD.insert("articulos", null, registro);
-                System.out.print(cursor.getString(1) + "\n");
             } while (cursor.moveToNext());
         }
+        int cantidad = cursor.getCount();
         cursor.close();
-        return cursor.getCount();
+        return cantidad;
     }
 
 }
