@@ -15,7 +15,7 @@ public class Buscador {
     }
 
     public int buscar() {
-        List<Busqueda> busquedas = baseDatos.getBusquedas();
+        List<Busqueda> busquedas = baseDatos.getAllBusqueda();
         MLBuscar mlBuscar = new MLBuscar();
         // set Agente
         int nuevos = 0;

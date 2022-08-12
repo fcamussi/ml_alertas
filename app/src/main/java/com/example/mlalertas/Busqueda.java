@@ -8,17 +8,15 @@ public class Busqueda {
     private int id;
     private List<String> palabrasList;
     private boolean articuloNuevo;
+    private boolean visible;
+    private boolean borrado;
 
     public Busqueda() {
         int id = -1;
         List<String> palabrasList = null;
-        boolean articuloNuevo = false;
-    }
-
-    public Busqueda(int id, List<String> palabrasList, boolean articuloNuevo) {
-        this.id = id;
-        this.palabrasList = palabrasList;
-        this.articuloNuevo = articuloNuevo;
+        articuloNuevo = false;
+        visible = false;
+        borrado = false;
     }
 
     public int getId() {
@@ -59,6 +57,22 @@ public class Busqueda {
         for (String palabra : palabrasSplited) {
             palabrasList.add(palabra);
         }
+    }
+
+    public boolean isBorrado() {
+        return borrado;
+    }
+
+    public void setBorrado(boolean borrado) {
+        this.borrado = borrado;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
 }

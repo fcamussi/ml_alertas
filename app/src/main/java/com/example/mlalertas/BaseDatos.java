@@ -22,9 +22,9 @@ public class BaseDatos {
         BD = admin.getWritableDatabase();
     }
 
-    public Cursor getCursorForAdapterBusqueda() { // ACA PUEDO PONER ORDER!
+    public Cursor getCursorForAdapterBusqueda() {
         Cursor cursor;
-        cursor = BD.rawQuery("SELECT id_busqueda AS _id,palabras,nuevo FROM busquedas", null);
+        cursor = BD.rawQuery("SELECT id_busqueda AS _id,palabras,articulo_nuevo FROM busquedas WHERE visible=1 AND borrado=0", null);
         return cursor;
     }
 
@@ -35,15 +35,16 @@ public class BaseDatos {
         if (cursor.moveToFirst()) {
             busqueda.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id_busqueda")));
             busqueda.setPalabras(cursor.getString(cursor.getColumnIndexOrThrow("palabras")));
-            busqueda.setArticuloNuevo(cursor.getInt(cursor.getColumnIndexOrThrow("nuevo")) > 0);
+            busqueda.setArticuloNuevo(cursor.getInt(cursor.getColumnIndexOrThrow("articulo_nuevo")) > 0);
+            busqueda.setVisible(cursor.getInt(cursor.getColumnIndexOrThrow("visible")) > 0);
+            busqueda.setBorrado(cursor.getInt(cursor.getColumnIndexOrThrow("borrado")) > 0);
         }
         cursor.close();
         return busqueda;
     }
 
-    public List<Busqueda> getBusquedas() {
+    public List<Busqueda> getAllBusqueda() {
         List<Busqueda> busquedasList = new ArrayList<>();
-
         Cursor cursor;
         cursor = BD.rawQuery("SELECT * FROM busquedas", null);
         if (cursor.moveToFirst()) {
@@ -51,23 +52,38 @@ public class BaseDatos {
                 Busqueda busqueda = new Busqueda();
                 busqueda.setId(cursor.getInt(cursor.getColumnIndexOrThrow("id_busqueda")));
                 busqueda.setPalabras(cursor.getString(cursor.getColumnIndexOrThrow("palabras")));
-                busqueda.setArticuloNuevo(cursor.getInt(cursor.getColumnIndexOrThrow("nuevo")) > 0);
+                busqueda.setArticuloNuevo(cursor.getInt(cursor.getColumnIndexOrThrow("articulo_nuevo")) > 0);
+                busqueda.setVisible(cursor.getInt(cursor.getColumnIndexOrThrow("visible")) > 0);
+                busqueda.setBorrado(cursor.getInt(cursor.getColumnIndexOrThrow("borrado")) > 0);
                 busquedasList.add(busqueda);
             } while (cursor.moveToNext());
         }
         cursor.close();
-
         return busquedasList;
     }
 
-    public void addBusqueda(Busqueda busqueda) {
+    public int addBusqueda(Busqueda busqueda) {
         ContentValues registro = new ContentValues();
         registro.put("palabras", busqueda.getPalabras());
-        registro.put("nuevo", busqueda.isArticuloNuevo());
-        BD.insert("busquedas", null, registro);
+        long rowid = BD.insert("busquedas", null, registro);
+        Cursor cursor = BD.rawQuery("SELECT id_busqueda FROM busquedas WHERE rowid=" + rowid, null);
+        cursor.moveToFirst();
+        int id_busqueda = cursor.getInt(cursor.getColumnIndexOrThrow("id_busqueda"));
+        cursor.close();
+        return id_busqueda;
     }
 
-    public Cursor getCursorForAdapterArticulo(int id_busqueda) {
+    public void updateBusqueda(Busqueda busqueda) {
+        ContentValues registro = new ContentValues();
+        registro.put("id_busqueda", busqueda.getId());
+        registro.put("palabras", busqueda.getPalabras());
+        registro.put("articulo_nuevo", busqueda.isArticuloNuevo());
+        registro.put("visible", busqueda.isVisible());
+        registro.put("borrado", busqueda.isBorrado());
+        int n = BD.update("busquedas", registro, "id_busqueda=" + busqueda.getId(), null);
+    }
+
+    public Cursor getCursorForAdapterArticulo(int id_busqueda) { // ACA PUEDO PONER ORDER!
         Cursor cursor;
         cursor = BD.rawQuery("SELECT id_articulo AS _id,title,permalink FROM articulos WHERE id_busqueda=" + id_busqueda, null);
         return cursor;

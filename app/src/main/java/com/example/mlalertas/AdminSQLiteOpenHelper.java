@@ -15,13 +15,15 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         BD.execSQL("CREATE TABLE IF NOT EXISTS busquedas(" +
                 "id_busqueda INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "palabras TEXT," +
-                "nuevo INTEGER)");
+                "articulo_nuevo INTEGER DEFAULT 0," +
+                "visible INTEGER DEFAULT 0," +
+                "borrado INTEGER DEFAULT 0)");
         BD.execSQL("CREATE TABLE IF NOT EXISTS articulos(" +
                 "id_busqueda INTEGER," +
                 "id_articulo TEXT," +
                 "title TEXT," +
                 "permalink TEXT," +
-                "nuevo INTEGER," +
+                "nuevo INTEGER DEFAULT 0," +
                 "FOREIGN KEY(id_busqueda) REFERENCES busquedas(id_busqueda))");
         BD.execSQL("CREATE TABLE articulos_tmp AS SELECT * FROM articulos WHERE 1=2");
     }

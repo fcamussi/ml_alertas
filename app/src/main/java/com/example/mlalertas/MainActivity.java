@@ -18,9 +18,12 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar pbBusquedas;
     private ListView lvBusquedas;
     private BusquedaCursorAdapter adapter;
+    private int activeSearches = 0;
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,24 +53,22 @@ public class MainActivity extends AppCompatActivity {
         adapter = new BusquedaCursorAdapter(this, cursor);
         lvBusquedas.setAdapter(adapter);
 
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                lvBusquedas.setEnabled(false);
-                pbBusquedas.setVisibility(View.VISIBLE);
-            }
-        };
-        IntentFilter filter = new IntentFilter(BuscadorWorker.BUSCANDO);
-        this.registerReceiver(broadcastReceiver, filter);
-
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                lvBusquedas.setEnabled(true);
-                pbBusquedas.setVisibility(View.GONE);
+                int id_busqueda = intent.getIntExtra("id_busqueda", 0);
+                Busqueda busqueda = baseDatos.getBusqueda(id_busqueda);
+                busqueda.setVisible(true);
+                baseDatos.updateBusqueda(busqueda);
+                cursor = baseDatos.getCursorForAdapterBusqueda();
+                adapter.changeCursor(cursor);
+                activeSearches--;
+                if (activeSearches == 0) { // Espero a que finalicen todas las búsquedas agregadas
+                    pbBusquedas.setVisibility(View.GONE);
+                }
             }
         };
-        filter = new IntentFilter(BuscadorWorker.BUSQUEDA_FINALIZADA);
+        IntentFilter filter = new IntentFilter(BroadcastSignal.ONE_SEARCH_FINISHED);
         this.registerReceiver(broadcastReceiver, filter);
 
         agregarBusquedaLauncher = registerForActivityResult(
@@ -82,11 +85,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        PeriodicWorkRequest work = new PeriodicWorkRequest.Builder(BuscadorWorker.class,
+        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(PeriodicSearcherWorker.class,
                 15, TimeUnit.MINUTES).build();
         // ExistingPeriodicWorkPolicy.KEEP: conserva el trabajo existente e ignora el nuevo
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork("Buscador",
-                ExistingPeriodicWorkPolicy.REPLACE, work);
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("PeriodicSearchWorker",
+                ExistingPeriodicWorkPolicy.KEEP, workRequest);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -114,10 +117,13 @@ public class MainActivity extends AppCompatActivity {
             String palabras = data.getStringExtra("palabras");
             Busqueda busqueda = new Busqueda();
             busqueda.setPalabras(palabras);
-            baseDatos.addBusqueda(busqueda);
-            cursor = baseDatos.getCursorForAdapterBusqueda();
-            adapter.changeCursor(cursor);
-            Toast.makeText(this, "Búsqueda agregada", Toast.LENGTH_SHORT).show();
+            int id_busqueda = baseDatos.addBusqueda(busqueda);
+            Data workerData = new Data.Builder().putInt("id_busqueda", id_busqueda).build();
+            activeSearches++;
+            WorkRequest workRequest = new OneTimeWorkRequest.Builder(OneSearchWorker.class).setInputData(workerData).build();
+            WorkManager.getInstance(this).enqueue(workRequest);
+            pbBusquedas.setVisibility(View.VISIBLE);
+            Toast.makeText(this, "Agregando búsqueda...", Toast.LENGTH_SHORT).show();
         }
     }
 

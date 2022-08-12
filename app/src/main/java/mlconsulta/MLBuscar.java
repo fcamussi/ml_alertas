@@ -85,6 +85,9 @@ public class MLBuscar {
         int limit = jsonObj.getJSONObject("paging").getInt("limit");
         int total = jsonObj.getJSONObject("paging").getInt("total");
 
+        if (total > 1000) { // límite impuesto por ML para consultas
+            total = 1000;
+        }
         this.articulosList.clear();
         this.cargarRegistros(jsonObj.getJSONArray("results"));
         for (int offset = limit; offset < total; offset += limit) {

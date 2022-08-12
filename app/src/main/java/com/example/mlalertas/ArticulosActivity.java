@@ -11,8 +11,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
+
+import java.util.List;
 
 public class ArticulosActivity extends AppCompatActivity {
 
@@ -22,17 +28,15 @@ public class ArticulosActivity extends AppCompatActivity {
     private ProgressBar pbArticulos;
     private ListView lvArticulos;
     private ArticuloCursorAdapter adapter;
+    private int id_busqueda;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_articulos);
 
-        int id_busqueda = getIntent().getIntExtra("id_busqueda", 0);
+        id_busqueda = getIntent().getIntExtra("id_busqueda", 0);
         baseDatos = new BaseDatos(this);
-        pbArticulos = findViewById(R.id.pbArticulos);
-        pbArticulos.setIndeterminate(true);
-        pbArticulos.setVisibility(View.GONE);
         lvArticulos = findViewById(R.id.lvArticulos);
         cursor = baseDatos.getCursorForAdapterArticulo(id_busqueda);
         adapter = new ArticuloCursorAdapter(this, cursor);
@@ -40,26 +44,13 @@ public class ArticulosActivity extends AppCompatActivity {
         Busqueda busqueda = baseDatos.getBusqueda(id_busqueda);
         getSupportActionBar().setTitle(busqueda.getPalabras());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                pbArticulos.setVisibility(View.VISIBLE);
-            }
-        };
-        IntentFilter filter = new IntentFilter(BuscadorWorker.BUSCANDO);
-        this.registerReceiver(broadcastReceiver, filter);
-
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                cursor = baseDatos.getCursorForAdapterArticulo(id_busqueda);
-                adapter.changeCursor(cursor);
-                pbArticulos.setVisibility(View.GONE);
-            }
-        };
-        filter = new IntentFilter(BuscadorWorker.BUSQUEDA_FINALIZADA);
-        this.registerReceiver(broadcastReceiver, filter);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        cursor = baseDatos.getCursorForAdapterArticulo(id_busqueda);
+        adapter.changeCursor(cursor);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
