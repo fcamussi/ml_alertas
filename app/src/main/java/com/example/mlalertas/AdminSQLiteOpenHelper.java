@@ -11,21 +11,25 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase BD) {
-        BD.execSQL("CREATE TABLE IF NOT EXISTS busquedas(" +
-                "id_busqueda INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "palabras TEXT," +
-                "articulo_nuevo INTEGER DEFAULT 0," +
+    public void onCreate(SQLiteDatabase DB) {
+        DB.execSQL("CREATE TABLE IF NOT EXISTS searches(" +
+                "search_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "words TEXT," +
+                "new_item INTEGER DEFAULT 0," +
                 "visible INTEGER DEFAULT 0," +
-                "borrado INTEGER DEFAULT 0)");
-        BD.execSQL("CREATE TABLE IF NOT EXISTS articulos(" +
-                "id_busqueda INTEGER," +
-                "id_articulo TEXT," +
+                "deleted INTEGER DEFAULT 0)");
+        DB.execSQL("CREATE TABLE IF NOT EXISTS items(" +
+                "search_id INTEGER," +
+                "item_id TEXT," +
                 "title TEXT," +
+                "price DOUBLE," +
+                "currency TEXT," +
                 "permalink TEXT," +
-                "nuevo INTEGER DEFAULT 0," +
-                "FOREIGN KEY(id_busqueda) REFERENCES busquedas(id_busqueda))");
-        BD.execSQL("CREATE TABLE articulos_tmp AS SELECT * FROM articulos WHERE 1=2");
+                "thumbnail TEXT," +
+                "state TEXT, " +
+                "new_item INTEGER DEFAULT 0," +
+                "FOREIGN KEY(search_id) REFERENCES searches(search_id))");
+        DB.execSQL("CREATE TABLE items_tmp AS SELECT * FROM items WHERE 1=2");
     }
 
     @Override

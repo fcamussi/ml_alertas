@@ -7,22 +7,22 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class BusquedaActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
 
-    EditText etPalabras;
+    EditText etWords;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_busqueda);
+        setContentView(R.layout.activity_search);
 
-        etPalabras = findViewById(R.id.etPalabras);
+        etWords = findViewById(R.id.etWords);
     }
 
     public void onClick(View view) {
         Intent data = new Intent();
-        String palabras = etPalabras.getText().toString();
-        data.putExtra("palabras", palabras);
+        String words = etWords.getText().toString();
+        data.putExtra("words", words);
         setResult(RESULT_OK, data);
         finish();
     }

@@ -9,30 +9,26 @@ import android.widget.CursorAdapter;
 import android.widget.TextView;
 
 
-public class BusquedaCursorAdapter extends CursorAdapter {
+public class SearchCursorAdapter extends CursorAdapter {
 
-    TextView tvPalabras;
-    TextView tvDetalles;
+    TextView tvWords;
 
-    public BusquedaCursorAdapter(Context context, Cursor c) {
+    public SearchCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup viewGroup) {
-        return LayoutInflater.from(context).inflate(R.layout.item_busqueda, viewGroup, false);
+        return LayoutInflater.from(context).inflate(R.layout.item_search, viewGroup, false);
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        tvPalabras = view.findViewById(R.id.tvTitulo);
-        tvDetalles = view.findViewById(R.id.tvPrecio);
+        tvWords = view.findViewById(R.id.tvWords);
         int _id = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
-        String palabras = cursor.getString(cursor.getColumnIndexOrThrow("palabras"));
-        String detalles = "";
+        String words = cursor.getString(cursor.getColumnIndexOrThrow("words"));
         view.setTag(String.valueOf(_id));
-        tvPalabras.setText(palabras);
-        tvDetalles.setText(detalles);
+        tvWords.setText(words);
     }
 
 }

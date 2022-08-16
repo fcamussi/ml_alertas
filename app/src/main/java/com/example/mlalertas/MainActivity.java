@@ -29,13 +29,12 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ActivityResultLauncher<Intent> agregarBusquedaLauncher;
-    private BaseDatos baseDatos;
-    private Buscador buscador;
+    private ActivityResultLauncher<Intent> addSearchLauncher;
+    private DataBase dataBase;
     private Cursor cursor;
-    private ProgressBar pbBusquedas;
-    private ListView lvBusquedas;
-    private BusquedaCursorAdapter adapter;
+    private ProgressBar pb;
+    private ListView lv;
+    private SearchCursorAdapter adapter;
     private int activeSearches = 0;
     private BroadcastReceiver broadcastReceiver;
 
@@ -44,44 +43,66 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        baseDatos = new BaseDatos(this);
-        pbBusquedas = findViewById(R.id.pbBusquedas);
-        pbBusquedas.setIndeterminate(true);
-        pbBusquedas.setVisibility(View.GONE);
-        lvBusquedas = findViewById(R.id.lvBusquedas);
-        cursor = baseDatos.getCursorForAdapterBusqueda();
-        adapter = new BusquedaCursorAdapter(this, cursor);
-        lvBusquedas.setAdapter(adapter);
+        dataBase = new DataBase(this);
+        pb = findViewById(R.id.pbSearches);
+        pb.setIndeterminate(true);
+        pb.setVisibility(View.GONE);
+        lv = findViewById(R.id.lvSearches);
+        cursor = dataBase.getCursorForAdapterSearch();
+        adapter = new SearchCursorAdapter(this, cursor);
+        lv.setAdapter(adapter);
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                int id_busqueda = intent.getIntExtra("id_busqueda", 0);
-                Busqueda busqueda = baseDatos.getBusqueda(id_busqueda);
-                busqueda.setVisible(true);
-                baseDatos.updateBusqueda(busqueda);
-                cursor = baseDatos.getCursorForAdapterBusqueda();
+                cursor = dataBase.getCursorForAdapterSearch();
                 adapter.changeCursor(cursor);
                 activeSearches--;
-                if (activeSearches == 0) { // Espero a que finalicen todas las búsquedas agregadas
-                    pbBusquedas.setVisibility(View.GONE);
+                if (activeSearches == 0) {
+                    pb.setVisibility(View.GONE);
                 }
             }
         };
-        IntentFilter filter = new IntentFilter(BroadcastSignal.ONE_SEARCH_FINISHED);
+        IntentFilter filter = new IntentFilter(Constants.ONE_TIME_SEARCH_FINISHED);
         this.registerReceiver(broadcastReceiver, filter);
 
-        agregarBusquedaLauncher = registerForActivityResult(
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                activeSearches--;
+                if (activeSearches == 0) {
+                    pb.setVisibility(View.GONE);
+                }
+                System.out.println("CONNECTION_FAILED");
+            }
+        };
+        filter = new IntentFilter(Constants.CONNECTION_FAILED);
+        this.registerReceiver(broadcastReceiver, filter);
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                activeSearches--;
+                if (activeSearches == 0) {
+                    pb.setVisibility(View.GONE);
+                }
+                System.out.println("ONE_TIME_SEARCH_TOO_MANY_ITEMS_FOUND");
+            }
+        };
+        filter = new IntentFilter(Constants.ONE_TIME_SEARCH_TOO_MANY_ITEMS_FOUND);
+        this.registerReceiver(broadcastReceiver, filter);
+
+        addSearchLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     Intent data = result.getData();
-                    agregarBusquedaResult(result.getResultCode(), data);
+                    addSearchResult(result.getResultCode(), data);
                 });
 
-        lvBusquedas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                mostrarArticulos(Integer.parseInt(view.getTag().toString()));
+                showItems(Integer.parseInt(view.getTag().toString()));
             }
         });
 
@@ -89,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 15, TimeUnit.MINUTES).build();
         // ExistingPeriodicWorkPolicy.KEEP: conserva el trabajo existente e ignora el nuevo
         WorkManager.getInstance(this).enqueueUniquePeriodicWork("PeriodicSearchWorker",
-                ExistingPeriodicWorkPolicy.KEEP, workRequest);
+                ExistingPeriodicWorkPolicy.REPLACE, workRequest);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,37 +120,37 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.itemAgregar:
-                agregarBusqueda();
+            case R.id.addSearch:
+                addSearch();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public void agregarBusqueda() {
-        Intent data = new Intent(this, BusquedaActivity.class);
-        agregarBusquedaLauncher.launch(data);
+    public void addSearch() {
+        Intent data = new Intent(this, SearchActivity.class);
+        addSearchLauncher.launch(data);
     }
 
-    public void agregarBusquedaResult(int result, Intent data) {
+    public void addSearchResult(int result, Intent data) {
         if (result == Activity.RESULT_OK) {
-            String palabras = data.getStringExtra("palabras");
-            Busqueda busqueda = new Busqueda();
-            busqueda.setPalabras(palabras);
-            int id_busqueda = baseDatos.addBusqueda(busqueda);
-            Data workerData = new Data.Builder().putInt("id_busqueda", id_busqueda).build();
+            String words = data.getStringExtra("words");
+            Data workerData = new Data.Builder()
+                    .putString("words", words)
+                    .putString("site_id", "MLA")
+                    .build();
             activeSearches++;
-            WorkRequest workRequest = new OneTimeWorkRequest.Builder(OneSearchWorker.class).setInputData(workerData).build();
+            WorkRequest workRequest = new OneTimeWorkRequest.Builder(OneTimeSearchWorker.class).setInputData(workerData).build();
             WorkManager.getInstance(this).enqueue(workRequest);
-            pbBusquedas.setVisibility(View.VISIBLE);
+            pb.setVisibility(View.VISIBLE);
             Toast.makeText(this, "Agregando búsqueda...", Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void mostrarArticulos(int id_busqueda) {
-        Intent intent = new Intent(this, ArticulosActivity.class);
-        intent.putExtra("id_busqueda", id_busqueda);
+    public void showItems(int search_id) {
+        Intent intent = new Intent(this, ItemsActivity.class);
+        intent.putExtra("search_id", search_id);
         startActivity(intent);
     }
 

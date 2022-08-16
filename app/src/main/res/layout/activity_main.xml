@@ -7,16 +7,16 @@
     tools:context=".MainActivity">
 
     <ListView
-        android:id="@+id/lvBusquedas"
+        android:id="@+id/lvSearches"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pbBusquedas" />
+        app:layout_constraintTop_toBottomOf="@+id/pbSearches" />
 
     <ProgressBar
-        android:id="@+id/pbBusquedas"
+        android:id="@+id/pbSearches"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

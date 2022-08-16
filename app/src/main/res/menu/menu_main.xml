@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/itemAgregar"
+        android:id="@+id/addSearch"
         android:icon="@android:drawable/ic_input_add"
         app:showAsAction="always" />
 </menu>

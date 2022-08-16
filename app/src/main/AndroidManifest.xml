@@ -16,10 +16,10 @@
         android:theme="@style/Theme.MLAlertas"
         tools:targetApi="31">
         <activity
-            android:name=".ArticulosActivity"
+            android:name=".ItemsActivity"
             android:exported="false" />
         <activity
-            android:name=".BusquedaActivity"
+            android:name=".SearchActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
