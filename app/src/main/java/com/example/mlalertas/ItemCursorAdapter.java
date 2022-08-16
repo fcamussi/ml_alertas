@@ -29,7 +29,7 @@ public class ItemCursorAdapter extends CursorAdapter {
     public void bindView(View view, Context context, Cursor cursor) {
         tvTitle = view.findViewById(R.id.tvTitle);
         tvPrice = view.findViewById(R.id.tvPrice);
-        tvState = view.findViewById(R.id.tvState);
+        tvState = view.findViewById(R.id.tvItemCount);
         String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
         Double price = cursor.getDouble(cursor.getColumnIndexOrThrow("price"));
         String currency = cursor.getString(cursor.getColumnIndexOrThrow("currency"));

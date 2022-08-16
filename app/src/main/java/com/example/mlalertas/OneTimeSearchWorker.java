@@ -39,7 +39,6 @@ public class OneTimeSearchWorker extends Worker {
             return Result.success();
         }
         List<Item> foundItems = mlSearcher.getFoundItems();
-        System.out.println(foundItems.size());
         if (foundItems.size() > Constants.MAX_ITEM_FOUND) {
             sendBroadcast(Constants.ONE_TIME_SEARCH_TOO_MANY_ITEMS_FOUND, words);
         } else {
@@ -47,6 +46,7 @@ public class OneTimeSearchWorker extends Worker {
             search.setWordList(wordsList);
             search = dataBase.addSearch(search);
             dataBase.addItems(search.getId(), foundItems, false);
+            search.setItemCount(dataBase.getItemCount(search.getId()));
             search.setVisible(true);
             dataBase.updateSearch(search);
             sendBroadcast(Constants.ONE_TIME_SEARCH_FINISHED, words);

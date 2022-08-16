@@ -12,6 +12,7 @@ import android.widget.TextView;
 public class SearchCursorAdapter extends CursorAdapter {
 
     TextView tvWords;
+    TextView tvItemCount;
 
     public SearchCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
@@ -25,10 +26,12 @@ public class SearchCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         tvWords = view.findViewById(R.id.tvWords);
+        tvItemCount = view.findViewById((R.id.tvItemCount));
         int _id = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
         String words = cursor.getString(cursor.getColumnIndexOrThrow("words"));
         view.setTag(String.valueOf(_id));
         tvWords.setText(words);
+        tvItemCount.setText(String.valueOf(cursor.getInt(cursor.getColumnIndexOrThrow("item_count"))));
     }
 
 }

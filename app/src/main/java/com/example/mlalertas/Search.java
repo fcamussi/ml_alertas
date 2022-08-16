@@ -6,6 +6,7 @@ public class Search {
 
     private int id;
     private List<String> wordList;
+    private int itemCount;
     private boolean newItem;
     private boolean visible;
     private boolean deleted;
@@ -32,6 +33,14 @@ public class Search {
 
     public void setWordList(List<String> wordList) {
         this.wordList = wordList;
+    }
+
+    public int getItemCount() {
+        return itemCount;
+    }
+
+    public void setItemCount(int itemCount) {
+        this.itemCount = itemCount;
     }
 
     public boolean isNewItem() {

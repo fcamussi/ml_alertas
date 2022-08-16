@@ -15,6 +15,7 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         DB.execSQL("CREATE TABLE IF NOT EXISTS searches(" +
                 "search_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "words TEXT," +
+                "item_count INTEGER DEFAULT 0," +
                 "new_item INTEGER DEFAULT 0," +
                 "visible INTEGER DEFAULT 0," +
                 "deleted INTEGER DEFAULT 0)");
