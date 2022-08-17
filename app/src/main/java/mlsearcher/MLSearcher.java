@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -17,8 +18,8 @@ public class MLSearcher {
     private final List<String> wordList;
     private final List<Item> itemList;
     private String siteId;
-    private String state;
     private String agent;
+    private boolean filtered;
     private int maxItemCount;
 
     /**
@@ -26,8 +27,8 @@ public class MLSearcher {
      */
     public MLSearcher() {
         siteId = null;
-        state = null;
         agent = "MLSearcher";
+        filtered = true;
         maxItemCount = 1000;
         wordList = new ArrayList<>();
         itemList = new ArrayList<>();
@@ -43,9 +44,7 @@ public class MLSearcher {
     static public List<String> stringToStringList(String string) {
         List<String> stringList = new ArrayList<>();
         String[] stringSplited = string.split("\\s+");
-        for (String str : stringSplited) {
-            stringList.add(str);
-        }
+        Collections.addAll(stringList, stringSplited);
         return stringList;
     }
 
@@ -57,11 +56,11 @@ public class MLSearcher {
      * @return String
      */
     static public String stringListToString(List<String> stringList) {
-        String string = stringList.get(0);
+        StringBuilder string = new StringBuilder(stringList.get(0));
         for (int c = 1; c < stringList.size(); c++) {
-            string = string + " " + stringList.get(c);
+            string.append(" ").append(stringList.get(c));
         }
-        return string;
+        return string.toString();
     }
 
     /**
@@ -71,15 +70,6 @@ public class MLSearcher {
      */
     public void setSiteId(String siteId) {
         this.siteId = siteId;
-    }
-
-    /**
-     * Setea el estado/provincia para filtrar la búsqueda
-     *
-     * @param state Nombre del estado/provincia
-     */
-    public void setState(String state) {
-        this.state = state;
     }
 
     /**
@@ -93,11 +83,20 @@ public class MLSearcher {
     }
 
     /**
+     * Setea si se hace un filtrado para que las palabras estén contenidas dentro del título
+     *
+     * @param filtered true para filtrar, false para no filtrar
+     *                 Por defecto es true
+     */
+    public void setFiltered(boolean filtered) {
+        this.filtered = filtered;
+    }
+
+    /**
      * Setea la cantidad máxima de articulos que se exploran en la búsqueda
-     * Dicha cantidad no tiene porque coincidir con la cantidad de articulos encontrados
      *
      * @param maxItemCount Cantidad máxima de articulos
-     *                     El valor por defecto es 1000, que es la cantidad máxima impuesta por ML
+     *                     El valor por defecto es 1000, que es la cantidad máxima definida por ML
      * @throws Exception Si maxItemCount es mayor a 1000
      */
     public void setMaxItemCount(int maxItemCount) throws Exception {
@@ -171,16 +170,19 @@ public class MLSearcher {
             item.setPermalink(permalink);
             item.setThumbnail(thumbnail);
             item.setState(state);
-            /* Chequea que cada palabra esté contenida en el título del artículo */
-            boolean match = true;
-            title = title.toLowerCase();
-            for (String word : wordList) {
-                if (!title.contains(word)) {
-                    match = false;
-                    break;
+            if (filtered) { /* Chequea que cada palabra esté contenida en el título del artículo */
+                boolean match = true;
+                title = title.toLowerCase();
+                for (String word : wordList) {
+                    if (!title.contains(word)) {
+                        match = false;
+                        break;
+                    }
                 }
+                if (match) itemList.add(item);
+            } else {
+                itemList.add(item);
             }
-            if (match) itemList.add(item);
         }
     }
 

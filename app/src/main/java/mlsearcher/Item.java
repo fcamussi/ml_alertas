@@ -1,7 +1,7 @@
 package mlsearcher;
 
 /**
- * Clase para almacenar los valores de los artículos
+ * Clase para almacenar la información de los artículos
  *
  * @author Fernando Camussi
  */

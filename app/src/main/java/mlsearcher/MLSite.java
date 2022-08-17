@@ -1,11 +1,8 @@
 package mlsearcher;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,7 +13,6 @@ import java.util.Map;
 public class MLSite {
 
     Map<String, String> siteMap;
-    Map<String, List<String>> stateMap;
     private String agent;
 
     /**
@@ -24,7 +20,6 @@ public class MLSite {
      */
     public MLSite() {
         siteMap = new HashMap<>();
-        stateMap = new HashMap<>();
         agent = "MLSearcher";
     }
 
@@ -55,19 +50,6 @@ public class MLSite {
             String siteName = jsonArr.getJSONObject(c).get("name").toString();
             siteMap.put(siteId, siteName);
         }
-        for (String id : siteMap.keySet()) {
-            content = url.getContent("https://api.mercadolibre.com/sites/" + id);
-            JSONObject jsonObj = new JSONObject(content);
-            String countryId = jsonObj.getString("country_id");
-            content = url.getContent("https://api.mercadolibre.com/countries/" + countryId);
-            jsonObj = new JSONObject(content);
-            jsonArr = jsonObj.getJSONArray("states");
-            List<String> stateList = new ArrayList<>();
-            for (int c = 0; c < jsonArr.length(); c++) {
-                stateList.add(jsonArr.getJSONObject(c).getString("name"));
-            }
-            stateMap.put(id, stateList);
-        }
     }
 
     /**
@@ -77,16 +59,6 @@ public class MLSite {
      */
     public Map<String, String> getSites() {
         return siteMap;
-    }
-
-    /**
-     * Obtiene los estados de un sitio
-     *
-     * @param id Identificador del sitio
-     * @return Estados del sitio
-     */
-    public List<String> getStatesBySiteId(String id) {
-        return stateMap.get(id);
     }
 
 }
