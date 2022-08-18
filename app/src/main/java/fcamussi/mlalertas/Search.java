@@ -6,6 +6,7 @@ public class Search {
 
     private int id;
     private List<String> wordList;
+    private String siteId;
     private int itemCount;
     private boolean newItem;
     private boolean visible;
@@ -14,6 +15,7 @@ public class Search {
     public Search() {
         int id = -1;
         List<String> wordList = null;
+        siteId = null;
         newItem = false;
         visible = false;
         deleted = false;
@@ -33,6 +35,14 @@ public class Search {
 
     public void setWordList(List<String> wordList) {
         this.wordList = wordList;
+    }
+
+    public String getSiteId() {
+        return siteId;
+    }
+
+    public void setSiteId(String siteId) {
+        this.siteId = siteId;
     }
 
     public int getItemCount() {

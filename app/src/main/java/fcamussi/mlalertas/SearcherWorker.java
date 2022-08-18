@@ -5,9 +5,9 @@ import android.content.Context;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-public class PeriodicSearcherWorker extends Worker {
+public class SearcherWorker extends Worker {
 
-    public PeriodicSearcherWorker(Context context, WorkerParameters params) {
+    public SearcherWorker(Context context, WorkerParameters params) {
         super(context, params);
     }
 

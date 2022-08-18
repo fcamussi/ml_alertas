@@ -11,9 +11,9 @@ import java.util.List;
 import mlsearcher.Item;
 import mlsearcher.MLSearcher;
 
-public class OneTimeSearchWorker extends Worker {
+public class AddSearchWorker extends Worker {
 
-    public OneTimeSearchWorker(Context context, WorkerParameters params) {
+    public AddSearchWorker(Context context, WorkerParameters params) {
         super(context, params);
     }
 
@@ -24,10 +24,6 @@ public class OneTimeSearchWorker extends Worker {
         DataBase dataBase = new DataBase(getApplicationContext());
         MLSearcher mlSearcher = new MLSearcher();
 
-/*        try {
-            mlSearcher.setMaxItemCount(Constants.MAX_ITEM_COUNT);
-        } catch (Exception e) {
-        }*/
         mlSearcher.setSiteId(siteId);
         List<String> wordsList = MLSearcher.stringToStringList(words);
         mlSearcher.setWords(wordsList);
@@ -35,29 +31,27 @@ public class OneTimeSearchWorker extends Worker {
         try {
             mlSearcher.searchItems();
         } catch (Exception e) {
-            sendBroadcast(Constants.CONNECTION_FAILED, words);
+            sendBroadcast(Constants.ADD_SEARCH_CONNECTION_FAILED, words, siteId);
             return Result.success();
         }
         List<Item> foundItems = mlSearcher.getFoundItems();
-        if (foundItems.size() > Constants.MAX_ITEM_FOUND) {
-            sendBroadcast(Constants.ONE_TIME_SEARCH_TOO_MANY_ITEMS_FOUND, words);
-        } else {
-            Search search = new Search();
-            search.setWordList(wordsList);
-            search = dataBase.addSearch(search);
-            dataBase.addItems(search.getId(), foundItems, false);
-            search.setItemCount(dataBase.getItemCount(search.getId()));
-            search.setVisible(true);
-            dataBase.updateSearch(search);
-            sendBroadcast(Constants.ONE_TIME_SEARCH_FINISHED, words);
-        }
+        Search search = new Search();
+        search.setWordList(wordsList);
+        search.setSiteId(siteId);
+        search = dataBase.addSearch(search);
+        dataBase.addItems(search.getId(), foundItems, false);
+        search.setItemCount(dataBase.getItemCount(search.getId()));
+        search.setVisible(true);
+        dataBase.updateSearch(search);
+        sendBroadcast(Constants.ADD_SEARCH_FINISHED, words, siteId);
         return Result.success();
     }
 
-    private void sendBroadcast(String broadcastMsg, String words) {
+    private void sendBroadcast(String broadcastMsg, String words, String siteId) {
         Intent intent = new Intent(broadcastMsg);
         intent.putExtra("words", words);
-        intent.setPackage(getApplicationContext().getPackageName());
+        intent.putExtra("site_id", siteId);
+        intent.setPackage(getApplicationContext().getPackageName()); // Para que solo ésta app lo reciba
         getApplicationContext().sendBroadcast(intent);
     }
 

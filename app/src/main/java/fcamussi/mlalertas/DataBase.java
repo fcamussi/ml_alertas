@@ -25,7 +25,7 @@ public class DataBase {
 
     public Cursor getCursorForAdapterSearch() {
         Cursor cursor;
-        cursor = DB.rawQuery("SELECT search_id AS _id,words,item_count,new_item FROM searches " +
+        cursor = DB.rawQuery("SELECT search_id AS _id,words,site_id,item_count,new_item FROM searches " +
                 "WHERE visible=1 AND deleted=0", null);
         return cursor;
     }
@@ -37,6 +37,7 @@ public class DataBase {
         if (cursor.moveToFirst()) {
             search.setId(cursor.getInt(cursor.getColumnIndexOrThrow("search_id")));
             search.setWordList(MLSearcher.stringToStringList(cursor.getString(cursor.getColumnIndexOrThrow("words"))));
+            search.setSiteId(cursor.getString(cursor.getColumnIndexOrThrow("site_id")));
             search.setItemCount(cursor.getInt(cursor.getColumnIndexOrThrow("item_count")));
             search.setNewItem(cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0);
             search.setVisible(cursor.getInt(cursor.getColumnIndexOrThrow("visible")) > 0);
@@ -55,6 +56,7 @@ public class DataBase {
                 Search search = new Search();
                 search.setId(cursor.getInt(cursor.getColumnIndexOrThrow("search_id")));
                 search.setWordList(MLSearcher.stringToStringList(cursor.getString(cursor.getColumnIndexOrThrow("words"))));
+                search.setSiteId(cursor.getString(cursor.getColumnIndexOrThrow("site_id")));
                 search.setItemCount(cursor.getInt(cursor.getColumnIndexOrThrow("item_count")));
                 search.setNewItem(cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0);
                 search.setVisible(cursor.getInt(cursor.getColumnIndexOrThrow("visible")) > 0);
@@ -69,6 +71,7 @@ public class DataBase {
     public Search addSearch(Search search) {
         ContentValues register = new ContentValues();
         register.put("words", MLSearcher.stringListToString(search.getWordList()));
+        register.put("site_id", search.getSiteId());
         long rowid = DB.insert("searches", null, register);
         Cursor cursor = DB.rawQuery("SELECT search_id FROM searches WHERE rowid=" + rowid, null);
         cursor.moveToFirst();
@@ -82,6 +85,7 @@ public class DataBase {
         ContentValues register = new ContentValues();
         register.put("search_id", search.getId());
         register.put("words", MLSearcher.stringListToString(search.getWordList()));
+        register.put("site_id", search.getSiteId());
         register.put("item_count", search.getItemCount());
         register.put("new_item", search.isNewItem());
         register.put("visible", search.isVisible());

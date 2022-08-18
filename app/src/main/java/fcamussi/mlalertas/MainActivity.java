@@ -66,33 +66,23 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        IntentFilter filter = new IntentFilter(Constants.ONE_TIME_SEARCH_FINISHED);
+        IntentFilter filter = new IntentFilter(Constants.ADD_SEARCH_FINISHED);
         this.registerReceiver(broadcastReceiver, filter);
 
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
+                String words = intent.getStringExtra("words");
+                String siteId = intent.getStringExtra("site_id");
                 activeSearches--;
                 if (activeSearches == 0) {
                     pb.setVisibility(View.GONE);
                 }
-                System.out.println("CONNECTION_FAILED");
+                System.out.println("No se pudo agregar la búsqueda para: "
+                        + words + ", en el sitio " + siteId);
             }
         };
-        filter = new IntentFilter(Constants.CONNECTION_FAILED);
-        this.registerReceiver(broadcastReceiver, filter);
-
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                activeSearches--;
-                if (activeSearches == 0) {
-                    pb.setVisibility(View.GONE);
-                }
-                System.out.println("ONE_TIME_SEARCH_TOO_MANY_ITEMS_FOUND");
-            }
-        };
-        filter = new IntentFilter(Constants.ONE_TIME_SEARCH_TOO_MANY_ITEMS_FOUND);
+        filter = new IntentFilter(Constants.ADD_SEARCH_CONNECTION_FAILED);
         this.registerReceiver(broadcastReceiver, filter);
 
         addSearchLauncher = registerForActivityResult(
@@ -109,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(PeriodicSearcherWorker.class,
+        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(SearcherWorker.class,
                 15, TimeUnit.MINUTES).build();
         // ExistingPeriodicWorkPolicy.KEEP: conserva el trabajo existente e ignora el nuevo
         WorkManager.getInstance(this).enqueueUniquePeriodicWork("PeriodicSearchWorker",
@@ -144,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                     .putString("site_id", "MLA")
                     .build();
             activeSearches++;
-            WorkRequest workRequest = new OneTimeWorkRequest.Builder(OneTimeSearchWorker.class).setInputData(workerData).build();
+            WorkRequest workRequest = new OneTimeWorkRequest.Builder(AddSearchWorker.class).setInputData(workerData).build();
             WorkManager.getInstance(this).enqueue(workRequest);
             pb.setVisibility(View.VISIBLE);
             Toast.makeText(this, "Agregando búsqueda...", Toast.LENGTH_SHORT).show();
