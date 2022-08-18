@@ -19,7 +19,7 @@
             android:name=".ItemsActivity"
             android:exported="false" />
         <activity
-            android:name=".SearchActivity"
+            android:name=".AddSearchActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -16,5 +16,6 @@
     <style name="TextAppearance.AppCompat.Widget.ActionBar.Title" parent="@android:style/TextAppearance">
         <item name="android:textColor">@color/blue_ML2</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tvWords"
+        android:id="@+id/tv_words"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvItemCount"
+        android:id="@+id/tv_item_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -26,10 +26,10 @@
         android:hint="Cantidad de artículos"
         android:textColorHint="#757575"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvWords" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_words" />
 
     <TextView
-        android:id="@+id/tvSite"
+        android:id="@+id/tv_site_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -39,6 +39,6 @@
         android:textColorHint="#757575"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvItemCount" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_count" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

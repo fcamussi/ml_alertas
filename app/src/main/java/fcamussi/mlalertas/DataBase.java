@@ -147,4 +147,10 @@ public class DataBase {
         return count;
     }
 
+    public Cursor getCursorForAdapterSite() {
+        Cursor cursor;
+        cursor = DB.rawQuery("SELECT site_id AS _id,name FROM sites", null);
+        return cursor;
+    }
+
 }

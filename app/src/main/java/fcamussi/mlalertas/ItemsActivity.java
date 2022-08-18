@@ -24,7 +24,7 @@ public class ItemsActivity extends AppCompatActivity {
 
         searchId = getIntent().getIntExtra("search_id", 0);
         dataBase = new DataBase(this);
-        lv = findViewById(R.id.lvItems);
+        lv = findViewById(R.id.lv_items);
         cursor = dataBase.getCursorForAdapterItem(searchId);
         adapter = new ItemCursorAdapter(this, cursor);
         lv.setAdapter(adapter);

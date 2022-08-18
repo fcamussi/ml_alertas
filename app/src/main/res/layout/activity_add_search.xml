@@ -18,11 +18,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etWords"
+        android:id="@+id/et_words"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="32dp"
         android:ems="10"
         android:hint="Palabras"
         android:inputType="textPersonName"
@@ -35,10 +35,17 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="160dp"
         android:onClick="onClick"
         android:text="Button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Spinner
+        android:id="@+id/spinner_site"
+        android:layout_width="409dp"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="127dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

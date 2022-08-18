@@ -47,10 +47,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         dataBase = new DataBase(this);
-        pb = findViewById(R.id.pbSearches);
+        pb = findViewById(R.id.pb_searches);
         pb.setIndeterminate(true);
         pb.setVisibility(View.GONE);
-        lv = findViewById(R.id.lvSearches);
+        lv = findViewById(R.id.lv_searches);
         cursor = dataBase.getCursorForAdapterSearch();
         adapter = new SearchCursorAdapter(this, cursor);
         lv.setAdapter(adapter);
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.addSearch:
+            case R.id.add_search:
                 addSearch();
                 return true;
             default:
@@ -122,16 +122,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void addSearch() {
-        Intent data = new Intent(this, SearchActivity.class);
+        Intent data = new Intent(this, AddSearchActivity.class);
         addSearchLauncher.launch(data);
     }
 
     public void addSearchResult(int result, Intent data) {
         if (result == Activity.RESULT_OK) {
             String words = data.getStringExtra("words");
+            String siteId = data.getStringExtra("site_id");
             Data workerData = new Data.Builder()
                     .putString("words", words)
-                    .putString("site_id", "MLA")
+                    .putString("site_id", siteId)
                     .build();
             activeSearches++;
             WorkRequest workRequest = new OneTimeWorkRequest.Builder(AddSearchWorker.class).setInputData(workerData).build();
