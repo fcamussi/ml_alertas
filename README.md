@@ -1,6 +1,6 @@
 # ML Alertas
 
-Aplicación que permite agregar búsquedas para que las mismas se realicen de forma automáticas cada cierto intervalo de tiempo y avise cuando se publica un producto nuevo se publique.
+Aplicación que permite agregar búsquedas para que las mismas se realicen de forma automáticas cada cierto intervalo de tiempo y avise cuando se publica un árticulo nuevo que coincide con los criterios de la búsqueda.
 
 ## Estado
 
