@@ -1,6 +1,7 @@
 # ML Alertas
 
-Alertas para Mercado Libre. Es una aplicación que permite agregar búsquedas para que las mismas se realicen de forma automáticas cada cierto intervalo de tiempo y avise cuando se publica un árticulo nuevo que coincide con los criterios de la búsqueda.
+Alertas para Mercado Libre.
+Es una aplicación que permite agregar búsquedas para que las mismas se realicen de forma automáticas cada cierto intervalo de tiempo y avise cuando se publica un árticulo nuevo que coincide con los criterios de la búsqueda.
 
 ## Estado
 
