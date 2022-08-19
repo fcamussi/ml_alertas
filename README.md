@@ -1,6 +1,6 @@
 # ML Alertas
 
-Aplicación de alertas para Mercado Libre.
+Aplicación de alertas para Mercado Libre para Android.
 
 Permite agregar búsquedas para que las mismas se realicen de forma automáticas cada cierto intervalo de tiempo y avise cuando se publica un árticulo nuevo que coincide con los criterios de la búsqueda.
 
