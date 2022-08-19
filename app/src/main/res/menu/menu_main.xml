@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/add_search"
-        android:icon="@android:drawable/ic_input_add"
+        android:icon="@drawable/ml_alertas_add"
         android:title="Agregar búsqueda"
         app:showAsAction="always" />
 </menu>

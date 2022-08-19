@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,9 +31,9 @@ public class AddSearchActivity extends AppCompatActivity {
         spinnerSite = findViewById(R.id.spinner_site);
         Cursor cursor = dataBase.getCursorForAdapterSite();
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_spinner_item,
+                android.R.layout.simple_spinner_dropdown_item,
                 cursor,
-                new String[]{"name"},
+                new String[]{"site_id_name"},
                 new int[]{android.R.id.text1},
                 0);
         spinnerSite.setAdapter(adapter);
@@ -39,15 +41,19 @@ public class AddSearchActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    public void onClick(View view) {
-        Intent intent = new Intent();
-        String words = etWords.getText().toString();
-        Cursor cursor = (Cursor) spinnerSite.getSelectedItem();
-        String siteId = cursor.getString(cursor.getColumnIndexOrThrow("_id"));
-        intent.putExtra("words", words);
-        intent.putExtra("site_id", siteId);
-        setResult(RESULT_OK, intent);
-        finish();
+    public void onClickBtnAdd(View view) {
+        if (etWords.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Debe ingresar al menos una palabra", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent intent = new Intent();
+            String words = etWords.getText().toString();
+            Cursor cursor = (Cursor) spinnerSite.getSelectedItem();
+            String siteId = cursor.getString(cursor.getColumnIndexOrThrow("_id"));
+            intent.putExtra("words", words);
+            intent.putExtra("site_id", siteId);
+            setResult(RESULT_OK, intent);
+            finish();
+        }
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

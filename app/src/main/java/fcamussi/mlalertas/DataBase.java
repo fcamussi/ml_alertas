@@ -149,7 +149,7 @@ public class DataBase {
 
     public Cursor getCursorForAdapterSite() {
         Cursor cursor;
-        cursor = DB.rawQuery("SELECT site_id AS _id,name FROM sites", null);
+        cursor = DB.rawQuery("SELECT site_id AS _id,site_id||' ('||name||')' as site_id_name FROM sites", null);
         return cursor;
     }
 
