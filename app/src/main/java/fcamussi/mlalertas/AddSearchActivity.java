@@ -1,6 +1,8 @@
 package fcamussi.mlalertas;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -8,17 +10,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import mlsearcher.MLSearcher;
 
 public class AddSearchActivity extends AppCompatActivity {
 
     EditText etWords;
     Spinner spinnerSite;
+    SharedPreferences preferences;
     private DataBase dataBase;
 
     @Override
@@ -39,12 +39,18 @@ public class AddSearchActivity extends AppCompatActivity {
         spinnerSite.setAdapter(adapter);
         getSupportActionBar().setTitle("Agregar búsqueda");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        preferences = getSharedPreferences("add_search_activity", Context.MODE_PRIVATE);
+        int spinnerIndex = preferences.getInt("spinner_index", 0);
+        spinnerSite.setSelection(spinnerIndex);
     }
 
     public void onClickBtnAdd(View view) {
         if (etWords.getText().toString().isEmpty()) {
             Toast.makeText(this, "Debe ingresar al menos una palabra", Toast.LENGTH_SHORT).show();
         } else {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putInt("spinner_index", spinnerSite.getSelectedItemPosition());
+            editor.commit();
             Intent intent = new Intent();
             String words = etWords.getText().toString();
             Cursor cursor = (Cursor) spinnerSite.getSelectedItem();

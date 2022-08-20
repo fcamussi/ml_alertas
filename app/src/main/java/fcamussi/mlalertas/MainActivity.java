@@ -138,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
             WorkRequest workRequest = new OneTimeWorkRequest.Builder(AddSearchWorker.class).setInputData(workerData).build();
             WorkManager.getInstance(this).enqueue(workRequest);
             pb.setVisibility(View.VISIBLE);
-            Toast.makeText(this, "Agregando búsqueda...", Toast.LENGTH_SHORT).show();
         }
     }
 
