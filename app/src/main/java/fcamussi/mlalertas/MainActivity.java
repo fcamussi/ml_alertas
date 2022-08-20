@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar pb;
     private ListView lv;
     private SearchCursorAdapter adapter;
-    private int activeSearches = 0;
     private BroadcastReceiver broadcastReceiver;
 
     @Override
@@ -60,10 +59,8 @@ public class MainActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 cursor = dataBase.getCursorForAdapterSearch();
                 adapter.changeCursor(cursor);
-                activeSearches--;
-                if (activeSearches == 0) {
-                    pb.setVisibility(View.GONE);
-                }
+                pb.setVisibility(View.GONE);
+                Toast.makeText(context, "Búsqueda agregada", Toast.LENGTH_SHORT).show();
             }
         };
         IntentFilter filter = new IntentFilter(Constants.ADD_SEARCH_FINISHED);
@@ -74,10 +71,7 @@ public class MainActivity extends AppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 String words = intent.getStringExtra("words");
                 String siteId = intent.getStringExtra("site_id");
-                activeSearches--;
-                if (activeSearches == 0) {
-                    pb.setVisibility(View.GONE);
-                }
+                pb.setVisibility(View.GONE);
                 System.out.println("No se pudo agregar la búsqueda para: "
                         + words + ", en el sitio " + siteId);
             }
@@ -88,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
         addSearchLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    Intent data = result.getData();
-                    addSearchResult(result.getResultCode(), data);
+                    Intent intent = result.getData();
+                    resultAddSearch(result.getResultCode(), intent);
                 });
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -114,27 +108,30 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_search:
-                addSearch();
+                if (pb.getVisibility() == View.VISIBLE) {
+                    Toast.makeText(getBaseContext(), "Espere...", Toast.LENGTH_SHORT).show();
+                } else {
+                    showAddSearch();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    public void addSearch() {
-        Intent data = new Intent(this, AddSearchActivity.class);
-        addSearchLauncher.launch(data);
+    public void showAddSearch() {
+        Intent intent = new Intent(this, AddSearchActivity.class);
+        addSearchLauncher.launch(intent);
     }
 
-    public void addSearchResult(int result, Intent data) {
+    public void resultAddSearch(int result, Intent intent) {
         if (result == Activity.RESULT_OK) {
-            String words = data.getStringExtra("words");
-            String siteId = data.getStringExtra("site_id");
+            String words = intent.getStringExtra("words");
+            String siteId = intent.getStringExtra("site_id");
             Data workerData = new Data.Builder()
                     .putString("words", words)
                     .putString("site_id", siteId)
                     .build();
-            activeSearches++;
             WorkRequest workRequest = new OneTimeWorkRequest.Builder(AddSearchWorker.class).setInputData(workerData).build();
             WorkManager.getInstance(this).enqueue(workRequest);
             pb.setVisibility(View.VISIBLE);
