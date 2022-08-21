@@ -12,7 +12,7 @@ public class Item {
     private String price;
     private String currency;
     private String permalink;
-    private String thumbnail;
+    private String thumbnailLink;
     private String state;
 
     public String getId() {
@@ -55,12 +55,12 @@ public class Item {
         this.permalink = permalink;
     }
 
-    public String getThumbnail() {
-        return thumbnail;
+    public String getThumbnailLink() {
+        return thumbnailLink;
     }
 
-    public void setThumbnail(String thumbnail) {
-        this.thumbnail = thumbnail;
+    public void setThumbnailLink(String thumbnailLink) {
+        this.thumbnailLink = thumbnailLink;
     }
 
     public String getState() {

@@ -2,8 +2,11 @@ package fcamussi.mlalertas;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,16 +36,22 @@ public class ItemsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        cursor = dataBase.getCursorForAdapterItem(searchId);
-        adapter.changeCursor(cursor);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_items, menu);
+        return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        finish();
-        return true;
+        switch (item.getItemId()) {
+            case R.id.delete_search:
+                Toast.makeText(getBaseContext(), "delete_search", Toast.LENGTH_SHORT).show();
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

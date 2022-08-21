@@ -27,10 +27,12 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
                 "price DOUBLE," +
                 "currency TEXT," +
                 "permalink TEXT," +
-                "thumbnail TEXT," +
+                "thumbnail_link TEXT," +
+                "thumbnail_image TEXT DEFAULT NULL," +
                 "state TEXT, " +
                 "new_item INTEGER DEFAULT 0," +
-                "FOREIGN KEY(search_id) REFERENCES searches(search_id))");
+                "PRIMARY KEY(search_id,item_id)," +
+                "FOREIGN KEY(search_id) REFERENCES searches(search_id) ON DELETE CASCADE)");
         DB.execSQL("CREATE TABLE items_tmp AS SELECT * FROM items");
         DB.execSQL("CREATE TABLE sites(" +
                 "site_id TEXT PRIMARY KEY," +

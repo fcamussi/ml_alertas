@@ -10,7 +10,9 @@
         <entry key="app/src/main/res/layout/item_item.xml" value="0.5" />
         <entry key="app/src/main/res/layout/item_search.xml" value="0.67" />
         <entry key="app/src/main/res/layout/item_site.xml" value="0.33" />
+        <entry key="app/src/main/res/menu/menu_item.xml" value="0.3645833333333333" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.36354166666666665" />
+        <entry key="app/src/main/res/menu/menu_searches.xml" value="0.3645833333333333" />
       </map>
     </option>
   </component>

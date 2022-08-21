@@ -111,7 +111,7 @@ public class DataBase {
             register.put("price", item.getPrice());
             register.put("currency", item.getCurrency());
             register.put("permalink", item.getPermalink());
-            register.put("thumbnail", item.getThumbnail());
+            register.put("thumbnail_link", item.getThumbnailLink());
             register.put("state", item.getState());
             register.put("new_item", newItem);
             DB.insert("items_tmp", null, register);
@@ -129,7 +129,7 @@ public class DataBase {
                 register.put("price", cursor.getString(cursor.getColumnIndexOrThrow("price")));
                 register.put("currency", cursor.getString(cursor.getColumnIndexOrThrow("currency")));
                 register.put("permalink", cursor.getString(cursor.getColumnIndexOrThrow("permalink")));
-                register.put("thumbnail", cursor.getString(cursor.getColumnIndexOrThrow("thumbnail")));
+                register.put("thumbnail_link", cursor.getString(cursor.getColumnIndexOrThrow("thumbnail_link")));
                 register.put("state", cursor.getString(cursor.getColumnIndexOrThrow("state")));
                 register.put("new_item", newItem);
                 DB.insert("items", null, register);

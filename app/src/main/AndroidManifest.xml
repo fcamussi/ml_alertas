@@ -22,7 +22,7 @@
             android:name=".AddSearchActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".SearchesActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
