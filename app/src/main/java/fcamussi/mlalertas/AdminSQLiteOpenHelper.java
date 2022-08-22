@@ -11,8 +11,8 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase DB) {
-        DB.execSQL("CREATE TABLE searches(" +
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE searches(" +
                 "search_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "words TEXT," +
                 "site_id TEXT," +
@@ -20,7 +20,7 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
                 "new_item INTEGER DEFAULT 0," +
                 "visible INTEGER DEFAULT 0," +
                 "deleted INTEGER DEFAULT 0)");
-        DB.execSQL("CREATE TABLE items(" +
+        db.execSQL("CREATE TABLE items(" +
                 "search_id INTEGER," +
                 "item_id TEXT," +
                 "title TEXT," +
@@ -33,32 +33,38 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
                 "new_item INTEGER DEFAULT 0," +
                 "PRIMARY KEY(search_id,item_id)," +
                 "FOREIGN KEY(search_id) REFERENCES searches(search_id) ON DELETE CASCADE)");
-        DB.execSQL("CREATE TABLE items_tmp AS SELECT * FROM items");
-        DB.execSQL("CREATE TABLE sites(" +
+        db.execSQL("CREATE TABLE items_tmp AS SELECT * FROM items");
+        db.execSQL("CREATE TABLE sites(" +
                 "site_id TEXT PRIMARY KEY," +
                 "name TEXT)");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MLB','Brasil')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MPE','Perú')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MLA','Argentina')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MLC','Chile')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MNI','Nicaragua')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MEC','Ecuador')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MLM','Mexico')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MSV','El Salvador')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MHN','Honduras')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MLV','Venezuela')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MLU','Uruguay')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MPY','Paraguay')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MCO','Colombia')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MGT','Guatemala')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MBO','Bolivia')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MCR','Costa Rica')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MRD','Dominicana')");
-        DB.execSQL("INSERT INTO sites(site_id,name) VALUES('MPA','Panamá')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MLB','Brasil')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MPE','Perú')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MLA','Argentina')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MLC','Chile')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MNI','Nicaragua')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MEC','Ecuador')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MLM','Mexico')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MSV','El Salvador')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MHN','Honduras')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MLV','Venezuela')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MLU','Uruguay')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MPY','Paraguay')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MCO','Colombia')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MGT','Guatemala')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MBO','Bolivia')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MCR','Costa Rica')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MRD','Dominicana')");
+        db.execSQL("INSERT INTO sites(site_id,name) VALUES('MPA','Panamá')");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
+    }
+
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        db.execSQL("PRAGMA foreign_keys=ON"); // activa el soporte para claves foráneas
     }
 }
