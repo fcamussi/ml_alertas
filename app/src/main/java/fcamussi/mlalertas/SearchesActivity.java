@@ -94,7 +94,7 @@ public class SearchesActivity extends AppCompatActivity {
                 //String words = intent.getStringExtra("words");
                 //String siteId = intent.getStringExtra("site_id");
                 pb.setVisibility(View.GONE);
-                String msg = "Mercado Libre arrojó demasiados resultados para su búsqueda. " +
+                String msg = "Mercado Libre retornó demasiados resultados para su búsqueda. " +
                         "Intente ser más específico.";
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                 alertDialogBuilder.setMessage(msg);
