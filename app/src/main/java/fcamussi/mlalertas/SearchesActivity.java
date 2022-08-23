@@ -98,13 +98,13 @@ public class SearchesActivity extends AppCompatActivity {
         lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                int searchId = Integer.parseInt(view.getTag().toString());
                 String msg = "¿Desea eliminar la búsqueda?";
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
                 alertDialogBuilder.setMessage(msg);
                 alertDialogBuilder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        int searchId = Integer.parseInt(view.getTag().toString());
                         setDeletedSearch(searchId);
                         dialogInterface.dismiss();
                     }
