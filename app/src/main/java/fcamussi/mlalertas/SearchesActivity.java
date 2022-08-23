@@ -1,8 +1,10 @@
 package fcamussi.mlalertas;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
@@ -93,6 +95,32 @@ public class SearchesActivity extends AppCompatActivity {
             }
         });
 
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                int searchId = Integer.parseInt(view.getTag().toString());
+                String msg = "¿Desea eliminar la búsqueda?";
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+                alertDialogBuilder.setMessage(msg);
+                alertDialogBuilder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        setDeletedSearch(searchId);
+                        dialogInterface.dismiss();
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+                return true;
+            }
+        });
+
         PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(SearcherWorker.class,
                 15, TimeUnit.MINUTES).build();
         // ExistingPeriodicWorkPolicy.KEEP: conserva el trabajo existente e ignora el nuevo
@@ -119,12 +147,12 @@ public class SearchesActivity extends AppCompatActivity {
         }
     }
 
-    public void showAddSearch() {
+    private void showAddSearch() {
         Intent intent = new Intent(this, AddSearchActivity.class);
         addSearchLauncher.launch(intent);
     }
 
-    public void resultAddSearch(int result, Intent intent) {
+    private void resultAddSearch(int result, Intent intent) {
         if (result == Activity.RESULT_OK) {
             String words = intent.getStringExtra("words");
             String siteId = intent.getStringExtra("site_id");
@@ -138,10 +166,18 @@ public class SearchesActivity extends AppCompatActivity {
         }
     }
 
-    public void showItems(int search_id) {
+    private void showItems(int search_id) {
         Intent intent = new Intent(this, ItemsActivity.class);
         intent.putExtra("search_id", search_id);
         startActivity(intent);
+    }
+
+    private void setDeletedSearch(int searchId) {
+        Search search = dataBase.getSearch(searchId);
+        search.setDeleted(true);
+        dataBase.updateSearch(search);
+        cursor = dataBase.getCursorForAdapterSearch();
+        adapter.changeCursor(cursor);
     }
 
 }
