@@ -71,14 +71,44 @@ public class SearchesActivity extends AppCompatActivity {
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                String words = intent.getStringExtra("words");
-                String siteId = intent.getStringExtra("site_id");
                 pb.setVisibility(View.GONE);
-                System.out.println("No se pudo agregar la búsqueda para: "
-                        + words + ", en el sitio " + siteId);
+                String msg = "La búsqueda no pudo agregarse porque falló la conexión.";
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                alertDialogBuilder.setMessage(msg);
+                alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         };
         filter = new IntentFilter(Constants.ADD_SEARCH_CONNECTION_FAILED);
+        this.registerReceiver(broadcastReceiver, filter);
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //String words = intent.getStringExtra("words");
+                //String siteId = intent.getStringExtra("site_id");
+                pb.setVisibility(View.GONE);
+                String msg = "Mercado Libre arrojó demasiados resultados para su búsqueda. " +
+                        "Intente ser más específico.";
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                alertDialogBuilder.setMessage(msg);
+                alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+        };
+        filter = new IntentFilter(Constants.ADD_SEARCH_MAX_RESULT_COUNT);
         this.registerReceiver(broadcastReceiver, filter);
 
         addSearchLauncher = registerForActivityResult(
