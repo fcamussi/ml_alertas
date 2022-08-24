@@ -25,23 +25,29 @@ public class DataBase {
 
     public Cursor getCursorForAdapterSearch() {
         Cursor cursor;
-        cursor = db.rawQuery("SELECT search_id AS _id,words,site_id,item_count,new_item FROM searches " +
+        cursor = db.rawQuery("SELECT search_id AS _id,words,site_id,frequency_id,item_count,new_item FROM searches " +
                 "WHERE visible=1 AND deleted=0", null);
         return cursor;
     }
 
-    public Search getSearch(int search_id) {
+    private void fillSearchFromCursor(Search search, Cursor cursor) {
+        search.setId(cursor.getInt(cursor.getColumnIndexOrThrow("search_id")));
+        search.setWordList(MLSearcher.stringToStringList(cursor.getString(cursor.getColumnIndexOrThrow("words"))));
+        search.setSiteId(cursor.getString(cursor.getColumnIndexOrThrow("site_id")));
+        search.setFrequencyId(cursor.getString(cursor.getColumnIndexOrThrow("frequency_id")));
+        search.setMinutesCountdown(cursor.getInt(cursor.getColumnIndexOrThrow("minutes_countdown")));
+        search.setItemCount(cursor.getInt(cursor.getColumnIndexOrThrow("item_count")));
+        search.setNewItem(cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0);
+        search.setVisible(cursor.getInt(cursor.getColumnIndexOrThrow("visible")) > 0);
+        search.setDeleted(cursor.getInt(cursor.getColumnIndexOrThrow("deleted")) > 0);
+    }
+
+    public Search getSearch(int searchId) {
         Search search = new Search();
         Cursor cursor;
-        cursor = db.rawQuery("SELECT * FROM searches WHERE search_id=" + search_id, null);
+        cursor = db.rawQuery("SELECT * FROM searches WHERE search_id=" + searchId, null);
         if (cursor.moveToFirst()) {
-            search.setId(cursor.getInt(cursor.getColumnIndexOrThrow("search_id")));
-            search.setWordList(MLSearcher.stringToStringList(cursor.getString(cursor.getColumnIndexOrThrow("words"))));
-            search.setSiteId(cursor.getString(cursor.getColumnIndexOrThrow("site_id")));
-            search.setItemCount(cursor.getInt(cursor.getColumnIndexOrThrow("item_count")));
-            search.setNewItem(cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0);
-            search.setVisible(cursor.getInt(cursor.getColumnIndexOrThrow("visible")) > 0);
-            search.setDeleted(cursor.getInt(cursor.getColumnIndexOrThrow("deleted")) > 0);
+            fillSearchFromCursor(search, cursor);
         }
         cursor.close();
         return search;
@@ -54,13 +60,7 @@ public class DataBase {
         if (cursor.moveToFirst()) {
             do {
                 Search search = new Search();
-                search.setId(cursor.getInt(cursor.getColumnIndexOrThrow("search_id")));
-                search.setWordList(MLSearcher.stringToStringList(cursor.getString(cursor.getColumnIndexOrThrow("words"))));
-                search.setSiteId(cursor.getString(cursor.getColumnIndexOrThrow("site_id")));
-                search.setItemCount(cursor.getInt(cursor.getColumnIndexOrThrow("item_count")));
-                search.setNewItem(cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0);
-                search.setVisible(cursor.getInt(cursor.getColumnIndexOrThrow("visible")) > 0);
-                search.setDeleted(cursor.getInt(cursor.getColumnIndexOrThrow("deleted")) > 0);
+                fillSearchFromCursor(search, cursor);
                 searchList.add(search);
             } while (cursor.moveToNext());
         }
@@ -72,6 +72,7 @@ public class DataBase {
         ContentValues register = new ContentValues();
         register.put("words", MLSearcher.stringListToString(search.getWordList()));
         register.put("site_id", search.getSiteId());
+        register.put("frequency_id", search.getFrequencyId());
         long rowid = db.insert("searches", null, register);
         Cursor cursor = db.rawQuery("SELECT search_id FROM searches WHERE rowid=" + rowid, null);
         cursor.moveToFirst();
@@ -86,6 +87,8 @@ public class DataBase {
         register.put("search_id", search.getId());
         register.put("words", MLSearcher.stringListToString(search.getWordList()));
         register.put("site_id", search.getSiteId());
+        register.put("frequency_id", search.getFrequencyId());
+        register.put("minutes_countdown", search.getMinutesCountdown());
         register.put("item_count", search.getItemCount());
         register.put("new_item", search.isNewItem());
         register.put("visible", search.isVisible());
@@ -93,19 +96,19 @@ public class DataBase {
         db.update("searches", register, "search_id=" + search.getId(), null);
     }
 
-    public Cursor getCursorForAdapterItem(int search_id) {
+    public Cursor getCursorForAdapterItem(int searchId) {
         Cursor cursor;
         cursor = db.rawQuery("SELECT item_id AS _id,title,price,currency,state " +
-                "FROM items WHERE search_id=" + search_id + " " +
+                "FROM items WHERE search_id=" + searchId + " " +
                 "ORDER BY item_id DESC", null);
         return cursor;
     }
 
-    public int addItems(int search_id, List<Item> itemList, boolean newItem) {
+    public int addItems(int searchId, List<Item> itemList, boolean newItem) {
         db.execSQL("DELETE FROM items_tmp");
         for (Item item : itemList) {
             ContentValues register = new ContentValues();
-            register.put("search_id", search_id);
+            register.put("search_id", searchId);
             register.put("item_id", item.getId());
             register.put("title", item.getTitle());
             register.put("price", item.getPrice());
@@ -119,11 +122,11 @@ public class DataBase {
         Cursor cursor;
         cursor = db.rawQuery("SELECT * FROM items_tmp " +
                 "WHERE item_id NOT IN (SELECT item_id FROM items " +
-                "WHERE search_id=" + search_id + ") AND search_id=" + search_id, null);
+                "WHERE search_id=" + searchId + ") AND search_id=" + searchId, null);
         if (cursor.moveToFirst()) {
             do {
                 ContentValues register = new ContentValues();
-                register.put("search_id", search_id);
+                register.put("search_id", searchId);
                 register.put("item_id", cursor.getString(cursor.getColumnIndexOrThrow("item_id")));
                 register.put("title", cursor.getString(cursor.getColumnIndexOrThrow("title")));
                 register.put("price", cursor.getString(cursor.getColumnIndexOrThrow("price")));
@@ -151,6 +154,24 @@ public class DataBase {
         Cursor cursor;
         cursor = db.rawQuery("SELECT site_id AS _id,site_id||' ('||name||')' as site_id_name FROM sites", null);
         return cursor;
+    }
+
+    public Cursor getCursorForAdapterFrequency() {
+        Cursor cursor;
+        cursor = db.rawQuery("SELECT frequency_id AS _id FROM frequencies ORDER BY MINUTES ASC", null);
+        return cursor;
+    }
+
+    public Frequency getFrequency(String frequencyId) {
+        Frequency frequency = new Frequency();
+        Cursor cursor;
+        cursor = db.rawQuery("SELECT * FROM frequency WHERE frequency_id=" + frequencyId, null);
+        if (cursor.moveToFirst()) {
+            frequency.setId(cursor.getString(cursor.getColumnIndexOrThrow("frequency_id")));
+            frequency.setMinutes(cursor.getInt(cursor.getColumnIndexOrThrow("minutes")));
+        }
+        cursor.close();
+        return frequency;
     }
 
 }

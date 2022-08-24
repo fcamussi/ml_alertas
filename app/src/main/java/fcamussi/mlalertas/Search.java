@@ -7,19 +7,12 @@ public class Search {
     private int id;
     private List<String> wordList;
     private String siteId;
+    private String frequencyId;
+    private int minutesCountdown;
     private int itemCount;
     private boolean newItem;
     private boolean visible;
     private boolean deleted;
-
-    public Search() {
-        int id = -1;
-        List<String> wordList = null;
-        siteId = null;
-        newItem = false;
-        visible = false;
-        deleted = false;
-    }
 
     public int getId() {
         return id;
@@ -43,6 +36,22 @@ public class Search {
 
     public void setSiteId(String siteId) {
         this.siteId = siteId;
+    }
+
+    public String getFrequencyId() {
+        return frequencyId;
+    }
+
+    public void setFrequencyId(String frequencyId) {
+        this.frequencyId = frequencyId;
+    }
+
+    public int getMinutesCountdown() {
+        return minutesCountdown;
+    }
+
+    public void setMinutesCountdown(int minutesCountdown) {
+        this.minutesCountdown = minutesCountdown;
     }
 
     public int getItemCount() {

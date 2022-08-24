@@ -186,9 +186,11 @@ public class SearchesActivity extends AppCompatActivity {
         if (result == Activity.RESULT_OK) {
             String words = intent.getStringExtra("words");
             String siteId = intent.getStringExtra("site_id");
+            String frequencyId = intent.getStringExtra("frequency_id");
             Data workerData = new Data.Builder()
                     .putString("words", words)
                     .putString("site_id", siteId)
+                    .putString("frequency_id", frequencyId)
                     .build();
             WorkRequest workRequest = new OneTimeWorkRequest.Builder(AddSearchWorker.class).setInputData(workerData).build();
             WorkManager.getInstance(this).enqueue(workRequest);

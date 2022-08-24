@@ -18,6 +18,7 @@ public class AddSearchActivity extends AppCompatActivity {
 
     EditText etWords;
     Spinner spinnerSite;
+    Spinner spinnerFrequency;
     SharedPreferences preferences;
     private DataBase dataBase;
 
@@ -26,37 +27,57 @@ public class AddSearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_search);
 
+        getSupportActionBar().setTitle("Agregar búsqueda");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         dataBase = new DataBase(this);
         etWords = findViewById(R.id.et_words);
         spinnerSite = findViewById(R.id.spinner_site);
-        Cursor cursor = dataBase.getCursorForAdapterSite();
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
+        spinnerFrequency = findViewById(R.id.spinner_frequency);
+        Cursor cursorSite = dataBase.getCursorForAdapterSite();
+        SimpleCursorAdapter adapterSite = new SimpleCursorAdapter(this,
                 android.R.layout.simple_spinner_dropdown_item,
-                cursor,
+                cursorSite,
                 new String[]{"site_id_name"},
                 new int[]{android.R.id.text1},
                 0);
-        spinnerSite.setAdapter(adapter);
-        getSupportActionBar().setTitle("Agregar búsqueda");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        spinnerSite.setAdapter(adapterSite);
+        Cursor cursorFrequency = dataBase.getCursorForAdapterFrequency();
+        SimpleCursorAdapter adapterFrequency = new SimpleCursorAdapter(this,
+                android.R.layout.simple_spinner_dropdown_item,
+                cursorFrequency,
+                new String[]{"_id"},
+                new int[]{android.R.id.text1},
+                0);
+        spinnerFrequency.setAdapter(adapterFrequency);
+
         preferences = getSharedPreferences("add_search_activity", Context.MODE_PRIVATE);
-        int spinnerIndex = preferences.getInt("spinner_index", 0);
-        spinnerSite.setSelection(spinnerIndex);
+        String words = preferences.getString("words", "");
+        int spinnerSiteIndex = preferences.getInt("spinner_site_index", 0);
+        int spinnerFrequencyIndex = preferences.getInt("spinner_frequency_index", spinnerFrequency.getCount()-1);
+        etWords.setText(words);
+        spinnerSite.setSelection(spinnerSiteIndex);
+        spinnerFrequency.setSelection(spinnerFrequencyIndex);
     }
 
     public void onClickBtnAdd(View view) {
         if (etWords.getText().toString().isEmpty()) {
             Toast.makeText(this, "Debe ingresar al menos una palabra", Toast.LENGTH_SHORT).show();
         } else {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putInt("spinner_index", spinnerSite.getSelectedItemPosition());
-            editor.commit();
-            Intent intent = new Intent();
             String words = etWords.getText().toString();
-            Cursor cursor = (Cursor) spinnerSite.getSelectedItem();
-            String siteId = cursor.getString(cursor.getColumnIndexOrThrow("_id"));
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("words", words);
+            editor.putInt("spinner_site_index", spinnerSite.getSelectedItemPosition());
+            editor.putInt("spinner_frequency_index", spinnerFrequency.getSelectedItemPosition());
+            editor.apply();
+            Intent intent = new Intent();
+            Cursor cursorSite = (Cursor) spinnerSite.getSelectedItem();
+            Cursor cursorFrequency = (Cursor) spinnerFrequency.getSelectedItem();
+            String siteId = cursorSite.getString(cursorSite.getColumnIndexOrThrow("_id"));
+            String frequencyId = cursorFrequency.getString(cursorFrequency.getColumnIndexOrThrow("_id"));
             intent.putExtra("words", words);
             intent.putExtra("site_id", siteId);
+            intent.putExtra("frequency_id", frequencyId);
             setResult(RESULT_OK, intent);
             finish();
         }

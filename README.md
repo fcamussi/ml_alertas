@@ -19,5 +19,4 @@ La aplicación se encuentra en estado alpha (en desarrollo)
 ![screenshot3](https://user-images.githubusercontent.com/75378876/185560640-3287850e-2adb-43b9-9013-685f26f9a9f4.png)
 
 ## Requisitos para la compilación
-- Android Studio
-- JDK
+- **Android Studio**

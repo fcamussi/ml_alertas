@@ -21,6 +21,7 @@ public class AddSearchWorker extends Worker {
     public Result doWork() {
         String words = getInputData().getString("words");
         String siteId = getInputData().getString("site_id");
+        String frequencyId = getInputData().getString("frequency_id");
         DataBase dataBase = new DataBase(getApplicationContext());
         MLSearcher mlSearcher = new MLSearcher();
 
@@ -38,6 +39,7 @@ public class AddSearchWorker extends Worker {
         Search search = new Search();
         search.setWordList(wordsList);
         search.setSiteId(siteId);
+        search.setFrequencyId(frequencyId);
         search = dataBase.addSearch(search);
         dataBase.addItems(search.getId(), foundItems, false);
         search.setItemCount(dataBase.getItemCount(search.getId()));

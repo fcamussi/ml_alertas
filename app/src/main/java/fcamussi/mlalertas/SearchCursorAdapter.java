@@ -12,8 +12,9 @@ import android.widget.TextView;
 public class SearchCursorAdapter extends CursorAdapter {
 
     TextView tvWords;
-    TextView tvItemCount;
     TextView tvSiteId;
+    TextView tvFrequencyId;
+    TextView tvItemCount;
 
     public SearchCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
@@ -27,16 +28,19 @@ public class SearchCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         tvWords = view.findViewById(R.id.tv_words);
-        tvItemCount = view.findViewById((R.id.tv_item_count));
         tvSiteId = view.findViewById(R.id.tv_site_id);
+        tvFrequencyId = view.findViewById(R.id.tv_frequency_id);
+        tvItemCount = view.findViewById((R.id.tv_item_count));
         int _id = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
         String words = cursor.getString(cursor.getColumnIndexOrThrow("words"));
-        int itemCount = cursor.getInt(cursor.getColumnIndexOrThrow("item_count"));
         String siteId = cursor.getString(cursor.getColumnIndexOrThrow("site_id"));
+        String frequencyId = cursor.getString(cursor.getColumnIndexOrThrow("frequency_id"));
+        int itemCount = cursor.getInt(cursor.getColumnIndexOrThrow("item_count"));
         view.setTag(String.valueOf(_id));
         tvWords.setText(words);
-        tvItemCount.setText(String.valueOf(itemCount));
         tvSiteId.setText(siteId);
+        tvFrequencyId.setText(frequencyId);
+        tvItemCount.setText(String.valueOf(itemCount));
     }
 
 }

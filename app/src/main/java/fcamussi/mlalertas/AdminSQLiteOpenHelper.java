@@ -16,10 +16,13 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
                 "search_id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "words TEXT," +
                 "site_id TEXT," +
+                "frequency_id TEXT," +
+                "minutes_countdown INTEGER," +
                 "item_count INTEGER DEFAULT 0," +
                 "new_item INTEGER DEFAULT 0," +
                 "visible INTEGER DEFAULT 0," +
                 "deleted INTEGER DEFAULT 0)");
+
         db.execSQL("CREATE TABLE items(" +
                 "search_id INTEGER," +
                 "item_id TEXT," +
@@ -28,12 +31,13 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
                 "currency TEXT," +
                 "permalink TEXT," +
                 "thumbnail_link TEXT," +
-                "thumbnail_image TEXT DEFAULT NULL," +
                 "state TEXT, " +
                 "new_item INTEGER DEFAULT 0," +
                 "PRIMARY KEY(search_id,item_id)," +
                 "FOREIGN KEY(search_id) REFERENCES searches(search_id) ON DELETE CASCADE)");
+
         db.execSQL("CREATE TABLE items_tmp AS SELECT * FROM items");
+
         db.execSQL("CREATE TABLE sites(" +
                 "site_id TEXT PRIMARY KEY," +
                 "name TEXT)");
@@ -55,6 +59,18 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         db.execSQL("INSERT INTO sites(site_id,name) VALUES('MCR','Costa Rica')");
         db.execSQL("INSERT INTO sites(site_id,name) VALUES('MRD','Dominicana')");
         db.execSQL("INSERT INTO sites(site_id,name) VALUES('MPA','Panamá')");
+
+        db.execSQL("CREATE TABLE frequencies(" +
+                "frequency_id TEXT PRIMARY KEY," +
+                "minutes INTEGER)");
+        db.execSQL("INSERT INTO frequencies(frequency_id,minutes) VALUES('15M',15)");
+        db.execSQL("INSERT INTO frequencies(frequency_id,minutes) VALUES('30M',30)");
+        db.execSQL("INSERT INTO frequencies(frequency_id,minutes) VALUES('1H',60)");
+        db.execSQL("INSERT INTO frequencies(frequency_id,minutes) VALUES('2H',120)");
+        db.execSQL("INSERT INTO frequencies(frequency_id,minutes) VALUES('4H',240)");
+        db.execSQL("INSERT INTO frequencies(frequency_id,minutes) VALUES('6H',360)");
+        db.execSQL("INSERT INTO frequencies(frequency_id,minutes) VALUES('12H',720)");
+        db.execSQL("INSERT INTO frequencies(frequency_id,minutes) VALUES('1D',1440)");
     }
 
     @Override
