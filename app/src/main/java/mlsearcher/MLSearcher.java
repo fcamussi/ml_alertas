@@ -117,6 +117,22 @@ public class MLSearcher {
     }
 
     /**
+     * Consulta la cantidad de resultados que produce la búsqueda
+     *
+     * @return La cantidad de resultados
+     * @throws Exception Si falla la consulta
+     */
+    public int getResultCount() throws Exception {
+        if (siteId == null) throw new Exception("Id de sitio no especificado");
+        Url url = new Url();
+        url.setAgent(agent);
+        String content = url.getContent(buildURLStr(0));
+        JSONObject jsonObj = new JSONObject(content);
+        int total = jsonObj.getJSONObject("paging").getInt("total");
+        return total;
+    }
+
+    /**
      * Realiza la búsqueda
      *
      * @throws Exception Si falla la búsqueda
