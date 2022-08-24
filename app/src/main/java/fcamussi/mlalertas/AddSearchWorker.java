@@ -31,12 +31,12 @@ public class AddSearchWorker extends Worker {
         mlSearcher.setAgent(Constants.AGENT);
         try {
             if (mlSearcher.getResultCount() > Constants.SEARCH_MAX_RESULT_COUNT) {
-                sendBroadcast(Constants.ADD_SEARCH_MAX_RESULT_COUNT, words, siteId);
+                sendBroadcast(Constants.ADD_SEARCH_MAX_RESULT_COUNT);
                 return Result.success();
             }
             mlSearcher.searchItems();
         } catch (Exception e) {
-            sendBroadcast(Constants.ADD_SEARCH_CONNECTION_FAILED, words, siteId);
+            sendBroadcast(Constants.ADD_SEARCH_CONNECTION_FAILED);
             return Result.success();
         }
         List<Item> foundItems = mlSearcher.getFoundItems();
@@ -49,14 +49,12 @@ public class AddSearchWorker extends Worker {
         search.setItemCount(dataBase.getItemCount(search.getId()));
         search.setVisible(true);
         dataBase.updateSearch(search);
-        sendBroadcast(Constants.ADD_SEARCH_FINISHED, words, siteId);
+        sendBroadcast(Constants.ADD_SEARCH_FINISHED);
         return Result.success();
     }
 
-    private void sendBroadcast(String broadcastMsg, String words, String siteId) {
+    private void sendBroadcast(String broadcastMsg) {
         Intent intent = new Intent(broadcastMsg);
-        intent.putExtra("words", words);
-        intent.putExtra("site_id", siteId);
         intent.setPackage(getApplicationContext().getPackageName()); // Para que solo ésta app lo reciba
         getApplicationContext().sendBroadcast(intent);
     }

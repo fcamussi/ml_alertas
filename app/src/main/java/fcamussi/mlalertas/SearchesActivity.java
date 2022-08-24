@@ -91,8 +91,6 @@ public class SearchesActivity extends AppCompatActivity {
         broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                //String words = intent.getStringExtra("words");
-                //String siteId = intent.getStringExtra("site_id");
                 pb.setVisibility(View.GONE);
                 String msg = "Ésta búsqueda produce demasiados resultados. " +
                         "Por favor, intente ser más específico.";
