@@ -26,8 +26,8 @@ public class AddSearchWorker extends Worker {
         MLSearcher mlSearcher = new MLSearcher();
 
         mlSearcher.setSiteId(siteId);
-        List<String> wordsList = MLSearcher.stringToStringList(words);
-        mlSearcher.setWords(wordsList);
+        List<String> wordList = MLSearcher.stringToStringList(words);
+        mlSearcher.setWords(wordList);
         mlSearcher.setAgent(Constants.AGENT);
         try {
             if (mlSearcher.getResultCount() > Constants.SEARCH_MAX_RESULT_COUNT) {
@@ -41,12 +41,12 @@ public class AddSearchWorker extends Worker {
         }
         List<Item> foundItems = mlSearcher.getFoundItems();
         Search search = new Search();
-        search.setWordList(wordsList);
+        search.setWordList(wordList);
         search.setSiteId(siteId);
         search.setFrequencyId(frequencyId);
         search = dataBase.addSearch(search);
-        dataBase.addItems(search.getId(), foundItems, false);
-        search.setItemCount(dataBase.getItemCount(search.getId()));
+        int itemCount = dataBase.addItems(search.getId(), foundItems, false);
+        search.setItemCount(itemCount);
         search.setVisible(true);
         dataBase.updateSearch(search);
         sendBroadcast(Constants.ADD_SEARCH_FINISHED);
@@ -55,7 +55,7 @@ public class AddSearchWorker extends Worker {
 
     private void sendBroadcast(String broadcastMsg) {
         Intent intent = new Intent(broadcastMsg);
-        intent.setPackage(getApplicationContext().getPackageName()); // Para que solo ésta app lo reciba
+        intent.setPackage(getApplicationContext().getPackageName()); // para que solo ésta app lo reciba
         getApplicationContext().sendBroadcast(intent);
     }
 

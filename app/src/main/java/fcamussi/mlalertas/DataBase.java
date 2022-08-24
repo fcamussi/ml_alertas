@@ -96,6 +96,10 @@ public class DataBase {
         db.update("searches", register, "search_id=" + search.getId(), null);
     }
 
+    public void deleteSearch(int searchId) {
+        db.execSQL("DELETE FROM searches WHERE search_id=" + searchId);
+    }
+
     public Cursor getCursorForAdapterItem(int searchId) {
         Cursor cursor;
         cursor = db.rawQuery("SELECT item_id AS _id,title,price,currency,state " +
@@ -138,9 +142,9 @@ public class DataBase {
                 db.insert("items", null, register);
             } while (cursor.moveToNext());
         }
-        int new_items_count = cursor.getCount();
+        int newItemCount = cursor.getCount();
         cursor.close();
-        return new_items_count;
+        return newItemCount;
     }
 
     public int getItemCount(int search_id) {
@@ -165,7 +169,7 @@ public class DataBase {
     public Frequency getFrequency(String frequencyId) {
         Frequency frequency = new Frequency();
         Cursor cursor;
-        cursor = db.rawQuery("SELECT * FROM frequency WHERE frequency_id=" + frequencyId, null);
+        cursor = db.rawQuery("SELECT * FROM frequencies WHERE frequency_id='" + frequencyId + "'", null);
         if (cursor.moveToFirst()) {
             frequency.setId(cursor.getString(cursor.getColumnIndexOrThrow("frequency_id")));
             frequency.setMinutes(cursor.getInt(cursor.getColumnIndexOrThrow("minutes")));
