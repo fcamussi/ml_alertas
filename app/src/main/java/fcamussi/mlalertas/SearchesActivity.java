@@ -106,7 +106,7 @@ public class SearchesActivity extends AppCompatActivity {
                 alertDialog.show();
             }
         };
-        filter = new IntentFilter(Constants.ADD_SEARCH_MAX_RESULT_COUNT);
+        filter = new IntentFilter(Constants.ADD_SEARCH_MAX_RESULT_COUNT_EXCEEDED);
         this.registerReceiver(broadcastReceiver, filter);
 
         addSearchLauncher = registerForActivityResult(
@@ -150,7 +150,7 @@ public class SearchesActivity extends AppCompatActivity {
         });
 
         PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(SearcherWorker.class,
-                15, TimeUnit.MINUTES).build();
+                Constants.SEARCHER_FREQUENCY_MINUTES, TimeUnit.MINUTES).build();
         // ExistingPeriodicWorkPolicy.KEEP: conserva el trabajo existente e ignora el nuevo
         WorkManager.getInstance(this).enqueueUniquePeriodicWork("PeriodicSearchWorker",
                 ExistingPeriodicWorkPolicy.REPLACE, workRequest);

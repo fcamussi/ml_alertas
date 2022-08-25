@@ -30,8 +30,8 @@ public class AddSearchWorker extends Worker {
         mlSearcher.setWords(wordList);
         mlSearcher.setAgent(Constants.AGENT);
         try {
-            if (mlSearcher.getResultCount() > Constants.SEARCH_MAX_RESULT_COUNT) {
-                sendBroadcast(Constants.ADD_SEARCH_MAX_RESULT_COUNT);
+            if (mlSearcher.getResultCount() > Constants.ADD_SEARCH_MAX_RESULT_COUNT) {
+                sendBroadcast(Constants.ADD_SEARCH_MAX_RESULT_COUNT_EXCEEDED);
                 return Result.success();
             }
             mlSearcher.searchItems();

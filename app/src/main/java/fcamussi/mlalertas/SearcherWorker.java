@@ -34,7 +34,7 @@ public class SearcherWorker extends Worker {
             }
             Frequency frequency = dataBase.getFrequency(search.getFrequencyId());
             int minutesCountdown = search.getMinutesCountdown();
-            minutesCountdown -= frequency.getMinutes();
+            minutesCountdown -= Constants.SEARCHER_FREQUENCY_MINUTES;
             if (minutesCountdown <= 0) { // hacemos la búsqueda
                 mlSearcher.setSiteId(search.getSiteId());
                 mlSearcher.setWords(search.getWordList());
@@ -50,6 +50,7 @@ public class SearcherWorker extends Worker {
                     newItem = true;
                 }
                 search.setItemCount(dataBase.getItemCount(search.getId()));
+                search.setMinutesCountdown(frequency.getMinutes());
                 dataBase.updateSearch(search);
             } else {
                 search.setMinutesCountdown(minutesCountdown);
