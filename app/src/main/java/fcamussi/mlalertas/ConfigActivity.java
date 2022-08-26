@@ -23,9 +23,14 @@ public class ConfigActivity extends AppCompatActivity {
 
         cbWifi = findViewById(R.id.cb_wifi);
         cbBatteryNotLow = findViewById(R.id.cb_battery_not_low);
+
+        boolean wifi = getIntent().getBooleanExtra("wifi", true);
+        boolean batteryNotLow = getIntent().getBooleanExtra("battery_not_low", true);
+        cbWifi.setChecked(wifi);
+        cbBatteryNotLow.setChecked(batteryNotLow);
     }
 
-    public void onClickBtnAccept(View view) {
+    public void onClickBtnSave(View view) {
         boolean wifi = cbWifi.isChecked();
         boolean batteryNotLow = cbBatteryNotLow.isChecked();
         Intent intent = new Intent();

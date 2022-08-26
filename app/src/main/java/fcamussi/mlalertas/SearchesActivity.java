@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
@@ -20,8 +21,10 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
@@ -39,6 +42,9 @@ public class SearchesActivity extends AppCompatActivity {
     private ListView lv;
     private SearchCursorAdapter adapter;
     private BroadcastReceiver broadcastReceiver;
+    SharedPreferences preferences;
+    boolean wifi;
+    boolean batteryNotLow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,11 +163,24 @@ public class SearchesActivity extends AppCompatActivity {
             }
         });
 
+        preferences = getSharedPreferences("searches_activity", Context.MODE_PRIVATE);
+        wifi = preferences.getBoolean("wifi", true);
+        batteryNotLow = preferences.getBoolean("battery_not_low", true);
+        enqueueSearcherWorker(wifi, batteryNotLow, false);
+    }
+
+    public void enqueueSearcherWorker(boolean wifi, boolean batteryNotLow, boolean replace) {
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(wifi ? NetworkType.UNMETERED : NetworkType.NOT_REQUIRED)
+                .setRequiresBatteryNotLow(batteryNotLow)
+                .build();
         PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(SearcherWorker.class,
-                Constants.SEARCHER_FREQUENCY_MINUTES, TimeUnit.MINUTES).build();
-        // ExistingPeriodicWorkPolicy.KEEP: conserva el trabajo existente e ignora el nuevo
+                Constants.SEARCHER_FREQUENCY_MINUTES, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .setInitialDelay(Constants.SEARCHER_FREQUENCY_MINUTES, TimeUnit.MINUTES)
+                .build();
         WorkManager.getInstance(this).enqueueUniquePeriodicWork("PeriodicSearchWorker",
-                ExistingPeriodicWorkPolicy.REPLACE, workRequest);
+                replace ? ExistingPeriodicWorkPolicy.REPLACE : ExistingPeriodicWorkPolicy.KEEP, workRequest);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -209,15 +228,20 @@ public class SearchesActivity extends AppCompatActivity {
 
     private void config() {
         Intent intent = new Intent(this, ConfigActivity.class);
+        intent.putExtra("wifi", wifi);
+        intent.putExtra("battery_not_low", batteryNotLow);
         configLauncher.launch(intent);
     }
 
     private void resultConfig(int result, Intent intent) {
         if (result == Activity.RESULT_OK) {
-            Toast.makeText(this, "Hizo click en Aceptar!", Toast.LENGTH_SHORT).show();
-
-            /*Boolean wifi = intent.getBooleanExtra("wifi");
-            Boolean batteryNotLow = intent.getBooleanExtra("battery_not_low");*/
+            wifi = intent.getBooleanExtra("wifi", true);
+            batteryNotLow = intent.getBooleanExtra("battery_not_low", true);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean("wifi", wifi);
+            editor.putBoolean("battery_not_low", batteryNotLow);
+            editor.apply();
+            enqueueSearcherWorker(wifi, batteryNotLow, true);
         }
     }
 

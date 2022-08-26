@@ -42,9 +42,6 @@ public class ItemsActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.delete_search:
-                Toast.makeText(getBaseContext(), "delete_search", Toast.LENGTH_SHORT).show();
-                return true;
             case android.R.id.home:
                 finish();
                 return true;

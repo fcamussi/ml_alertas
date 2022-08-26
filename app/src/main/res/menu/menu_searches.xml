@@ -9,5 +9,5 @@
         app:showAsAction="always" />
     <item
         android:id="@+id/config"
-        android:title="Ajustes" />
+        android:title="Configuración" />
 </menu>
