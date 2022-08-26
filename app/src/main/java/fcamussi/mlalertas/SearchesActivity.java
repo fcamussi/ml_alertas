@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 public class SearchesActivity extends AppCompatActivity {
 
     private ActivityResultLauncher<Intent> addSearchLauncher;
+    private ActivityResultLauncher<Intent> configLauncher;
     private DataBase dataBase;
     private Cursor cursor;
     private ProgressBar pb;
@@ -116,6 +117,13 @@ public class SearchesActivity extends AppCompatActivity {
                     resultAddSearch(result.getResultCode(), intent);
                 });
 
+        configLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    Intent intent = result.getData();
+                    resultConfig(result.getResultCode(), intent);
+                });
+
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -170,6 +178,8 @@ public class SearchesActivity extends AppCompatActivity {
                     showAddSearch();
                 }
                 return true;
+            case R.id.config:
+                config();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -196,6 +206,20 @@ public class SearchesActivity extends AppCompatActivity {
         }
     }
 
+    private void config() {
+        Intent intent = new Intent(this, ConfigActivity.class);
+        configLauncher.launch(intent);
+    }
+
+    private void resultConfig(int result, Intent intent) {
+        if (result == Activity.RESULT_OK) {
+            Toast.makeText(this, "Hizo click en Aceptar!", Toast.LENGTH_SHORT).show();
+
+            /*Boolean wifi = intent.getBooleanExtra("wifi");
+            Boolean batteryNotLow = intent.getBooleanExtra("battery_not_low");*/
+        }
+    }
+
     private void showItems(int search_id) {
         Intent intent = new Intent(this, ItemsActivity.class);
         intent.putExtra("search_id", search_id);
@@ -208,6 +232,7 @@ public class SearchesActivity extends AppCompatActivity {
         dataBase.updateSearch(search);
         cursor = dataBase.getCursorForAdapterSearch();
         adapter.changeCursor(cursor);
+        Toast.makeText(this, "Búsqueda eliminada", Toast.LENGTH_SHORT).show();
     }
 
 }

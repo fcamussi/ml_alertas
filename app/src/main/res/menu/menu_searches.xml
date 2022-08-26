@@ -7,4 +7,7 @@
         android:icon="@drawable/ml_alertas_add"
         android:title="Agregar búsqueda"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/config"
+        android:title="Ajustes" />
 </menu>
