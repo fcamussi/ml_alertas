@@ -180,6 +180,7 @@ public class SearchesActivity extends AppCompatActivity {
                 return true;
             case R.id.config:
                 config();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
