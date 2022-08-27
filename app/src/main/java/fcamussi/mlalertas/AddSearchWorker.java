@@ -44,6 +44,7 @@ public class AddSearchWorker extends Worker {
         search.setWordList(wordList);
         search.setSiteId(siteId);
         search.setFrequencyId(frequencyId);
+        search.setMinutesCountdown(dataBase.getFrequency(frequencyId).getMinutes());
         search = dataBase.addSearch(search);
         dataBase.addItems(search.getId(), foundItems, false);
         search.setItemCount(dataBase.getItemCount(search.getId()));
