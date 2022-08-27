@@ -25,7 +25,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="Hacer búsquedas en segundo plando sólo cuando se esté conectado a una red Wi-Fi"
+        android:text="No hacer búsquedas en segundo plando si no se está conectado a una red Wi-Fi"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +37,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="No hacer búsquedas en segundo plano cuando la batería esté baja"
+        android:text="No hacer búsquedas en segundo plano si la batería está baja"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cb_wifi" />

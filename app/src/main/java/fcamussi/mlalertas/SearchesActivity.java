@@ -169,20 +169,6 @@ public class SearchesActivity extends AppCompatActivity {
         enqueueSearcherWorker(wifi, batteryNotLow, false);
     }
 
-    public void enqueueSearcherWorker(boolean wifi, boolean batteryNotLow, boolean replace) {
-        Constraints constraints = new Constraints.Builder()
-                .setRequiredNetworkType(wifi ? NetworkType.UNMETERED : NetworkType.NOT_REQUIRED)
-                .setRequiresBatteryNotLow(batteryNotLow)
-                .build();
-        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(SearcherWorker.class,
-                Constants.SEARCHER_FREQUENCY_MINUTES, TimeUnit.MINUTES)
-                .setConstraints(constraints)
-                .setInitialDelay(Constants.SEARCHER_FREQUENCY_MINUTES, TimeUnit.MINUTES)
-                .build();
-        WorkManager.getInstance(this).enqueueUniquePeriodicWork("PeriodicSearchWorker",
-                replace ? ExistingPeriodicWorkPolicy.REPLACE : ExistingPeriodicWorkPolicy.KEEP, workRequest);
-    }
-
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_searches, menu);
         return true;
@@ -198,11 +184,25 @@ public class SearchesActivity extends AppCompatActivity {
                 }
                 return true;
             case R.id.config:
-                config();
+                showConfig();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void enqueueSearcherWorker(boolean wifi, boolean batteryNotLow, boolean replace) {
+        Constraints constraints = new Constraints.Builder()
+                .setRequiredNetworkType(wifi ? NetworkType.UNMETERED : NetworkType.NOT_REQUIRED)
+                .setRequiresBatteryNotLow(batteryNotLow)
+                .build();
+        PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(SearcherWorker.class,
+                Constants.SEARCHER_FREQUENCY_MINUTES, TimeUnit.MINUTES)
+                .setConstraints(constraints)
+                .setInitialDelay(Constants.SEARCHER_FREQUENCY_MINUTES, TimeUnit.MINUTES)
+                .build();
+        WorkManager.getInstance(this).enqueueUniquePeriodicWork("PeriodicSearchWorker",
+                replace ? ExistingPeriodicWorkPolicy.REPLACE : ExistingPeriodicWorkPolicy.KEEP, workRequest);
     }
 
     private void showAddSearch() {
@@ -226,7 +226,7 @@ public class SearchesActivity extends AppCompatActivity {
         }
     }
 
-    private void config() {
+    private void showConfig() {
         Intent intent = new Intent(this, ConfigActivity.class);
         intent.putExtra("wifi", wifi);
         intent.putExtra("battery_not_low", batteryNotLow);
