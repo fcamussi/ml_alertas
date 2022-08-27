@@ -68,12 +68,11 @@ public class SearcherWorker extends Worker {
         }
         if (newItemList.size() == 1) {
             sendNotification("¡Nuevo artículo publicado!", newItemList.get(0).getTitle());
-            sendBroadcast(Constants.SEARCHER_NEW_ITEM_FOUND);
         } else if (newItemList.size() > 1) {
             sendNotification("¡Nuevos artículos publicados!", String.format(Locale.US,
                     "Hay %d nuevos artículos", newItemList.size()));
-            sendBroadcast(Constants.SEARCHER_NEW_ITEM_FOUND);
         }
+        sendBroadcast(Constants.SEARCHER_FINISHED);
         return Result.success();
     }
 

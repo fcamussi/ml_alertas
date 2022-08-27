@@ -46,7 +46,7 @@ public class ItemsActivity extends AppCompatActivity {
                 adapter.changeCursor(cursor);
             }
         };
-        IntentFilter filter = new IntentFilter(Constants.SEARCHER_NEW_ITEM_FOUND);
+        IntentFilter filter = new IntentFilter(Constants.SEARCHER_FINISHED);
         this.registerReceiver(broadcastReceiver, filter);
     }
 

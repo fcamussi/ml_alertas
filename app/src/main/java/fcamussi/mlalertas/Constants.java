@@ -7,5 +7,5 @@ public class Constants {
     public final static String ADD_SEARCH_FINISHED = "fcamussi.mlalertas.ADD_SEARCH_FINISHED";
     public final static String ADD_SEARCH_CONNECTION_FAILED = "fcamussi.mlalertas.ADD_SEARCH_CONNECTION_FAILED";
     public final static String ADD_SEARCH_MAX_RESULT_COUNT_EXCEEDED = "fcamussi.mlalertas.ADD_SEARCH_MAX_RESULT_COUNT_EXCEEDED";
-    public final static String SEARCHER_NEW_ITEM_FOUND = "fcamussi.mlalertas.SEARCHER_NEW_ITEM_FOUND";
+    public final static String SEARCHER_FINISHED = "fcamussi.mlalertas.SEARCHER_FINISHED";
 }

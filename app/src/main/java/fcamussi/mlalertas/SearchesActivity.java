@@ -123,7 +123,7 @@ public class SearchesActivity extends AppCompatActivity {
                 adapter.changeCursor(cursor);
             }
         };
-        filter = new IntentFilter(Constants.SEARCHER_NEW_ITEM_FOUND);
+        filter = new IntentFilter(Constants.SEARCHER_FINISHED);
         this.registerReceiver(broadcastReceiver, filter);
 
         addSearchLauncher = registerForActivityResult(
@@ -258,6 +258,7 @@ public class SearchesActivity extends AppCompatActivity {
             editor.putBoolean("wifi", wifi);
             editor.putBoolean("battery_not_low", batteryNotLow);
             editor.apply();
+            Toast.makeText(this, "Configuración guardada", Toast.LENGTH_SHORT).show();
             enqueueSearcherWorker(wifi, batteryNotLow, true);
         }
     }
