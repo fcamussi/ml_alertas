@@ -94,8 +94,7 @@ public class SearcherWorker extends Worker {
                 .setContentText(text)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
-                .setVisibility(NotificationCompat.VISIBILITY_PRIVATE);
+                .setAutoCancel(true);
         /* Muestra la notificación */
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
         notificationManager.notify(NOTIFICATION_ID, builder.build());
