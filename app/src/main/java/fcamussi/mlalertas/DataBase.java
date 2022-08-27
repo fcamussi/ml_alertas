@@ -96,7 +96,7 @@ public class DataBase {
         return cursor;
     }
 
-    public int addItems(int searchId, List<Item> itemList, boolean newItem) {
+    public List<Item> addItems(int searchId, List<Item> itemList, boolean newItem) {
         db.execSQL("DELETE FROM items_tmp");
         for (Item item : itemList) {
             ContentValues register = new ContentValues();
@@ -115,24 +115,24 @@ public class DataBase {
         cursor = db.rawQuery("SELECT * FROM items_tmp " +
                 "WHERE item_id NOT IN (SELECT item_id FROM items " +
                 "WHERE search_id=" + searchId + ") AND search_id=" + searchId, null);
+        List<Item> newItemList = new ArrayList();
         if (cursor.moveToFirst()) {
             do {
-                ContentValues register = new ContentValues();
-                register.put("search_id", searchId);
-                register.put("item_id", cursor.getString(cursor.getColumnIndexOrThrow("item_id")));
-                register.put("title", cursor.getString(cursor.getColumnIndexOrThrow("title")));
-                register.put("price", cursor.getString(cursor.getColumnIndexOrThrow("price")));
-                register.put("currency", cursor.getString(cursor.getColumnIndexOrThrow("currency")));
-                register.put("permalink", cursor.getString(cursor.getColumnIndexOrThrow("permalink")));
-                register.put("thumbnail_link", cursor.getString(cursor.getColumnIndexOrThrow("thumbnail_link")));
-                register.put("state", cursor.getString(cursor.getColumnIndexOrThrow("state")));
-                register.put("new_item", newItem);
-                db.insert("items", null, register);
+                Item item = new Item();
+                item.setId(cursor.getString(cursor.getColumnIndexOrThrow("item_id")));
+                item.setTitle(cursor.getString(cursor.getColumnIndexOrThrow("title")));
+                item.setPrice(cursor.getString(cursor.getColumnIndexOrThrow("price")));
+                item.setCurrency(cursor.getString(cursor.getColumnIndexOrThrow("currency")));
+                item.setPermalink(cursor.getString(cursor.getColumnIndexOrThrow("permalink")));
+                item.setThumbnailLink(cursor.getString(cursor.getColumnIndexOrThrow("thumbnail_link")));
+                item.setState(cursor.getString(cursor.getColumnIndexOrThrow("state")));
+                newItemList.add(item);
             } while (cursor.moveToNext());
         }
-        int newItemCount = cursor.getCount();
         cursor.close();
-        return newItemCount;
+        db.execSQL("DELETE FROM items WHERE search_id=" + searchId);
+        db.execSQL("INSERT INTO items SELECT * FROM items_tmp");
+        return newItemList;
     }
 
     public int getItemCount(int search_id) {

@@ -12,6 +12,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
@@ -33,7 +34,7 @@ public class SearcherWorker extends Worker {
     public Result doWork() {
         DataBase dataBase = new DataBase(getApplicationContext());
         MLSearcher mlSearcher = new MLSearcher();
-        int newItemCount = 0;
+        List<Item> newItemList = new ArrayList<>();
 
         mlSearcher.setAgent(Constants.AGENT);
         List<Search> searches = dataBase.getAllSearches();
@@ -53,10 +54,10 @@ public class SearcherWorker extends Worker {
                 } catch (Exception e) {
                 }
                 List<Item> foundItems = mlSearcher.getFoundItems();
-                int count = dataBase.addItems(search.getId(), foundItems, true);
-                if (count > 0) {
+                List itemList = dataBase.addItems(search.getId(), foundItems, true);
+                if (itemList.size() > 0) {
                     search.setNewItem(true);
-                    newItemCount += count;
+                    newItemList.addAll(itemList);
                 }
                 search.setItemCount(dataBase.getItemCount(search.getId()));
                 search.setMinutesCountdown(frequency.getMinutes()); // se resetea el countdown
@@ -65,9 +66,12 @@ public class SearcherWorker extends Worker {
             }
             dataBase.updateSearch(search);
         }
-        if (newItemCount > 0) {
-            sendNotification("¡Nuevo artículo publicado!", String.format(Locale.US,
-                    "Nuevos artículos encontrados: %d", newItemCount));
+        if (newItemList.size() == 1) {
+            sendNotification("¡Nuevo artículo publicado!", newItemList.get(0).getTitle());
+            sendBroadcast(Constants.SEARCHER_NEW_ITEM_FOUND);
+        } else if (newItemList.size() > 1) {
+            sendNotification("¡Nuevos artículos publicados!", String.format(Locale.US,
+                    "Hay %d nuevos artículos", newItemList.size()));
             sendBroadcast(Constants.SEARCHER_NEW_ITEM_FOUND);
         }
         return Result.success();

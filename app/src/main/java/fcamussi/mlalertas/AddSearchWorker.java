@@ -45,8 +45,8 @@ public class AddSearchWorker extends Worker {
         search.setSiteId(siteId);
         search.setFrequencyId(frequencyId);
         search = dataBase.addSearch(search);
-        int itemCount = dataBase.addItems(search.getId(), foundItems, false);
-        search.setItemCount(itemCount);
+        dataBase.addItems(search.getId(), foundItems, false);
+        search.setItemCount(dataBase.getItemCount(search.getId()));
         search.setVisible(true);
         dataBase.updateSearch(search);
         sendBroadcast(Constants.ADD_SEARCH_FINISHED);

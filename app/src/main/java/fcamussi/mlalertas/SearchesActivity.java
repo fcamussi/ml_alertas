@@ -164,9 +164,9 @@ public class SearchesActivity extends AppCompatActivity {
         });
 
         preferences = getSharedPreferences("searches_activity", Context.MODE_PRIVATE);
-        wifi = preferences.getBoolean("wifi", true);
+        wifi = preferences.getBoolean("wifi", false);
         batteryNotLow = preferences.getBoolean("battery_not_low", true);
-        enqueueSearcherWorker(wifi, batteryNotLow, false);
+        enqueueSearcherWorker(wifi, batteryNotLow, true);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
