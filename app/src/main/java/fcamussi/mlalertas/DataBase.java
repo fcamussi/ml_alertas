@@ -30,18 +30,6 @@ public class DataBase {
         return cursor;
     }
 
-    private void fillSearchFromCursor(Search search, Cursor cursor) {
-        search.setId(cursor.getInt(cursor.getColumnIndexOrThrow("search_id")));
-        search.setWordList(MLSearcher.stringToStringList(cursor.getString(cursor.getColumnIndexOrThrow("words"))));
-        search.setSiteId(cursor.getString(cursor.getColumnIndexOrThrow("site_id")));
-        search.setFrequencyId(cursor.getString(cursor.getColumnIndexOrThrow("frequency_id")));
-        search.setMinutesCountdown(cursor.getInt(cursor.getColumnIndexOrThrow("minutes_countdown")));
-        search.setItemCount(cursor.getInt(cursor.getColumnIndexOrThrow("item_count")));
-        search.setNewItem(cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0);
-        search.setVisible(cursor.getInt(cursor.getColumnIndexOrThrow("visible")) > 0);
-        search.setDeleted(cursor.getInt(cursor.getColumnIndexOrThrow("deleted")) > 0);
-    }
-
     public Search getSearch(int searchId) {
         Search search = new Search();
         Cursor cursor;
@@ -176,6 +164,18 @@ public class DataBase {
         }
         cursor.close();
         return frequency;
+    }
+
+    private void fillSearchFromCursor(Search search, Cursor cursor) {
+        search.setId(cursor.getInt(cursor.getColumnIndexOrThrow("search_id")));
+        search.setWordList(MLSearcher.stringToStringList(cursor.getString(cursor.getColumnIndexOrThrow("words"))));
+        search.setSiteId(cursor.getString(cursor.getColumnIndexOrThrow("site_id")));
+        search.setFrequencyId(cursor.getString(cursor.getColumnIndexOrThrow("frequency_id")));
+        search.setMinutesCountdown(cursor.getInt(cursor.getColumnIndexOrThrow("minutes_countdown")));
+        search.setItemCount(cursor.getInt(cursor.getColumnIndexOrThrow("item_count")));
+        search.setNewItem(cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0);
+        search.setVisible(cursor.getInt(cursor.getColumnIndexOrThrow("visible")) > 0);
+        search.setDeleted(cursor.getInt(cursor.getColumnIndexOrThrow("deleted")) > 0);
     }
 
 }
