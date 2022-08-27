@@ -1,5 +1,9 @@
 package fcamussi.mlalertas;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
@@ -18,6 +22,7 @@ public class ItemsActivity extends AppCompatActivity {
     private ListView lv;
     private ItemCursorAdapter adapter;
     private int searchId;
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,23 @@ public class ItemsActivity extends AppCompatActivity {
         Search search = dataBase.getSearch(searchId);
         getSupportActionBar().setTitle(MLSearcher.stringListToString(search.getWordList()));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                cursor = dataBase.getCursorForAdapterItem(searchId);
+                adapter.changeCursor(cursor);
+            }
+        };
+        IntentFilter filter = new IntentFilter(Constants.SEARCHER_NEW_ITEM_FOUND);
+        this.registerReceiver(broadcastReceiver, filter);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        cursor = dataBase.getCursorForAdapterItem(searchId);
+        adapter.changeCursor(cursor);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

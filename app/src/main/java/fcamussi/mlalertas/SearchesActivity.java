@@ -116,6 +116,16 @@ public class SearchesActivity extends AppCompatActivity {
         filter = new IntentFilter(Constants.ADD_SEARCH_MAX_RESULT_COUNT_EXCEEDED);
         this.registerReceiver(broadcastReceiver, filter);
 
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                cursor = dataBase.getCursorForAdapterSearch();
+                adapter.changeCursor(cursor);
+            }
+        };
+        filter = new IntentFilter(Constants.SEARCHER_NEW_ITEM_FOUND);
+        this.registerReceiver(broadcastReceiver, filter);
+
         addSearchLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -167,6 +177,13 @@ public class SearchesActivity extends AppCompatActivity {
         wifi = preferences.getBoolean("wifi", false);
         batteryNotLow = preferences.getBoolean("battery_not_low", true);
         enqueueSearcherWorker(wifi, batteryNotLow, false);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        cursor = dataBase.getCursorForAdapterSearch();
+        adapter.changeCursor(cursor);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
