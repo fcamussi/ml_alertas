@@ -57,6 +57,7 @@ public class SearcherWorker extends Worker {
                 List<Item> foundItems = mlSearcher.getFoundItems();
                 dataBase.beginTransaction();
                 try {
+                    search = dataBase.getSearch(search.getId()); // porque el search puede haber cambiado
                     List itemList = dataBase.addItems(search.getId(), foundItems, true);
                     if (itemList.size() > 0) {
                         search.setNewItem(true);
@@ -70,8 +71,15 @@ public class SearcherWorker extends Worker {
                     dataBase.endTransaction();
                 }
             } else { // todavía no es momento de hacer la búsqueda
-                search.setMinutesCountdown(minutesCountdown);
-                dataBase.updateSearch(search);
+                dataBase.beginTransaction();
+                try {
+                    search = dataBase.getSearch(search.getId()); // porque el search puede haber cambiado
+                    search.setMinutesCountdown(minutesCountdown);
+                    dataBase.updateSearch(search);
+                    dataBase.setTransactionSuccessful();
+                } finally {
+                    dataBase.endTransaction();
+                }
             }
         }
         if (newItemList.size() == 1) {

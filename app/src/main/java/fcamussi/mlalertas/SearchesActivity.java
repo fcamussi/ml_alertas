@@ -270,9 +270,15 @@ public class SearchesActivity extends AppCompatActivity {
     }
 
     private void setDeletedSearch(int searchId) {
-        Search search = dataBase.getSearch(searchId);
-        search.setDeleted(true);
-        dataBase.updateSearch(search);
+        dataBase.beginTransaction();
+        try {
+            Search search = dataBase.getSearch(searchId);
+            search.setDeleted(true);
+            dataBase.updateSearch(search);
+            dataBase.setTransactionSuccessful();
+        } finally {
+            dataBase.endTransaction();
+        }
         cursor = dataBase.getCursorForAdapterSearch();
         adapter.changeCursor(cursor);
         Toast.makeText(this, "Búsqueda eliminada", Toast.LENGTH_SHORT).show();
