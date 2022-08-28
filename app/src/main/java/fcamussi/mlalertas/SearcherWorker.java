@@ -55,17 +55,24 @@ public class SearcherWorker extends Worker {
                     continue;
                 }
                 List<Item> foundItems = mlSearcher.getFoundItems();
-                List itemList = dataBase.addItems(search.getId(), foundItems, true);
-                if (itemList.size() > 0) {
-                    search.setNewItem(true);
-                    newItemList.addAll(itemList);
+                dataBase.beginTransaction();
+                try {
+                    List itemList = dataBase.addItems(search.getId(), foundItems, true);
+                    if (itemList.size() > 0) {
+                        search.setNewItem(true);
+                        newItemList.addAll(itemList);
+                    }
+                    search.setItemCount(dataBase.getItemCount(search.getId()));
+                    search.setMinutesCountdown(frequency.getMinutes()); // se resetea el countdown
+                    dataBase.updateSearch(search);
+                    dataBase.setTransactionSuccessful();
+                } finally {
+                    dataBase.endTransaction();
                 }
-                search.setItemCount(dataBase.getItemCount(search.getId()));
-                search.setMinutesCountdown(frequency.getMinutes()); // se resetea el countdown
             } else { // todavía no es momento de hacer la búsqueda
                 search.setMinutesCountdown(minutesCountdown);
+                dataBase.updateSearch(search);
             }
-            dataBase.updateSearch(search);
         }
         if (newItemList.size() == 1) {
             sendNotification("¡Nuevo artículo publicado!", newItemList.get(0).getTitle());

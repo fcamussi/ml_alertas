@@ -23,6 +23,18 @@ public class DataBase {
         db = admin.getWritableDatabase();
     }
 
+    public void beginTransaction() {
+        db.beginTransaction();
+    }
+
+    public void setTransactionSuccessful() {
+        db.setTransactionSuccessful();
+    }
+
+    public void endTransaction() {
+        db.endTransaction();
+    }
+
     public Cursor getCursorForAdapterSearch() {
         Cursor cursor;
         cursor = db.rawQuery("SELECT search_id AS _id,words,site_id,frequency_id,item_count,new_item FROM searches " +

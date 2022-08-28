@@ -45,11 +45,17 @@ public class AddSearchWorker extends Worker {
         search.setSiteId(siteId);
         search.setFrequencyId(frequencyId);
         search.setMinutesCountdown(dataBase.getFrequency(frequencyId).getMinutes());
-        search = dataBase.addSearch(search);
-        dataBase.addItems(search.getId(), foundItems, false);
-        search.setItemCount(dataBase.getItemCount(search.getId()));
-        search.setVisible(true);
-        dataBase.updateSearch(search);
+        dataBase.beginTransaction();
+        try {
+            search = dataBase.addSearch(search);
+            dataBase.addItems(search.getId(), foundItems, false);
+            search.setItemCount(dataBase.getItemCount(search.getId()));
+            search.setVisible(true);
+            dataBase.updateSearch(search);
+            dataBase.setTransactionSuccessful();
+        } finally {
+            dataBase.endTransaction();
+        }
         sendBroadcast(Constants.ADD_SEARCH_FINISHED);
         return Result.success();
     }
