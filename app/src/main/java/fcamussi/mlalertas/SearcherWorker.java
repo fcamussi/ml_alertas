@@ -52,6 +52,7 @@ public class SearcherWorker extends Worker {
                 try {
                     mlSearcher.searchItems();
                 } catch (Exception e) {
+                    continue;
                 }
                 List<Item> foundItems = mlSearcher.getFoundItems();
                 List itemList = dataBase.addItems(search.getId(), foundItems, true);
