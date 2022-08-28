@@ -14,13 +14,15 @@ import mlsearcher.MLSearcher;
 public class DataBase {
 
     private static AdminSQLiteOpenHelper admin = null;
-    private final SQLiteDatabase db;
+    private static SQLiteDatabase db = null;
 
     public DataBase(Context context) {
         if (admin == null) {
             admin = new AdminSQLiteOpenHelper(context, "DB", null, 1);
         }
-        db = admin.getWritableDatabase();
+        if (db == null) {
+            db = admin.getWritableDatabase();
+        }
     }
 
     public void beginTransaction() {
