@@ -108,7 +108,7 @@ public class DataBase {
             register.put("permalink", item.getPermalink());
             register.put("thumbnail_link", item.getThumbnailLink());
             register.put("state", item.getState());
-            register.put("new_item", newItem);
+            register.put("new_item", false);
             db.insert("items_tmp", null, register);
         }
         Cursor cursor;
@@ -127,11 +127,13 @@ public class DataBase {
                 item.setThumbnailLink(cursor.getString(cursor.getColumnIndexOrThrow("thumbnail_link")));
                 item.setState(cursor.getString(cursor.getColumnIndexOrThrow("state")));
                 newItemList.add(item);
+                db.execSQL("UPDATE items_tmp SET new_item=" + (newItem ? 1 : 0) +
+                        " WHERE search_id=" + searchId + " AND item_id='" + item.getId() + "'");
             } while (cursor.moveToNext());
         }
         cursor.close();
         db.execSQL("DELETE FROM items WHERE search_id=" + searchId);
-        db.execSQL("INSERT INTO items SELECT * FROM items_tmp");
+        db.execSQL("INSERT INTO items SELECT * FROM items_tmp WHERE search_id=" + searchId);
         return newItemList;
     }
 
