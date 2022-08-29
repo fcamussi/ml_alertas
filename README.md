@@ -13,10 +13,10 @@ Es una aplicación ideal para coleccionistas que buscan artículos dificil de en
 La aplicación se encuentra en estado alpha (en desarrollo)
 
 ## Capturas
-
-![screenshot1](https://user-images.githubusercontent.com/75378876/185560633-e2228a0f-88b3-4056-9b94-0f2d034ffa6c.png) 
-![screenshot2](https://user-images.githubusercontent.com/75378876/185560636-e231139b-a39f-412f-88c1-c376c25bb82d.png) 
-![screenshot3](https://user-images.githubusercontent.com/75378876/185560640-3287850e-2adb-43b9-9013-685f26f9a9f4.png)
+![screenshot1](https://user-images.githubusercontent.com/75378876/187227284-9ec63ef2-a653-4018-bf6a-d11e158ca76b.png)
+![screenshot2](https://user-images.githubusercontent.com/75378876/187227285-56457c95-9b3b-46bd-a691-83b07f257ead.png)
+![screenshot3](https://user-images.githubusercontent.com/75378876/187227290-2cbf13a7-c885-4a54-b06b-8cca145355a7.png)
+![screenshot4](https://user-images.githubusercontent.com/75378876/187227294-bdad4d59-f59e-415d-817a-8ca96853a839.png)
 
 ## Requisitos para la compilación
 - **Android Studio**
