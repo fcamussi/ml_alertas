@@ -106,7 +106,7 @@ public class DataBase {
         Cursor cursor;
         cursor = db.rawQuery("SELECT item_id AS _id,title,price,currency,state " +
                 "FROM items WHERE search_id=" + searchId + " " +
-                "ORDER BY item_id DESC", null);
+                "ORDER BY rowid DESC", null);
         return cursor;
     }
 
