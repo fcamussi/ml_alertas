@@ -11,7 +11,6 @@ public class Search {
     private int minutesCountdown;
     private int itemCount;
     private boolean newItem;
-    private boolean visible;
     private boolean deleted;
 
     public int getId() {
@@ -68,14 +67,6 @@ public class Search {
 
     public void setNewItem(boolean newItem) {
         this.newItem = newItem;
-    }
-
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
     }
 
     public boolean isDeleted() {

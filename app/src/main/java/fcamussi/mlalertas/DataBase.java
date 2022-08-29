@@ -39,8 +39,8 @@ public class DataBase {
 
     public Cursor getCursorForAdapterSearch() {
         Cursor cursor;
-        cursor = db.rawQuery("SELECT search_id AS _id,words,site_id,frequency_id,item_count,new_item FROM searches " +
-                "WHERE visible=1 AND deleted=0", null);
+        cursor = db.rawQuery("SELECT search_id AS _id,words,site_id,frequency_id,item_count,new_item " +
+                "FROM searches WHERE deleted=0", null);
         return cursor;
     }
 
@@ -93,7 +93,6 @@ public class DataBase {
         register.put("minutes_countdown", search.getMinutesCountdown());
         register.put("item_count", search.getItemCount());
         register.put("new_item", search.isNewItem());
-        register.put("visible", search.isVisible());
         register.put("deleted", search.isDeleted());
         db.update("searches", register, "search_id=" + search.getId(), null);
     }
@@ -190,7 +189,6 @@ public class DataBase {
         search.setMinutesCountdown(cursor.getInt(cursor.getColumnIndexOrThrow("minutes_countdown")));
         search.setItemCount(cursor.getInt(cursor.getColumnIndexOrThrow("item_count")));
         search.setNewItem(cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0);
-        search.setVisible(cursor.getInt(cursor.getColumnIndexOrThrow("visible")) > 0);
         search.setDeleted(cursor.getInt(cursor.getColumnIndexOrThrow("deleted")) > 0);
     }
 

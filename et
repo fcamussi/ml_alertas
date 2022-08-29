@@ -1,0 +1,82 @@
+[1mdiff --git a/app/src/main/java/fcamussi/mlalertas/AddSearchWorker.java b/app/src/main/java/fcamussi/mlalertas/AddSearchWorker.java[m
+[1mindex 2b5e202..902830f 100644[m
+[1m--- a/app/src/main/java/fcamussi/mlalertas/AddSearchWorker.java[m
+[1m+++ b/app/src/main/java/fcamussi/mlalertas/AddSearchWorker.java[m
+[36m@@ -50,7 +50,6 @@[m [mpublic class AddSearchWorker extends Worker {[m
+             search = dataBase.addSearch(search);[m
+             dataBase.addItems(search.getId(), foundItems, false);[m
+             search.setItemCount(dataBase.getItemCount(search.getId()));[m
+[31m-            search.setVisible(true);[m
+             dataBase.updateSearch(search);[m
+             dataBase.setTransactionSuccessful();[m
+         } finally {[m
+[1mdiff --git a/app/src/main/java/fcamussi/mlalertas/AdminSQLiteOpenHelper.java b/app/src/main/java/fcamussi/mlalertas/AdminSQLiteOpenHelper.java[m
+[1mindex 6fefe84..9fc6e13 100644[m
+[1m--- a/app/src/main/java/fcamussi/mlalertas/AdminSQLiteOpenHelper.java[m
+[1m+++ b/app/src/main/java/fcamussi/mlalertas/AdminSQLiteOpenHelper.java[m
+[36m@@ -20,7 +20,6 @@[m [mpublic class AdminSQLiteOpenHelper extends SQLiteOpenHelper {[m
+                 "minutes_countdown INTEGER," +[m
+                 "item_count INTEGER DEFAULT 0," +[m
+                 "new_item INTEGER DEFAULT 0," +[m
+[31m-                "visible INTEGER DEFAULT 0," +[m
+                 "deleted INTEGER DEFAULT 0)");[m
+ [m
+         db.execSQL("CREATE TABLE items(" +[m
+[1mdiff --git a/app/src/main/java/fcamussi/mlalertas/DataBase.java b/app/src/main/java/fcamussi/mlalertas/DataBase.java[m
+[1mindex 2300796..b1f7c17 100644[m
+[1m--- a/app/src/main/java/fcamussi/mlalertas/DataBase.java[m
+[1m+++ b/app/src/main/java/fcamussi/mlalertas/DataBase.java[m
+[36m@@ -39,8 +39,8 @@[m [mpublic class DataBase {[m
+ [m
+     public Cursor getCursorForAdapterSearch() {[m
+         Cursor cursor;[m
+[31m-        cursor = db.rawQuery("SELECT search_id AS _id,words,site_id,frequency_id,item_count,new_item FROM searches " +[m
+[31m-                "WHERE visible=1 AND deleted=0", null);[m
+[32m+[m[32m        cursor = db.rawQuery("SELECT search_id AS _id,words,site_id,frequency_id,item_count,new_item " +[m
+[32m+[m[32m                "FROM searches WHERE deleted=0", null);[m
+         return cursor;[m
+     }[m
+ [m
+[36m@@ -93,7 +93,6 @@[m [mpublic class DataBase {[m
+         register.put("minutes_countdown", search.getMinutesCountdown());[m
+         register.put("item_count", search.getItemCount());[m
+         register.put("new_item", search.isNewItem());[m
+[31m-        register.put("visible", search.isVisible());[m
+         register.put("deleted", search.isDeleted());[m
+         db.update("searches", register, "search_id=" + search.getId(), null);[m
+     }[m
+[36m@@ -190,7 +189,6 @@[m [mpublic class DataBase {[m
+         search.setMinutesCountdown(cursor.getInt(cursor.getColumnIndexOrThrow("minutes_countdown")));[m
+         search.setItemCount(cursor.getInt(cursor.getColumnIndexOrThrow("item_count")));[m
+         search.setNewItem(cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0);[m
+[31m-        search.setVisible(cursor.getInt(cursor.getColumnIndexOrThrow("visible")) > 0);[m
+         search.setDeleted(cursor.getInt(cursor.getColumnIndexOrThrow("deleted")) > 0);[m
+     }[m
+ [m
+[1mdiff --git a/app/src/main/java/fcamussi/mlalertas/Search.java b/app/src/main/java/fcamussi/mlalertas/Search.java[m
+[1mindex 2bd5f2d..b8d829d 100644[m
+[1m--- a/app/src/main/java/fcamussi/mlalertas/Search.java[m
+[1m+++ b/app/src/main/java/fcamussi/mlalertas/Search.java[m
+[36m@@ -11,7 +11,6 @@[m [mpublic class Search {[m
+     private int minutesCountdown;[m
+     private int itemCount;[m
+     private boolean newItem;[m
+[31m-    private boolean visible;[m
+     private boolean deleted;[m
+ [m
+     public int getId() {[m
+[36m@@ -70,14 +69,6 @@[m [mpublic class Search {[m
+         this.newItem = newItem;[m
+     }[m
+ [m
+[31m-    public boolean isVisible() {[m
+[31m-        return visible;[m
+[31m-    }[m
+[31m-[m
+[31m-    public void setVisible(boolean visible) {[m
+[31m-        this.visible = visible;[m
+[31m-    }[m
+[31m-[m
+     public boolean isDeleted() {[m
+         return deleted;[m
+     }[m

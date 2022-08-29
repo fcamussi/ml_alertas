@@ -50,7 +50,6 @@ public class AddSearchWorker extends Worker {
             search = dataBase.addSearch(search);
             dataBase.addItems(search.getId(), foundItems, false);
             search.setItemCount(dataBase.getItemCount(search.getId()));
-            search.setVisible(true);
             dataBase.updateSearch(search);
             dataBase.setTransactionSuccessful();
         } finally {

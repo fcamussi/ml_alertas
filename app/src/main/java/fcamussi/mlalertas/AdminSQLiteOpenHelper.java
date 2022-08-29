@@ -20,7 +20,6 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
                 "minutes_countdown INTEGER," +
                 "item_count INTEGER DEFAULT 0," +
                 "new_item INTEGER DEFAULT 0," +
-                "visible INTEGER DEFAULT 0," +
                 "deleted INTEGER DEFAULT 0)");
 
         db.execSQL("CREATE TABLE items(" +
