@@ -103,7 +103,7 @@ public class DataBase {
 
     public Cursor getCursorForAdapterItem(int searchId) {
         Cursor cursor;
-        cursor = db.rawQuery("SELECT item_id AS _id,title,price,currency,state " +
+        cursor = db.rawQuery("SELECT item_id AS _id,title,price,currency,state,new_item " +
                 "FROM items WHERE search_id=" + searchId + " " +
                 "ORDER BY rowid DESC", null);
         return cursor;
