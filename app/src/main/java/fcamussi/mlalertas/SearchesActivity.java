@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -45,6 +46,7 @@ public class SearchesActivity extends AppCompatActivity {
     SharedPreferences preferences;
     boolean wifi;
     boolean batteryNotLow;
+    ActionMenuItemView actionMenuItemView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,6 +199,10 @@ public class SearchesActivity extends AppCompatActivity {
                 if (pb.getVisibility() == View.VISIBLE) {
                     Toast.makeText(getBaseContext(), "Espere...", Toast.LENGTH_SHORT).show();
                 } else {
+                    if (actionMenuItemView == null) {
+                        actionMenuItemView = findViewById(R.id.add_search);
+                    }
+                    actionMenuItemView.setEnabled(false);
                     showAddSearch();
                 }
                 return true;
@@ -241,6 +247,7 @@ public class SearchesActivity extends AppCompatActivity {
             WorkManager.getInstance(this).enqueue(workRequest);
             pb.setVisibility(View.VISIBLE);
         }
+        actionMenuItemView.setEnabled(true);
     }
 
     private void showConfig() {
