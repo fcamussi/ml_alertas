@@ -109,6 +109,10 @@ public class DataBase {
         return cursor;
     }
 
+    public void unsetSearchNewItem(int searchId) {
+        db.execSQL("UPDATE searches SET new_item=0 WHERE search_id=" + searchId);
+    }
+
     public List<Item> addItems(int searchId, List<Item> itemList, boolean newItem) {
         /* inserto los encontrados en items_tmp */
         db.execSQL("DELETE FROM items_tmp");
@@ -162,6 +166,19 @@ public class DataBase {
 
     public int getItemCount(int search_id) {
         Cursor cursor = db.rawQuery("SELECT * FROM items WHERE search_id=" + search_id, null);
+        int count = cursor.getCount();
+        cursor.close();
+        return count;
+    }
+
+    public void unsetNewItem(int searchId, String itemId) {
+        db.execSQL("UPDATE items SET new_item=0 WHERE search_id=" + searchId + " " +
+                "AND item_id='" + itemId + "'");
+    }
+
+    public int getNewItemCount(int searchId) {
+        Cursor cursor = db.rawQuery("SELECT * FROM items WHERE search_id=" + searchId + " " +
+                "AND new_item=1", null);
         int count = cursor.getCount();
         cursor.close();
         return count;

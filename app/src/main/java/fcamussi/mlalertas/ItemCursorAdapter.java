@@ -33,11 +33,13 @@ public class ItemCursorAdapter extends CursorAdapter {
         tvDetails1 = view.findViewById(R.id.tv_item_details1);
         tvDetails2 = view.findViewById(R.id.tv_item_details2);
         iv = view.findViewById(R.id.iv_item);
+        String _id = cursor.getString(cursor.getColumnIndexOrThrow("_id"));
         String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
         Double price = cursor.getDouble(cursor.getColumnIndexOrThrow("price"));
         String currency = cursor.getString(cursor.getColumnIndexOrThrow("currency"));
         String state = cursor.getString(cursor.getColumnIndexOrThrow("state"));
         boolean newItem = cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0;
+        view.setTag(_id);
         tvTitle.setText(title);
         tvDetails1.setText(String.format(Locale.US, "Provincia: %s", state));
         tvDetails2.setText(String.format(Locale.US, "Precio: %s %.2f", currency, price));

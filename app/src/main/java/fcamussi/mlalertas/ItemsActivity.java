@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -48,6 +50,25 @@ public class ItemsActivity extends AppCompatActivity {
         };
         IntentFilter filter = new IntentFilter(Constants.SEARCHER_FINISHED);
         this.registerReceiver(broadcastReceiver, filter);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String itemId = view.getTag().toString();
+                dataBase.beginTransaction();
+                try {
+                    dataBase.unsetNewItem(searchId, itemId);
+                    if (dataBase.getNewItemCount(searchId) == 0) {
+                        dataBase.unsetSearchNewItem(searchId);
+                    }
+                    dataBase.setTransactionSuccessful();
+                } finally {
+                    dataBase.endTransaction();
+                }
+                cursor = dataBase.getCursorForAdapterItem(searchId);
+                adapter.changeCursor(cursor);
+            }
+        });
     }
 
     @Override
