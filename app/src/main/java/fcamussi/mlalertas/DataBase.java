@@ -110,6 +110,7 @@ public class DataBase {
     }
 
     public List<Item> addItems(int searchId, List<Item> itemList, boolean newItem) {
+        /* inserto los encontrados en items_tmp */
         db.execSQL("DELETE FROM items_tmp");
         for (Item item : itemList) {
             ContentValues register = new ContentValues();
@@ -124,10 +125,12 @@ public class DataBase {
             register.put("new_item", false);
             db.insert("items_tmp", null, register);
         }
+        /* selecciono los nuevos: los que están en items_tmp y no están en items */
         Cursor cursor;
         cursor = db.rawQuery("SELECT * FROM items_tmp " +
                 "WHERE item_id NOT IN (SELECT item_id FROM items " +
                 "WHERE search_id=" + searchId + ") AND search_id=" + searchId, null);
+        /* los agrego a newItemList para retornarlos */
         List<Item> newItemList = new ArrayList();
         if (cursor.moveToFirst()) {
             do {
@@ -140,13 +143,20 @@ public class DataBase {
                 item.setThumbnailLink(cursor.getString(cursor.getColumnIndexOrThrow("thumbnail_link")));
                 item.setState(cursor.getString(cursor.getColumnIndexOrThrow("state")));
                 newItemList.add(item);
-                db.execSQL("UPDATE items_tmp SET new_item=" + (newItem ? 1 : 0) +
-                        " WHERE search_id=" + searchId + " AND item_id='" + item.getId() + "'");
             } while (cursor.moveToNext());
         }
         cursor.close();
-        db.execSQL("DELETE FROM items WHERE search_id=" + searchId);
-        db.execSQL("INSERT INTO items SELECT * FROM items_tmp WHERE search_id=" + searchId);
+        /* borro de items los que ya no están publicados */
+        db.execSQL("DELETE FROM items WHERE item_id NOT IN (SELECT item_id FROM items_tmp " +
+                "WHERE search_id=" + searchId + ") AND search_id=" + searchId);
+        if (newItem) {
+            /* marco los items nuevos como nuevos */
+            db.execSQL("UPDATE items_tmp SET new_item=1 WHERE item_id NOT IN (SELECT item_id FROM " +
+                    "items WHERE search_id=" + searchId + ") AND search_id=" + searchId);
+        }
+        /* inserto en items los nuevos que fueron publicados */
+        db.execSQL("INSERT INTO items SELECT * FROM items_tmp WHERE item_id NOT IN (SELECT item_id FROM " +
+                "items WHERE search_id=" + searchId + ") AND search_id=" + searchId);
         return newItemList;
     }
 
