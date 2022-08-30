@@ -36,6 +36,10 @@ import java.util.concurrent.TimeUnit;
 
 public class SearchesActivity extends AppCompatActivity {
 
+    SharedPreferences preferences;
+    boolean wifi;
+    boolean batteryNotLow;
+    ActionMenuItemView actionMenuItemView;
     private ActivityResultLauncher<Intent> addSearchLauncher;
     private ActivityResultLauncher<Intent> configLauncher;
     private DataBase dataBase;
@@ -44,10 +48,6 @@ public class SearchesActivity extends AppCompatActivity {
     private ListView lv;
     private SearchCursorAdapter adapter;
     private BroadcastReceiver broadcastReceiver;
-    SharedPreferences preferences;
-    boolean wifi;
-    boolean batteryNotLow;
-    ActionMenuItemView actionMenuItemView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
