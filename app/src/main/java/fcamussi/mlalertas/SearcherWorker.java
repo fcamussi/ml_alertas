@@ -13,8 +13,10 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.UUID;
 
 import mlsearcher.Item;
@@ -82,11 +84,16 @@ public class SearcherWorker extends Worker {
                 }
             }
         }
-        if (newItemList.size() == 1) {
+        /* Veo la cantidad de artículos nuevos y envío una notificación push */
+        Set<String> itemIdSet = new HashSet<>(); // para eliminar duplicados
+        for (Item item : newItemList) {
+            itemIdSet.add(item.getId());
+        }
+        if (itemIdSet.size() == 1) {
             sendNotification("¡Nuevo artículo publicado!", newItemList.get(0).getTitle());
-        } else if (newItemList.size() > 1) {
+        } else if (itemIdSet.size() > 1) {
             sendNotification("¡Nuevos artículos publicados!", String.format(Locale.US,
-                    "Hay %d nuevos artículos", newItemList.size()));
+                    "Hay %d artículos nuevos", itemIdSet.size()));
         }
         sendBroadcast(Constants.SEARCHER_FINISHED);
         return Result.success();
