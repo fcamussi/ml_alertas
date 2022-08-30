@@ -301,6 +301,7 @@ public class SearchesActivity extends AppCompatActivity {
             List<Search> searchList = dataBase.getAllSearches();
             for (Search search : searchList) {
                 dataBase.unsetSearchNewItem(search.getId());
+                dataBase.unsetAllNewItem(search.getId());
             }
             dataBase.setTransactionSuccessful();
         } finally {

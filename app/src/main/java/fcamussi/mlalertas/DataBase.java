@@ -101,19 +101,16 @@ public class DataBase {
         db.execSQL("DELETE FROM searches WHERE search_id=" + searchId);
     }
 
+    public void unsetSearchNewItem(int searchId) {
+        db.execSQL("UPDATE searches SET new_item=0 WHERE search_id=" + searchId);
+    }
+
     public Cursor getCursorForAdapterItem(int searchId) {
         Cursor cursor;
         cursor = db.rawQuery("SELECT item_id AS _id,title,price,currency,state,new_item " +
                 "FROM items WHERE search_id=" + searchId + " " +
                 "ORDER BY rowid DESC", null);
         return cursor;
-    }
-
-    public void unsetSearchNewItem(int searchId) {
-        db.execSQL("UPDATE searches SET new_item=0 WHERE search_id=" + searchId);
-        if (getNewItemCount(searchId) > 0) {
-            db.execSQL("UPDATE items SET new_item=0 WHERE search_id=" + searchId);
-        }
     }
 
     public List<Item> addItems(int searchId, List<Item> itemList, boolean newItem) {
@@ -177,6 +174,10 @@ public class DataBase {
     public void unsetNewItem(int searchId, String itemId) {
         db.execSQL("UPDATE items SET new_item=0 WHERE search_id=" + searchId + " " +
                 "AND item_id='" + itemId + "'");
+    }
+
+    public void unsetAllNewItem(int searchId) {
+        db.execSQL("UPDATE items SET new_item=0 WHERE search_id=" + searchId);
     }
 
     public int getNewItemCount(int searchId) {
