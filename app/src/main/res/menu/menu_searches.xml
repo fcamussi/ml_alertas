@@ -8,6 +8,9 @@
         android:title="Agregar búsqueda"
         app:showAsAction="always" />
     <item
-        android:id="@+id/config"
+        android:id="@+id/unset_notifications"
+        android:title="Desmarcar notificaciones" />
+    <item
+        android:id="@+id/configuration"
         android:title="Configuración" />
 </menu>

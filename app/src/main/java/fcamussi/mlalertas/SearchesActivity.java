@@ -31,6 +31,7 @@ import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class SearchesActivity extends AppCompatActivity {
@@ -139,7 +140,7 @@ public class SearchesActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     Intent intent = result.getData();
-                    resultConfig(result.getResultCode(), intent);
+                    resultConfiguration(result.getResultCode(), intent);
                 });
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -206,8 +207,11 @@ public class SearchesActivity extends AppCompatActivity {
                     showAddSearch();
                 }
                 return true;
-            case R.id.config:
-                showConfig();
+            case R.id.unset_notifications:
+                unsetNotifications();
+                return true;
+            case R.id.configuration:
+                showConfiguration();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -250,14 +254,14 @@ public class SearchesActivity extends AppCompatActivity {
         actionMenuItemView.setEnabled(true);
     }
 
-    private void showConfig() {
-        Intent intent = new Intent(this, ConfigActivity.class);
+    private void showConfiguration() {
+        Intent intent = new Intent(this, ConfigurationActivity.class);
         intent.putExtra("wifi", wifi);
         intent.putExtra("battery_not_low", batteryNotLow);
         configLauncher.launch(intent);
     }
 
-    private void resultConfig(int result, Intent intent) {
+    private void resultConfiguration(int result, Intent intent) {
         if (result == Activity.RESULT_OK) {
             wifi = intent.getBooleanExtra("wifi", true);
             batteryNotLow = intent.getBooleanExtra("battery_not_low", true);
@@ -289,6 +293,22 @@ public class SearchesActivity extends AppCompatActivity {
         cursor = dataBase.getCursorForAdapterSearch();
         adapter.changeCursor(cursor);
         Toast.makeText(this, "Búsqueda eliminada", Toast.LENGTH_SHORT).show();
+    }
+
+    private void unsetNotifications() {
+        dataBase.beginTransaction();
+        try {
+            List<Search> searchList = dataBase.getAllSearches();
+            for (Search search : searchList) {
+                dataBase.unsetSearchNewItem(search.getId());
+            }
+            dataBase.setTransactionSuccessful();
+        } finally {
+            dataBase.endTransaction();
+        }
+        cursor = dataBase.getCursorForAdapterSearch();
+        adapter.changeCursor(cursor);
+        Toast.makeText(this, "Notificaciones desmarcadas", Toast.LENGTH_SHORT).show();
     }
 
 }

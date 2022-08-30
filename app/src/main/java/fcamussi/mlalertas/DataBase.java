@@ -111,6 +111,9 @@ public class DataBase {
 
     public void unsetSearchNewItem(int searchId) {
         db.execSQL("UPDATE searches SET new_item=0 WHERE search_id=" + searchId);
+        if (getNewItemCount(searchId) > 0) {
+            db.execSQL("UPDATE items SET new_item=0 WHERE search_id=" + searchId);
+        }
     }
 
     public List<Item> addItems(int searchId, List<Item> itemList, boolean newItem) {

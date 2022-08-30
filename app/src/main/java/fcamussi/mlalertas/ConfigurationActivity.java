@@ -8,7 +8,7 @@ import android.widget.CheckBox;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class ConfigActivity extends AppCompatActivity {
+public class ConfigurationActivity extends AppCompatActivity {
 
     CheckBox cbWifi;
     CheckBox cbBatteryNotLow;
