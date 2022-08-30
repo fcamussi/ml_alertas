@@ -51,8 +51,8 @@ public class ItemsActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    protected void onResume() {
+        super.onResume();
         cursor = dataBase.getCursorForAdapterItem(searchId);
         adapter.changeCursor(cursor);
     }

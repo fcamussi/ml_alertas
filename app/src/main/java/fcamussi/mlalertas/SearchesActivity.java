@@ -182,8 +182,8 @@ public class SearchesActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
+    protected void onResume() {
+        super.onResume();
         cursor = dataBase.getCursorForAdapterSearch();
         adapter.changeCursor(cursor);
     }
