@@ -23,7 +23,7 @@ public class ItemsActivity extends AppCompatActivity {
     private ListView lv;
     private ItemCursorAdapter adapter;
     private int searchId;
-    private BroadcastReceiver broadcastReceiver;
+    private BroadcastReceiver brCursorRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,16 +39,6 @@ public class ItemsActivity extends AppCompatActivity {
         Search search = dataBase.getSearch(searchId);
         getSupportActionBar().setTitle(MLSearcher.stringListToString(search.getWordList()));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                cursor = dataBase.getCursorForAdapterItem(searchId);
-                adapter.changeCursor(cursor);
-            }
-        };
-        IntentFilter filter = new IntentFilter(Constants.SEARCHER_FINISHED);
-        this.registerReceiver(broadcastReceiver, filter);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -75,6 +65,22 @@ public class ItemsActivity extends AppCompatActivity {
         super.onResume();
         cursor = dataBase.getCursorForAdapterItem(searchId);
         adapter.changeCursor(cursor);
+
+        brCursorRefresh = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                cursor = dataBase.getCursorForAdapterItem(searchId);
+                adapter.changeCursor(cursor);
+            }
+        };
+        IntentFilter filter = new IntentFilter(Constants.SEARCHER_FINISHED);
+        this.registerReceiver(brCursorRefresh, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(brCursorRefresh);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

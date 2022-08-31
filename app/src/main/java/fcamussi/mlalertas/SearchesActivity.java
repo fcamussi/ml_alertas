@@ -47,7 +47,10 @@ public class SearchesActivity extends AppCompatActivity {
     private ProgressBar pb;
     private ListView lv;
     private SearchCursorAdapter adapter;
-    private BroadcastReceiver broadcastReceiver;
+    private BroadcastReceiver brAddSearchFinished;
+    private BroadcastReceiver brAddSearchConnectionFailed;
+    private BroadcastReceiver brAddSearchMaxResultCountExceeded;
+    private BroadcastReceiver brCursorRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,69 +68,6 @@ public class SearchesActivity extends AppCompatActivity {
         cursor = dataBase.getCursorForAdapterSearch();
         adapter = new SearchCursorAdapter(this, cursor);
         lv.setAdapter(adapter);
-
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                cursor = dataBase.getCursorForAdapterSearch();
-                adapter.changeCursor(cursor);
-                pb.setVisibility(View.GONE);
-                Toast.makeText(context, "Búsqueda agregada", Toast.LENGTH_SHORT).show();
-            }
-        };
-        IntentFilter filter = new IntentFilter(Constants.ADD_SEARCH_FINISHED);
-        this.registerReceiver(broadcastReceiver, filter);
-
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                pb.setVisibility(View.GONE);
-                String msg = "La búsqueda no pudo agregarse porque falló la conexión.";
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-                alertDialogBuilder.setMessage(msg);
-                alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-            }
-        };
-        filter = new IntentFilter(Constants.ADD_SEARCH_CONNECTION_FAILED);
-        this.registerReceiver(broadcastReceiver, filter);
-
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                pb.setVisibility(View.GONE);
-                String msg = "Ésta búsqueda produce demasiados resultados. " +
-                        "Por favor, intente ser más específico.";
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-                alertDialogBuilder.setMessage(msg);
-                alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-            }
-        };
-        filter = new IntentFilter(Constants.ADD_SEARCH_MAX_RESULT_COUNT_EXCEEDED);
-        this.registerReceiver(broadcastReceiver, filter);
-
-        broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                cursor = dataBase.getCursorForAdapterSearch();
-                adapter.changeCursor(cursor);
-            }
-        };
-        filter = new IntentFilter(Constants.SEARCHER_FINISHED);
-        this.registerReceiver(broadcastReceiver, filter);
 
         addSearchLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -187,6 +127,78 @@ public class SearchesActivity extends AppCompatActivity {
         super.onResume();
         cursor = dataBase.getCursorForAdapterSearch();
         adapter.changeCursor(cursor);
+
+        brAddSearchFinished = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                cursor = dataBase.getCursorForAdapterSearch();
+                adapter.changeCursor(cursor);
+                pb.setVisibility(View.GONE);
+                Toast.makeText(context, "Búsqueda agregada", Toast.LENGTH_SHORT).show();
+            }
+        };
+        IntentFilter filter = new IntentFilter(Constants.ADD_SEARCH_FINISHED);
+        this.registerReceiver(brAddSearchFinished, filter);
+
+        brAddSearchConnectionFailed = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                pb.setVisibility(View.GONE);
+                String msg = "La búsqueda no pudo agregarse porque falló la conexión.";
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                alertDialogBuilder.setMessage(msg);
+                alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+        };
+        filter = new IntentFilter(Constants.ADD_SEARCH_CONNECTION_FAILED);
+        this.registerReceiver(brAddSearchConnectionFailed, filter);
+
+        brAddSearchMaxResultCountExceeded = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                pb.setVisibility(View.GONE);
+                String msg = "Ésta búsqueda produce demasiados resultados. " +
+                        "Por favor, intente ser más específico.";
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+                alertDialogBuilder.setMessage(msg);
+                alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+            }
+        };
+        filter = new IntentFilter(Constants.ADD_SEARCH_MAX_RESULT_COUNT_EXCEEDED);
+        this.registerReceiver(brAddSearchMaxResultCountExceeded, filter);
+
+        brCursorRefresh = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                cursor = dataBase.getCursorForAdapterSearch();
+                adapter.changeCursor(cursor);
+            }
+        };
+        filter = new IntentFilter(Constants.SEARCHER_FINISHED);
+        this.registerReceiver(brCursorRefresh, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(brAddSearchFinished);
+        unregisterReceiver(brAddSearchConnectionFailed);
+        unregisterReceiver(brAddSearchMaxResultCountExceeded);
+        unregisterReceiver(brCursorRefresh);
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
