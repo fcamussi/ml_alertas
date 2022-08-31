@@ -44,7 +44,12 @@ public class AddSearchWorker extends Worker {
         search.setWordList(wordList);
         search.setSiteId(siteId);
         search.setFrequencyId(frequencyId);
-        search.setMinutesCountdown(dataBase.getFrequency(frequencyId).getMinutes());
+        /* Escojo minutesCountdown de manera aleatoria entre SEARCHER_FREQUENCY_MINUTES y
+           la cantidad de minutos de la frecuencia seleccionada para balancear la carga */
+        int minutes = dataBase.getFrequency(frequencyId).getMinutes();
+        int frequency = minutes / Constants.SEARCHER_FREQUENCY_MINUTES;
+        int minutesCountdown = (int) (Math.random() * frequency + 1) * 15;
+        search.setMinutesCountdown(minutesCountdown);
         dataBase.beginTransaction();
         try {
             search = dataBase.addSearch(search);
