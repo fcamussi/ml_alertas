@@ -8,15 +8,12 @@ Para la búsqueda se utiliza la API de mercadolibre y permite hacer búsquedas e
 
 Es una aplicación ideal para coleccionistas que buscan artículos dificil de encontrar y que se venden muy rápido.
 
-## Estado
-
-La aplicación se encuentra en estado alpha (en desarrollo)
-
 ## Capturas
-![screenshot1](https://user-images.githubusercontent.com/75378876/187227285-56457c95-9b3b-46bd-a691-83b07f257ead.png)
-![screenshot2](https://user-images.githubusercontent.com/75378876/187227284-9ec63ef2-a653-4018-bf6a-d11e158ca76b.png)
-![screenshot3](https://user-images.githubusercontent.com/75378876/187227290-2cbf13a7-c885-4a54-b06b-8cca145355a7.png)
-![screenshot4](https://user-images.githubusercontent.com/75378876/187227294-bdad4d59-f59e-415d-817a-8ca96853a839.png)
+![screenshot2](https://user-images.githubusercontent.com/75378876/187760229-8013f21e-6533-4355-a996-d4c9edac0751.png)
+![screenshot2](https://user-images.githubusercontent.com/75378876/187760240-b9841b28-01b9-4aa8-ab1f-b68b6a0bd770.png)
+![screenshot2](https://user-images.githubusercontent.com/75378876/187760242-7f182400-f9fb-43d3-8747-665d333da9c2.png)
+![screenshot2](https://user-images.githubusercontent.com/75378876/187760245-73b429c6-80d9-4565-999f-e612e057cd94.png)
+![screenshot2](https://user-images.githubusercontent.com/75378876/187760246-49baca1c-ce9a-4e29-a85b-cbfbaa5fcce2.png)
 
 ## Requisitos para la compilación
 - **Android Studio**
