@@ -3,6 +3,7 @@ package fcamussi.mlalertas;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -108,8 +109,9 @@ public class SearcherWorker extends Worker {
     private void sendNotification(String title, String text) {
         /* Crea la notificación */
         Intent intent = new Intent(getApplicationContext(), SearchesActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
+        TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(getApplicationContext());
+        taskStackBuilder.addNextIntentWithParentStack(intent);
+        PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                 .setSmallIcon(R.drawable.ml_alertas_push_100x100)
                 .setContentTitle(title)
