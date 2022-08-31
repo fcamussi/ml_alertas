@@ -135,7 +135,7 @@ public class MLSearcher {
     /**
      * Realiza la búsqueda
      *
-     * @throws Exception Si falla la búsqueda
+     * @throws Exception Si falla la búsqueda o el id del sitio no fue especificado
      */
     public void searchItems() throws Exception {
         if (siteId == null) throw new Exception("Id de sitio no especificado");
