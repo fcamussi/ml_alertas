@@ -16,4 +16,4 @@ Es una aplicación ideal para coleccionistas que buscan artículos dificil de en
 ![screenshot5](https://user-images.githubusercontent.com/75378876/187760646-0748330c-4109-4800-a55d-28e2e0975b10.png)
 
 ## Requisitos para la compilación
-- **Android Studio**
+- Android Studio
