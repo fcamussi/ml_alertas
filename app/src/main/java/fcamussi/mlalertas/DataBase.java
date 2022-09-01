@@ -13,7 +13,7 @@ import mlsearcher.MLSearcher;
 
 public class DataBase {
 
-    private SQLiteDatabase db = null;
+    private static SQLiteDatabase db = null;
 
     public DataBase(Context context) {
         if (db == null) {
