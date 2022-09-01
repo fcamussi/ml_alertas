@@ -194,11 +194,11 @@ public class SearchesActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        super.onPause();
         unregisterReceiver(brAddSearchFinished);
         unregisterReceiver(brAddSearchConnectionFailed);
         unregisterReceiver(brAddSearchMaxResultCountExceeded);
         unregisterReceiver(brCursorRefresh);
+        super.onPause();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {

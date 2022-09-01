@@ -79,8 +79,8 @@ public class ItemsActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        super.onPause();
         unregisterReceiver(brCursorRefresh);
+        super.onPause();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
