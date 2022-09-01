@@ -19,8 +19,6 @@ public class DataBase {
     public DataBase(Context context) {
         if (admin == null) {
             admin = new AdminSQLiteOpenHelper(context, "DB", null, 1);
-        }
-        if (db == null) {
             db = admin.getWritableDatabase();
         }
     }
