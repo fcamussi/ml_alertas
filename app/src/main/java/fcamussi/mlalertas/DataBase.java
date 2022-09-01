@@ -13,12 +13,11 @@ import mlsearcher.MLSearcher;
 
 public class DataBase {
 
-    private static AdminSQLiteOpenHelper admin = null;
-    private static SQLiteDatabase db = null;
+    private SQLiteDatabase db = null;
 
     public DataBase(Context context) {
-        if (admin == null) {
-            admin = new AdminSQLiteOpenHelper(context, "DB", null, 1);
+        if (db == null) {
+            AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(context, "DB", null, 1);
             db = admin.getWritableDatabase();
         }
     }
