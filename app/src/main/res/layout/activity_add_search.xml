@@ -8,7 +8,7 @@
     tools:context=".SearchActivity">
 
     <Spinner
-        android:id="@+id/spinner_frequency"
+        android:id="@+id/add_search_sp_frequency"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -16,10 +16,10 @@
         android:contentDescription="Sitio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/add_search_tv_frequency" />
 
     <EditText
-        android:id="@+id/et_words"
+        android:id="@+id/add_search_et_words"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -48,7 +48,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
-        android:id="@+id/spinner_site"
+        android:id="@+id/add_search_sp_site"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -56,10 +56,10 @@
         android:contentDescription="Sitio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/add_search_tv_site" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/add_search_tv_site"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -67,10 +67,10 @@
         android:text="Sitio:"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_words" />
+        app:layout_constraintTop_toBottomOf="@+id/add_search_et_words" />
 
     <TextView
-        android:id="@+id/textView6"
+        android:id="@+id/add_search_tv_frequency"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -78,6 +78,6 @@
         android:text="Frequencia:"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_site" />
+        app:layout_constraintTop_toBottomOf="@+id/add_search_sp_site" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/item_item_tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_item_details1"
+        android:id="@+id/item_item_tv_details1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -30,10 +30,10 @@
         android:textColorHint="#757575"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+        app:layout_constraintTop_toBottomOf="@+id/item_item_tv_title" />
 
     <TextView
-        android:id="@+id/tv_item_details2"
+        android:id="@+id/item_item_tv_details2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -43,19 +43,19 @@
         android:hint="Detalles2"
         android:textColorHint="#757575"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/iv_item"
+        app:layout_constraintEnd_toStartOf="@+id/item_item_iv_bell"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_item_details1"
+        app:layout_constraintTop_toBottomOf="@+id/item_item_tv_details1"
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
-        android:id="@+id/iv_item"
+        android:id="@+id/item_item_iv_bell"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_item_details1"
+        app:layout_constraintTop_toBottomOf="@+id/item_item_tv_details1"
         app:srcCompat="@drawable/ml_alertas_yellow_100x100" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

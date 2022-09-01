@@ -16,6 +16,9 @@
         android:theme="@style/Theme.MLAlertas"
         tools:targetApi="31">
         <activity
+            android:name=".ItemActivity"
+            android:exported="false" />
+        <activity
             android:name=".ConfigurationActivity"
             android:exported="false" />
         <activity

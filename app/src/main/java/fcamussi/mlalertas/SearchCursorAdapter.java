@@ -17,7 +17,7 @@ public class SearchCursorAdapter extends CursorAdapter {
     TextView tvWords;
     TextView tvDetails1;
     TextView tvDetails2;
-    ImageView iv;
+    ImageView ivBell;
 
     public SearchCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
@@ -30,10 +30,10 @@ public class SearchCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        tvWords = view.findViewById(R.id.tv_words);
-        tvDetails1 = view.findViewById(R.id.tv_search_details1);
-        tvDetails2 = view.findViewById(R.id.tv_search_details2);
-        iv = view.findViewById(R.id.iv_search);
+        tvWords = view.findViewById(R.id.item_search_tv_words);
+        tvDetails1 = view.findViewById(R.id.item_search_tv_details1);
+        tvDetails2 = view.findViewById(R.id.item_search_tv_details2);
+        ivBell = view.findViewById(R.id.item_search_tv_iv_bell);
         int _id = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
         String words = cursor.getString(cursor.getColumnIndexOrThrow("words"));
         String siteId = cursor.getString(cursor.getColumnIndexOrThrow("site_id"));
@@ -46,7 +46,7 @@ public class SearchCursorAdapter extends CursorAdapter {
         String details2 = String.format(Locale.US, "Cantidad: %d", itemCount);
         tvDetails1.setText(details1);
         tvDetails2.setText(details2);
-        iv.setVisibility(newItem ? View.VISIBLE : View.GONE);
+        ivBell.setVisibility(newItem ? View.VISIBLE : View.GONE);
     }
 
 }

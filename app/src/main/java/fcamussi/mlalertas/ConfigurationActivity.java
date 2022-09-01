@@ -16,13 +16,13 @@ public class ConfigurationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_config);
+        setContentView(R.layout.activity_configuration);
 
         getSupportActionBar().setTitle("Configuración");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        cbWifi = findViewById(R.id.cb_wifi);
-        cbBatteryNotLow = findViewById(R.id.cb_battery_not_low);
+        cbWifi = findViewById(R.id.configuration_cb_wifi);
+        cbBatteryNotLow = findViewById(R.id.configuration_cb_battery_not_low);
 
         boolean wifi = getIntent().getBooleanExtra("wifi", true);
         boolean batteryNotLow = getIntent().getBooleanExtra("battery_not_low", true);

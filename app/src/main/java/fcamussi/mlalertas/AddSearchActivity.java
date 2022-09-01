@@ -31,9 +31,9 @@ public class AddSearchActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dataBase = new DataBase(this);
-        etWords = findViewById(R.id.et_words);
-        spinnerSite = findViewById(R.id.spinner_site);
-        spinnerFrequency = findViewById(R.id.spinner_frequency);
+        etWords = findViewById(R.id.add_search_et_words);
+        spinnerSite = findViewById(R.id.add_search_sp_site);
+        spinnerFrequency = findViewById(R.id.add_search_sp_frequency);
         Cursor cursorSite = dataBase.getCursorForAdapterSite();
         SimpleCursorAdapter adapterSite = new SimpleCursorAdapter(this,
                 android.R.layout.simple_spinner_dropdown_item,

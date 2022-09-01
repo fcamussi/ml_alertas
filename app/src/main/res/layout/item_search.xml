@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tv_words"
+        android:id="@+id/item_search_tv_words"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -21,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_search_details1"
+        android:id="@+id/item_search_tv_details1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -31,10 +31,10 @@
         android:textColorHint="#757575"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_words" />
+        app:layout_constraintTop_toBottomOf="@+id/item_search_tv_words" />
 
     <TextView
-        android:id="@+id/tv_search_details2"
+        android:id="@+id/item_search_tv_details2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -44,13 +44,13 @@
         android:hint="Detalles2"
         android:textColorHint="#757575"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/iv_search"
+        app:layout_constraintEnd_toStartOf="@+id/item_search_tv_iv_bell"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_search_details1"
+        app:layout_constraintTop_toBottomOf="@+id/item_search_tv_details1"
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
-        android:id="@+id/iv_search"
+        android:id="@+id/item_search_tv_iv_bell"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"

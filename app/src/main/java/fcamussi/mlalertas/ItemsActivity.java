@@ -32,7 +32,7 @@ public class ItemsActivity extends AppCompatActivity {
 
         searchId = getIntent().getIntExtra("search_id", 0);
         dataBase = new DataBase(this);
-        lv = findViewById(R.id.lv_items);
+        lv = findViewById(R.id.items_lv);
         cursor = dataBase.getCursorForAdapterItem(searchId);
         adapter = new ItemCursorAdapter(this, cursor);
         lv.setAdapter(adapter);

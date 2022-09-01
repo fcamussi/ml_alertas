@@ -16,7 +16,7 @@ public class ItemCursorAdapter extends CursorAdapter {
     TextView tvTitle;
     TextView tvDetails1;
     TextView tvDetails2;
-    ImageView iv;
+    ImageView ivBell;
 
     public ItemCursorAdapter(Context context, Cursor c) {
         super(context, c, 0);
@@ -29,10 +29,10 @@ public class ItemCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        tvTitle = view.findViewById(R.id.tv_title);
-        tvDetails1 = view.findViewById(R.id.tv_item_details1);
-        tvDetails2 = view.findViewById(R.id.tv_item_details2);
-        iv = view.findViewById(R.id.iv_item);
+        tvTitle = view.findViewById(R.id.item_item_tv_title);
+        tvDetails1 = view.findViewById(R.id.item_item_tv_details1);
+        tvDetails2 = view.findViewById(R.id.item_item_tv_details2);
+        ivBell = view.findViewById(R.id.item_item_iv_bell);
         String _id = cursor.getString(cursor.getColumnIndexOrThrow("_id"));
         String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
         Double price = cursor.getDouble(cursor.getColumnIndexOrThrow("price"));
@@ -43,7 +43,7 @@ public class ItemCursorAdapter extends CursorAdapter {
         tvTitle.setText(title);
         tvDetails1.setText(String.format(Locale.US, "Provincia: %s", state));
         tvDetails2.setText(String.format(Locale.US, "Precio: %s %.2f", currency, price));
-        iv.setVisibility(newItem ? View.VISIBLE : View.GONE);
+        ivBell.setVisibility(newItem ? View.VISIBLE : View.GONE);
     }
 
 }

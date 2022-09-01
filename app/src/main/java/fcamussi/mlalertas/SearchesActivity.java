@@ -61,10 +61,10 @@ public class SearchesActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
 
         dataBase = new DataBase(this);
-        pb = findViewById(R.id.pb_searches);
+        pb = findViewById(R.id.searches_pb);
         pb.setIndeterminate(true);
         pb.setVisibility(View.GONE);
-        lv = findViewById(R.id.lv_searches);
+        lv = findViewById(R.id.searches_lv);
         cursor = dataBase.getCursorForAdapterSearch();
         adapter = new SearchCursorAdapter(this, cursor);
         lv.setAdapter(adapter);
@@ -208,21 +208,21 @@ public class SearchesActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.add_search:
+            case R.id.menu_searches_add_search:
                 if (pb.getVisibility() == View.VISIBLE) {
                     Toast.makeText(getBaseContext(), "Espere...", Toast.LENGTH_SHORT).show();
                 } else {
                     if (actionMenuItemView == null) {
-                        actionMenuItemView = findViewById(R.id.add_search);
+                        actionMenuItemView = findViewById(R.id.menu_searches_add_search);
                     }
                     actionMenuItemView.setEnabled(false);
                     showAddSearch();
                 }
                 return true;
-            case R.id.unset_notifications:
+            case R.id.menu_searches_unset_notifications:
                 unsetNotifications();
                 return true;
-            case R.id.configuration:
+            case R.id.menu_searches_configuration:
                 showConfiguration();
                 return true;
             default:
