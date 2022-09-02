@@ -41,7 +41,7 @@ public class SearchesActivity extends AppCompatActivity {
     boolean batteryNotLow;
     ActionMenuItemView actionMenuItemView;
     private ActivityResultLauncher<Intent> addSearchLauncher;
-    private ActivityResultLauncher<Intent> configLauncher;
+    private ActivityResultLauncher<Intent> configurationLauncher;
     private DataBase dataBase;
     private Cursor cursor;
     private ProgressBar pb;
@@ -59,7 +59,6 @@ public class SearchesActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
-
         dataBase = new DataBase(this);
         pb = findViewById(R.id.searches_pb);
         pb.setIndeterminate(true);
@@ -76,7 +75,7 @@ public class SearchesActivity extends AppCompatActivity {
                     resultAddSearch(result.getResultCode(), intent);
                 });
 
-        configLauncher = registerForActivityResult(
+        configurationLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     Intent intent = result.getData();
@@ -270,7 +269,7 @@ public class SearchesActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ConfigurationActivity.class);
         intent.putExtra("wifi", wifi);
         intent.putExtra("battery_not_low", batteryNotLow);
-        configLauncher.launch(intent);
+        configurationLauncher.launch(intent);
     }
 
     private void resultConfiguration(int result, Intent intent) {

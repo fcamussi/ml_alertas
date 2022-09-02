@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import mlsearcher.MLSearcher;
@@ -39,11 +41,16 @@ public class ItemsActivity extends AppCompatActivity {
         Search search = dataBase.getSearch(searchId);
         getSupportActionBar().setTitle(MLSearcher.stringListToString(search.getWordList()));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String itemId = view.getTag().toString();
+                Intent intent = new Intent(getBaseContext(), ItemViewActivity.class);
+                intent.putExtra("search_id", searchId);
+                intent.putExtra("item_id", itemId);
+                startActivity(intent);
                 dataBase.beginTransaction();
                 try {
                     dataBase.unsetNewItem(searchId, itemId);
@@ -58,6 +65,7 @@ public class ItemsActivity extends AppCompatActivity {
                 adapter.changeCursor(cursor);
             }
         });
+
     }
 
     @Override
@@ -81,11 +89,6 @@ public class ItemsActivity extends AppCompatActivity {
     protected void onPause() {
         unregisterReceiver(brCursorRefresh);
         super.onPause();
-    }
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_items, menu);
-        return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
