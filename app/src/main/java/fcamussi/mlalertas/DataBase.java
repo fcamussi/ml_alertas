@@ -201,11 +201,23 @@ public class DataBase {
     }
 
     public int getItemCount(int search_id) {
-        Cursor cursor = db.rawQuery("SELECT * " +
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) " +
                         "FROM items " +
                         "WHERE search_id=" + search_id,
                 null);
-        int count = cursor.getCount();
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
+        cursor.close();
+        return count;
+    }
+
+    public int getNewItemCount(int searchId) {
+        Cursor cursor = db.rawQuery("SELECT COUNT(*) " +
+                        "FROM items " +
+                        "WHERE search_id=" + searchId + " AND new_item=1",
+                null);
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
         cursor.close();
         return count;
     }
@@ -213,16 +225,6 @@ public class DataBase {
     public void unsetAllNewItem(int searchId) {
         db.execSQL("UPDATE items SET new_item=0 " +
                 "WHERE search_id=" + searchId);
-    }
-
-    public int getNewItemCount(int searchId) {
-        Cursor cursor = db.rawQuery("SELECT * " +
-                        "FROM items " +
-                        "WHERE search_id=" + searchId + " AND new_item=1",
-                null);
-        int count = cursor.getCount();
-        cursor.close();
-        return count;
     }
 
     public Cursor getCursorForAdapterSite() {
