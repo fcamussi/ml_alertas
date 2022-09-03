@@ -73,6 +73,7 @@ public class SearchesActivity extends AppCompatActivity {
                 result -> {
                     Intent intent = result.getData();
                     resultAddSearch(result.getResultCode(), intent);
+                    actionMenuItemView.setEnabled(true);
                 });
 
         configurationLauncher = registerForActivityResult(
@@ -262,7 +263,6 @@ public class SearchesActivity extends AppCompatActivity {
             WorkManager.getInstance(this).enqueue(workRequest);
             pb.setVisibility(View.VISIBLE);
         }
-        actionMenuItemView.setEnabled(true);
     }
 
     private void showConfiguration() {

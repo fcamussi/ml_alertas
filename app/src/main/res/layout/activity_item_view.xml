@@ -22,13 +22,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/item_view_tv_detail1"
+        android:id="@+id/item_view_tv_details1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:hint="Detail1"
+        android:hint="Details1"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,19 +37,19 @@
         app:layout_constraintTop_toBottomOf="@+id/item_view_tv_title" />
 
     <TextView
-        android:id="@+id/item_view_tv_detail2"
+        android:id="@+id/item_view_tv_details2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:hint="Detail2"
+        android:hint="Details2"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_view_tv_detail1" />
+        app:layout_constraintTop_toBottomOf="@+id/item_view_tv_details1" />
 
     <Button
         android:id="@+id/item_view_btn_open_in_ml"
@@ -58,6 +58,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:onClick="onClickBtnOpenInML"
         android:text="Abrir en Mercado Libre"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

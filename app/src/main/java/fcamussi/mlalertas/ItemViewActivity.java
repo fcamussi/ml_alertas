@@ -1,32 +1,55 @@
 package fcamussi.mlalertas;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.Locale;
 
 public class ItemViewActivity extends AppCompatActivity {
 
-    private DataBase dataBase;
-    private TextView tvTitle;
-    private TextView tvDetail1;
-    private TextView tvDetail2;
+    private Button btnOpenInML;
+    private String permalink;
+    private ActivityResultLauncher<Intent> openInMLLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_view);
 
-        getSupportActionBar().setTitle("Ponga título aquí");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
         String itemId = getIntent().getStringExtra("item_id");
         int searchId = getIntent().getIntExtra("search_id", 0);
-        dataBase = new DataBase(this);
-        tvTitle = findViewById(R.id.item_view_tv_title);
-        tvDetail1 = findViewById(R.id.item_view_tv_detail1);
-        tvDetail2 = findViewById(R.id.item_view_tv_detail2);
+        DataBase dataBase = new DataBase(this);
+        Item item = dataBase.getItem(itemId, searchId);
+        getSupportActionBar().setTitle(item.getTitle());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        TextView tvTitle = findViewById(R.id.item_view_tv_title);
+        TextView tvDetails1 = findViewById(R.id.item_view_tv_details1);
+        TextView tvDetails2 = findViewById(R.id.item_view_tv_details2);
+        btnOpenInML = findViewById(R.id.item_view_btn_open_in_ml);
+        tvTitle.setText(item.getTitle());
+        String detail1 = String.format(Locale.US, "Provincia: %s", item.getState());
+        String detail2 = String.format(Locale.US, "Precio: %s %s",
+                item.getCurrency(),
+                item.getPrice());
+        tvDetails1.setText(detail1);
+        tvDetails2.setText(detail2);
+        permalink = item.getPermalink();
+
+        openInMLLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    btnOpenInML.setEnabled(true);
+                });
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -39,8 +62,10 @@ public class ItemViewActivity extends AppCompatActivity {
         }
     }
 
+    public void onClickBtnOpenInML(View view) {
+        btnOpenInML.setEnabled(false);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(permalink));
+        openInMLLauncher.launch(intent);
+    }
+
 }
-
-
-//Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
-//startActivity(browserIntent);

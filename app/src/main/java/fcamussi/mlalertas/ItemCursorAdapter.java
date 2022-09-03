@@ -35,14 +35,14 @@ public class ItemCursorAdapter extends CursorAdapter {
         ivBell = view.findViewById(R.id.item_item_iv_bell);
         String _id = cursor.getString(cursor.getColumnIndexOrThrow("_id"));
         String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
-        Double price = cursor.getDouble(cursor.getColumnIndexOrThrow("price"));
+        String price = cursor.getString(cursor.getColumnIndexOrThrow("price"));
         String currency = cursor.getString(cursor.getColumnIndexOrThrow("currency"));
         String state = cursor.getString(cursor.getColumnIndexOrThrow("state"));
         boolean newItem = cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0;
         view.setTag(_id);
         tvTitle.setText(title);
         tvDetails1.setText(String.format(Locale.US, "Provincia: %s", state));
-        tvDetails2.setText(String.format(Locale.US, "Precio: %s %.2f", currency, price));
+        tvDetails2.setText(String.format(Locale.US, "Precio: %s %s", currency, price));
         ivBell.setVisibility(newItem ? View.VISIBLE : View.GONE);
     }
 
