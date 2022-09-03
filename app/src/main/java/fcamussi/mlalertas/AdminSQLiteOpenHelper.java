@@ -23,16 +23,17 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
                 "deleted INTEGER DEFAULT 0)");
 
         db.execSQL("CREATE TABLE items(" +
-                "search_id INTEGER," +
                 "item_id TEXT," +
+                "search_id INTEGER," +
                 "title TEXT," +
-                "price DOUBLE," +
+                "price TEXT," +
                 "currency TEXT," +
                 "permalink TEXT," +
                 "thumbnail_link TEXT," +
+                "thumbnail BLOB DEFAULT NULL," +
                 "state TEXT, " +
                 "new_item INTEGER DEFAULT 0," +
-                "PRIMARY KEY(search_id,item_id)," +
+                "PRIMARY KEY(item_id,search_id)," +
                 "FOREIGN KEY(search_id) REFERENCES searches(search_id) ON DELETE CASCADE)");
 
         db.execSQL("CREATE TABLE items_tmp AS SELECT * FROM items");

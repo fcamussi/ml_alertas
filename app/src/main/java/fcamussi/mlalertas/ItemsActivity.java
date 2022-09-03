@@ -6,14 +6,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import mlsearcher.MLSearcher;
@@ -48,14 +45,18 @@ public class ItemsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 String itemId = view.getTag().toString();
                 Intent intent = new Intent(getBaseContext(), ItemViewActivity.class);
-                intent.putExtra("search_id", searchId);
                 intent.putExtra("item_id", itemId);
+                intent.putExtra("search_id", searchId);
                 startActivity(intent);
                 dataBase.beginTransaction();
                 try {
-                    dataBase.unsetNewItem(searchId, itemId);
+                    Item item = dataBase.getItem(itemId, searchId);
+                    item.setNewItem(false);
+                    dataBase.updateItem(item);
                     if (dataBase.getNewItemCount(searchId) == 0) {
-                        dataBase.unsetSearchNewItem(searchId);
+                        Search search = dataBase.getSearch(searchId);
+                        search.setNewItem(false);
+                        dataBase.updateSearch(search);
                     }
                     dataBase.setTransactionSuccessful();
                 } finally {

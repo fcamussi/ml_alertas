@@ -1,16 +1,10 @@
 package fcamussi.mlalertas;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.BroadcastReceiver;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import mlsearcher.MLSearcher;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ItemViewActivity extends AppCompatActivity {
 
@@ -27,8 +21,8 @@ public class ItemViewActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Ponga título aquí");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        String itemId = getIntent().getStringExtra("item_id");
         int searchId = getIntent().getIntExtra("search_id", 0);
-        String itemId =  getIntent().getStringExtra("search_id");
         dataBase = new DataBase(this);
         tvTitle = findViewById(R.id.item_view_tv_title);
         tvDetail1 = findViewById(R.id.item_view_tv_detail1);
@@ -48,5 +42,5 @@ public class ItemViewActivity extends AppCompatActivity {
 }
 
 
-    //Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
-    //startActivity(browserIntent);
+//Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+//startActivity(browserIntent);

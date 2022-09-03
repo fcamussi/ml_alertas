@@ -6,9 +6,11 @@ import android.content.Intent;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import mlsearcher.Item;
 import mlsearcher.MLSearcher;
 
 public class AddSearchWorker extends Worker {
@@ -39,7 +41,10 @@ public class AddSearchWorker extends Worker {
             sendBroadcast(Constants.ADD_SEARCH_CONNECTION_FAILED);
             return Result.success();
         }
-        List<Item> foundItems = mlSearcher.getFoundItems();
+        List<Item> foundItems = new ArrayList<>();
+        for (Map<String,String> item : mlSearcher.getFoundItems()) {
+            foundItems.add(new Item(item));
+        }
         Search search = new Search();
         search.setWordList(wordList);
         search.setSiteId(siteId);
@@ -53,7 +58,7 @@ public class AddSearchWorker extends Worker {
         dataBase.beginTransaction();
         try {
             search = dataBase.addSearch(search);
-            dataBase.addItems(search.getId(), foundItems, false);
+            dataBase.addNewItemsAndRemoveOldItems(search.getId(), foundItems, false);
             search.setItemCount(dataBase.getItemCount(search.getId()));
             dataBase.updateSearch(search);
             dataBase.setTransactionSuccessful();

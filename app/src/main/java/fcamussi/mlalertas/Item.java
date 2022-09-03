@@ -1,19 +1,32 @@
-package mlsearcher;
+package fcamussi.mlalertas;
 
-/**
- * Clase para almacenar la información de los artículos
- *
- * @author Fernando Camussi
- */
+import java.util.Map;
+
 public class Item {
 
     private String id;
+    private int searchId;
     private String title;
     private String price;
     private String currency;
     private String permalink;
     private String thumbnailLink;
+    private byte[] thumbnail;
     private String state;
+    private boolean newItem;
+
+    public Item() {
+    }
+
+    public Item(Map<String, String> item) {
+        id = item.get("id");
+        title = item.get("title");
+        price = item.get("price");
+        currency = item.get("currency");
+        permalink = item.get("permalink");
+        thumbnailLink = item.get("thumbnail_link");
+        state = item.get("state");
+    }
 
     public String getId() {
         return id;
@@ -21,6 +34,14 @@ public class Item {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public int getSearchId() {
+        return searchId;
+    }
+
+    public void setSearchId(int searchId) {
+        this.searchId = searchId;
     }
 
     public String getTitle() {
@@ -63,12 +84,28 @@ public class Item {
         this.thumbnailLink = thumbnailLink;
     }
 
+    public byte[] getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(byte[] thumbnail) {
+        this.thumbnail = thumbnail;
+    }
+
     public String getState() {
         return state;
     }
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public boolean isNewItem() {
+        return newItem;
+    }
+
+    public void setNewItem(boolean newItem) {
+        this.newItem = newItem;
     }
 
 }

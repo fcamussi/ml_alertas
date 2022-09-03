@@ -6,7 +6,9 @@ import org.json.JSONObject;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Clase para buscar artículos en Mercado Libre
@@ -16,7 +18,7 @@ import java.util.List;
 public class MLSearcher {
 
     private final List<String> wordList;
-    private final List<Item> itemList;
+    private final List<Map<String, String>> itemList;
     private String siteId;
     private String agent;
     private boolean filtered;
@@ -161,9 +163,9 @@ public class MLSearcher {
     /**
      * Obtiene la lista de artículos encontrados
      *
-     * @return Lista de artículos
+     * @return Lista de artículos de tipo Map
      */
-    public List<Item> getFoundItems() {
+    public List<Map<String, String>> getFoundItems() {
         return itemList;
     }
 
@@ -178,14 +180,14 @@ public class MLSearcher {
             String permalink = jsonArr.getJSONObject(c).get("permalink").toString();
             String thumbnailLink = jsonArr.getJSONObject(c).get("thumbnail").toString();
             String state = jsonArr.getJSONObject(c).getJSONObject("address").get("state_name").toString();
-            Item item = new Item();
-            item.setId(id);
-            item.setTitle(title);
-            item.setPrice(price);
-            item.setCurrency(currency);
-            item.setPermalink(permalink);
-            item.setThumbnailLink(thumbnailLink);
-            item.setState(state);
+            Map<String, String> item = new HashMap<>();
+            item.put("id", id);
+            item.put("title", title);
+            item.put("price", price);
+            item.put("currency", currency);
+            item.put("permalink", permalink);
+            item.put("thumbnail_link", thumbnailLink);
+            item.put("state", state);
             if (filtered) { /* Chequea que cada palabra esté contenida en el título del artículo */
                 boolean match = true;
                 title = title.toLowerCase();

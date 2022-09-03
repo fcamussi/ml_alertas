@@ -17,10 +17,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import mlsearcher.Item;
 import mlsearcher.MLSearcher;
 
 public class SearcherWorker extends Worker {
@@ -57,11 +57,16 @@ public class SearcherWorker extends Worker {
                 } catch (Exception e) {
                     continue;
                 }
-                List<Item> foundItems = mlSearcher.getFoundItems();
+                List<Item> foundItems = new ArrayList<>();
+                for (Map<String, String> item : mlSearcher.getFoundItems()) {
+                    foundItems.add(new Item(item));
+                }
                 dataBase.beginTransaction();
                 try {
                     search = dataBase.getSearch(search.getId()); // porque el search puede haber cambiado
-                    List itemList = dataBase.addItems(search.getId(), foundItems, true);
+                    List<Item> itemList = dataBase.addNewItemsAndRemoveOldItems(search.getId(),
+                            foundItems,
+                            true);
                     if (itemList.size() > 0) {
                         search.setNewItem(true);
                         newItemList.addAll(itemList);
