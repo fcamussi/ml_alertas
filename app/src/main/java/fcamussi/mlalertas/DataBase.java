@@ -110,7 +110,7 @@ public class DataBase {
 
     public Cursor getCursorForAdapterItem(int searchId) {
         Cursor cursor;
-        cursor = db.rawQuery("SELECT item_id AS _id,title,price,currency,state,new_item " +
+        cursor = db.rawQuery("SELECT item_id AS _id,title,price,currency,state,thumbnail,new_item " +
                         "FROM items " +
                         "WHERE search_id=" + searchId + " " +
                         "ORDER BY rowid DESC",
@@ -225,6 +225,24 @@ public class DataBase {
     public void unsetAllNewItem(int searchId) {
         db.execSQL("UPDATE items SET new_item=0 " +
                 "WHERE search_id=" + searchId);
+    }
+
+    public List<Item> getAllItemThumbnailNull() {
+        Cursor cursor;
+        List<Item> itemList = new ArrayList<>();
+        cursor = db.rawQuery("SELECT * " +
+                        "FROM items " +
+                        "WHERE thumbnail IS NULL",
+                null);
+        if (cursor.moveToFirst()) {
+            do {
+                Item item = new Item();
+                fillItemFromCursor(item, cursor);
+                itemList.add(item);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return itemList;
     }
 
     public Cursor getCursorForAdapterSite() {

@@ -16,7 +16,7 @@
         android:textColorHint="#78909C"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/item_item_iv_thumbnail"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -29,7 +29,7 @@
         android:hint="Detalles1"
         android:textColorHint="#757575"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/item_item_iv_thumbnail"
         app:layout_constraintTop_toBottomOf="@+id/item_item_tv_title" />
 
     <TextView
@@ -44,7 +44,7 @@
         android:textColorHint="#757575"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/item_item_iv_bell"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/item_item_iv_thumbnail"
         app:layout_constraintTop_toBottomOf="@+id/item_item_tv_details1"
         app:layout_constraintVertical_bias="1.0" />
 
@@ -57,5 +57,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/item_item_tv_details1"
         app:srcCompat="@drawable/ml_alertas_yellow_100x100" />
+
+    <ImageView
+        android:id="@+id/item_item_iv_thumbnail"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

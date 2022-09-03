@@ -3,11 +3,13 @@ package fcamussi.mlalertas;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +44,7 @@ public class AddSearchWorker extends Worker {
             return Result.success();
         }
         List<Item> foundItems = new ArrayList<>();
-        for (Map<String,String> item : mlSearcher.getFoundItems()) {
+        for (Map<String, String> item : mlSearcher.getFoundItems()) {
             foundItems.add(new Item(item));
         }
         Search search = new Search();
@@ -65,6 +67,9 @@ public class AddSearchWorker extends Worker {
         } finally {
             dataBase.endTransaction();
         }
+        WorkRequest workRequest = new OneTimeWorkRequest.Builder(ImageDownloaderWorker.class).build();
+        WorkManager.getInstance(getApplicationContext()).enqueue(workRequest);
+
         sendBroadcast(Constants.ADD_SEARCH_FINISHED);
         return Result.success();
     }

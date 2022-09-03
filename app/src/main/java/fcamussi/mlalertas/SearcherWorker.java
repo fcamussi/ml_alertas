@@ -10,6 +10,9 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -90,17 +93,23 @@ public class SearcherWorker extends Worker {
                 }
             }
         }
-        /* Veo la cantidad de artículos nuevos y envío una notificación push */
-        Set<String> itemIdSet = new HashSet<>(); // para eliminar duplicados
-        for (Item item : newItemList) {
-            itemIdSet.add(item.getId());
+        if (newItemList.size() > 0) {
+            /* Veo la cantidad de artículos nuevos y envío una notificación push */
+            Set<String> itemIdSet = new HashSet<>(); // para eliminar duplicados
+            for (Item item : newItemList) {
+                itemIdSet.add(item.getId());
+            }
+            if (itemIdSet.size() == 1) {
+                sendNotification("¡Nuevo artículo publicado!", newItemList.get(0).getTitle());
+            }
+            if (itemIdSet.size() > 1) {
+                sendNotification("¡Nuevos artículos publicados!", String.format(Locale.US,
+                        "Hay %d artículos nuevos", itemIdSet.size()));
+            }
+            WorkRequest workRequest = new OneTimeWorkRequest.Builder(ImageDownloaderWorker.class).build();
+            WorkManager.getInstance(getApplicationContext()).enqueue(workRequest);
         }
-        if (itemIdSet.size() == 1) {
-            sendNotification("¡Nuevo artículo publicado!", newItemList.get(0).getTitle());
-        } else if (itemIdSet.size() > 1) {
-            sendNotification("¡Nuevos artículos publicados!", String.format(Locale.US,
-                    "Hay %d artículos nuevos", itemIdSet.size()));
-        }
+
         sendBroadcast(Constants.SEARCHER_FINISHED);
         return Result.success();
     }

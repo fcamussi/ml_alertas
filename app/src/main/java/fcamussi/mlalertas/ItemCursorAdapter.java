@@ -2,6 +2,8 @@ package fcamussi.mlalertas;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,7 @@ public class ItemCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
+        ImageView ivThumbnail = view.findViewById(R.id.item_item_iv_thumbnail);
         tvTitle = view.findViewById(R.id.item_item_tv_title);
         tvDetails1 = view.findViewById(R.id.item_item_tv_details1);
         tvDetails2 = view.findViewById(R.id.item_item_tv_details2);
@@ -38,8 +41,13 @@ public class ItemCursorAdapter extends CursorAdapter {
         String price = cursor.getString(cursor.getColumnIndexOrThrow("price"));
         String currency = cursor.getString(cursor.getColumnIndexOrThrow("currency"));
         String state = cursor.getString(cursor.getColumnIndexOrThrow("state"));
+        byte[] thumbnailByte = cursor.getBlob(cursor.getColumnIndexOrThrow("thumbnail"));
         boolean newItem = cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0;
         view.setTag(_id);
+        if (thumbnailByte != null) {
+            Bitmap thumbnail = BitmapFactory.decodeByteArray(thumbnailByte, 0, thumbnailByte.length);
+            ivThumbnail.setImageBitmap(thumbnail);
+        }
         tvTitle.setText(title);
         tvDetails1.setText(String.format(Locale.US, "Provincia: %s", state));
         tvDetails2.setText(String.format(Locale.US, "Precio: %s %s", currency, price));

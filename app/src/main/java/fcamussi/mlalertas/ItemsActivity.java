@@ -75,6 +75,7 @@ public class ItemsActivity extends AppCompatActivity {
             }
         };
         IntentFilter filter = new IntentFilter(Constants.SEARCHER_FINISHED);
+        filter.addAction(Constants.IMAGE_DOWNLOADER_FINISHED);
         this.registerReceiver(brCursorRefresh, filter);
     }
 
