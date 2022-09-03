@@ -67,14 +67,6 @@ public class ItemsActivity extends AppCompatActivity {
             }
         });
 
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        cursor = dataBase.getCursorForAdapterItem(searchId);
-        adapter.changeCursor(cursor);
-
         brCursorRefresh = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -87,9 +79,16 @@ public class ItemsActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
+    protected void onResume() {
+        super.onResume();
+        cursor = dataBase.getCursorForAdapterItem(searchId);
+        adapter.changeCursor(cursor);
+    }
+
+    @Override
+    protected void onDestroy() {
         unregisterReceiver(brCursorRefresh);
-        super.onPause();
+        super.onDestroy();
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

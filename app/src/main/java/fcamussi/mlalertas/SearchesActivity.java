@@ -116,18 +116,6 @@ public class SearchesActivity extends AppCompatActivity {
             }
         });
 
-        preferences = getSharedPreferences("searches_activity", Context.MODE_PRIVATE);
-        wifi = preferences.getBoolean("wifi", false);
-        batteryNotLow = preferences.getBoolean("battery_not_low", true);
-        enqueueSearcherWorker(wifi, batteryNotLow, false); // replace=true para reemplazar el SearchWorker
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        cursor = dataBase.getCursorForAdapterSearch();
-        adapter.changeCursor(cursor);
-
         brAddSearchFinished = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -190,15 +178,27 @@ public class SearchesActivity extends AppCompatActivity {
         };
         filter = new IntentFilter(Constants.SEARCHER_FINISHED);
         this.registerReceiver(brCursorRefresh, filter);
+
+        preferences = getSharedPreferences("searches_activity", Context.MODE_PRIVATE);
+        wifi = preferences.getBoolean("wifi", false);
+        batteryNotLow = preferences.getBoolean("battery_not_low", true);
+        enqueueSearcherWorker(wifi, batteryNotLow, false); // replace=true para reemplazar el SearchWorker
     }
 
     @Override
-    protected void onPause() {
+    protected void onResume() {
+        super.onResume();
+        cursor = dataBase.getCursorForAdapterSearch();
+        adapter.changeCursor(cursor);
+    }
+
+    @Override
+    protected void onDestroy() {
         unregisterReceiver(brAddSearchFinished);
         unregisterReceiver(brAddSearchConnectionFailed);
         unregisterReceiver(brAddSearchMaxResultCountExceeded);
         unregisterReceiver(brCursorRefresh);
-        super.onPause();
+        super.onDestroy();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
