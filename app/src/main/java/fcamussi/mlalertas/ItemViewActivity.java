@@ -1,11 +1,14 @@
 package fcamussi.mlalertas;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -33,10 +36,16 @@ public class ItemViewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         TextView tvTitle = findViewById(R.id.item_view_tv_title);
+        ImageView ivThumbnail = findViewById(R.id.item_view_iv_thumbnail);
         TextView tvDetails1 = findViewById(R.id.item_view_tv_details1);
         TextView tvDetails2 = findViewById(R.id.item_view_tv_details2);
         btnOpenInML = findViewById(R.id.item_view_btn_open_in_ml);
         tvTitle.setText(item.getTitle());
+        byte[] thumbnail = item.getThumbnail();
+        if (thumbnail != null) {
+            Bitmap thumbnailBitmap = BitmapFactory.decodeByteArray(thumbnail, 0, thumbnail.length);
+            ivThumbnail.setImageBitmap(thumbnailBitmap);
+        }
         String detail1 = String.format(Locale.US, "Provincia: %s", item.getState());
         String detail2 = String.format(Locale.US, "Precio: %s %s",
                 item.getCurrency(),

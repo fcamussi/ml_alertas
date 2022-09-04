@@ -41,12 +41,12 @@ public class ItemCursorAdapter extends CursorAdapter {
         String price = cursor.getString(cursor.getColumnIndexOrThrow("price"));
         String currency = cursor.getString(cursor.getColumnIndexOrThrow("currency"));
         String state = cursor.getString(cursor.getColumnIndexOrThrow("state"));
-        byte[] thumbnailByte = cursor.getBlob(cursor.getColumnIndexOrThrow("thumbnail"));
+        byte[] thumbnail = cursor.getBlob(cursor.getColumnIndexOrThrow("thumbnail"));
         boolean newItem = cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0;
         view.setTag(_id);
-        if (thumbnailByte != null) {
-            Bitmap thumbnail = BitmapFactory.decodeByteArray(thumbnailByte, 0, thumbnailByte.length);
-            ivThumbnail.setImageBitmap(thumbnail);
+        if (thumbnail != null) {
+            Bitmap thumbnailBitmap = BitmapFactory.decodeByteArray(thumbnail, 0, thumbnail.length);
+            ivThumbnail.setImageBitmap(thumbnailBitmap);
         }
         tvTitle.setText(title);
         tvDetails1.setText(String.format(Locale.US, "Provincia: %s", state));
