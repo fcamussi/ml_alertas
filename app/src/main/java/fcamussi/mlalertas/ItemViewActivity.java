@@ -69,6 +69,7 @@ public class ItemViewActivity extends AppCompatActivity {
                     thumbnail = BitmapFactory.decodeStream(in);
                     in.close();
                 } catch (Exception e) {
+                    thumbnail = null;
                 }
                 handler.post(new Runnable() {
                     @Override
