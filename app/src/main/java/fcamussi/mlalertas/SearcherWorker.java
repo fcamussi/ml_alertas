@@ -10,9 +10,6 @@ import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -106,8 +103,8 @@ public class SearcherWorker extends Worker {
                 sendNotification("¡Nuevos artículos publicados!", String.format(Locale.US,
                         "Hay %d artículos nuevos", itemIdSet.size()));
             }
-            WorkRequest workRequest = new OneTimeWorkRequest.Builder(ImageDownloaderWorker.class).build();
-            WorkManager.getInstance(getApplicationContext()).enqueue(workRequest);
+            ImageDownloader imageDownloader = new ImageDownloader(getApplicationContext());
+            imageDownloader.download();
         }
 
         sendBroadcast(Constants.SEARCHER_FINISHED);

@@ -3,9 +3,6 @@ package fcamussi.mlalertas;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -67,8 +64,8 @@ public class AddSearchWorker extends Worker {
         } finally {
             dataBase.endTransaction();
         }
-        WorkRequest workRequest = new OneTimeWorkRequest.Builder(ImageDownloaderWorker.class).build();
-        WorkManager.getInstance(getApplicationContext()).enqueue(workRequest);
+        ImageDownloader imageDownloader = new ImageDownloader(getApplicationContext());
+        imageDownloader.download();
 
         sendBroadcast(Constants.ADD_SEARCH_FINISHED);
         return Result.success();

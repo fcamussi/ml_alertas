@@ -1,12 +1,8 @@
 package fcamussi.mlalertas;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-
-import androidx.work.Worker;
-import androidx.work.WorkerParameters;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,15 +10,16 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.List;
 
-public class ImageDownloaderWorker extends Worker {
+public class ImageDownloader {
 
-    public ImageDownloaderWorker(Context context, WorkerParameters workerParams) {
-        super(context, workerParams);
+    Context context;
+
+    public ImageDownloader(Context context) {
+        this.context = context;
     }
 
-    @Override
-    public Result doWork() {
-        DataBase dataBase = new DataBase(getApplicationContext());
+    public void download() {
+        DataBase dataBase = new DataBase(context);
 
         List<Item> itemList = dataBase.getAllItemThumbnailNull();
         for (Item item : itemList) {
@@ -49,15 +46,6 @@ public class ImageDownloaderWorker extends Worker {
         } finally {
             dataBase.endTransaction();
         }
-
-        sendBroadcast(Constants.IMAGE_DOWNLOADER_FINISHED);
-        return Result.success();
-    }
-
-    private void sendBroadcast(String broadcastMsg) {
-        Intent intent = new Intent(broadcastMsg);
-        intent.setPackage(getApplicationContext().getPackageName()); // para que solo ésta app lo reciba
-        getApplicationContext().sendBroadcast(intent);
     }
 
 }
