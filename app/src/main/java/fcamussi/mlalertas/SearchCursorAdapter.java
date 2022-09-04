@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
-
 public class SearchCursorAdapter extends CursorAdapter {
 
     TextView tvWords;
