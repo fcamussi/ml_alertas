@@ -110,7 +110,7 @@ public class DataBase {
 
     public Cursor getCursorForAdapterItem(int searchId) {
         Cursor cursor;
-        cursor = db.rawQuery("SELECT item_id AS _id,title,price,currency,state,thumbnail,new_item " +
+        cursor = db.rawQuery("SELECT item_id AS _id,title,price,currency,city,state,thumbnail,new_item " +
                         "FROM items " +
                         "WHERE search_id=" + searchId + " " +
                         "ORDER BY rowid DESC",
@@ -144,6 +144,7 @@ public class DataBase {
             register.put("currency", item.getCurrency());
             register.put("permalink", item.getPermalink());
             register.put("thumbnail_link", item.getThumbnailLink());
+            register.put("city", item.getCity());
             register.put("state", item.getState());
             register.put("new_item", false);
             db.insert("items_tmp", null, register);
@@ -193,6 +194,7 @@ public class DataBase {
         register.put("permalink", item.getPermalink());
         register.put("thumbnail_link", item.getThumbnailLink());
         register.put("thumbnail", item.getThumbnail());
+        register.put("city", item.getCity());
         register.put("state", item.getState());
         register.put("new_item", item.isNewItem());
         db.update("items", register,
@@ -297,6 +299,7 @@ public class DataBase {
         item.setPermalink(cursor.getString(cursor.getColumnIndexOrThrow("permalink")));
         item.setThumbnailLink(cursor.getString(cursor.getColumnIndexOrThrow("thumbnail_link")));
         item.setThumbnail(cursor.getBlob(cursor.getColumnIndexOrThrow("thumbnail")));
+        item.setCity(cursor.getString(cursor.getColumnIndexOrThrow("city")));
         item.setState(cursor.getString(cursor.getColumnIndexOrThrow("state")));
         item.setNewItem(cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0);
     }

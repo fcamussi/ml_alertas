@@ -54,7 +54,7 @@ public class ItemViewActivity extends AppCompatActivity {
             Bitmap thumbnailBitmap = BitmapFactory.decodeByteArray(thumbnail, 0, thumbnail.length);
             ivThumbnail.setImageBitmap(thumbnailBitmap);
         }
-        String detail1 = String.format(Locale.US, "Provincia: %s", item.getState());
+        String detail1 = item.getCity() + ", " + item.getState();
         String detail2 = String.format(Locale.US, "Precio: %s %s",
                 item.getCurrency(),
                 item.getPrice());

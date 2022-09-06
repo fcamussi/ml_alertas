@@ -40,6 +40,7 @@ public class ItemCursorAdapter extends CursorAdapter {
         String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
         String price = cursor.getString(cursor.getColumnIndexOrThrow("price"));
         String currency = cursor.getString(cursor.getColumnIndexOrThrow("currency"));
+        String city = cursor.getString(cursor.getColumnIndexOrThrow("city"));
         String state = cursor.getString(cursor.getColumnIndexOrThrow("state"));
         byte[] thumbnail = cursor.getBlob(cursor.getColumnIndexOrThrow("thumbnail"));
         boolean newItem = cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0;
@@ -49,7 +50,7 @@ public class ItemCursorAdapter extends CursorAdapter {
             ivThumbnail.setImageBitmap(thumbnailBitmap);
         }
         tvTitle.setText(title);
-        tvDetails1.setText(String.format(Locale.US, "Provincia: %s", state));
+        tvDetails1.setText(city + ", " + state);
         tvDetails2.setText(String.format(Locale.US, "Precio: %s %s", currency, price));
         ivBell.setVisibility(newItem ? View.VISIBLE : View.GONE);
     }

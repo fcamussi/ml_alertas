@@ -179,6 +179,7 @@ public class MLSearcher {
             String currency = jsonArr.getJSONObject(c).get("currency_id").toString();
             String permalink = jsonArr.getJSONObject(c).get("permalink").toString();
             String thumbnailLink = jsonArr.getJSONObject(c).get("thumbnail").toString();
+            String city = jsonArr.getJSONObject(c).getJSONObject("address").get("city_name").toString();
             String state = jsonArr.getJSONObject(c).getJSONObject("address").get("state_name").toString();
             Map<String, String> item = new HashMap<>();
             item.put("id", id);
@@ -187,6 +188,7 @@ public class MLSearcher {
             item.put("currency", currency);
             item.put("permalink", permalink);
             item.put("thumbnail_link", thumbnailLink);
+            item.put("city", city);
             item.put("state", state);
             if (filtered) { /* Chequea que cada palabra esté contenida en el título del artículo */
                 boolean match = true;

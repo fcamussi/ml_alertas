@@ -13,6 +13,7 @@ public class Item {
     private String thumbnailLink;
     private byte[] thumbnail;
     private String state;
+    private String city;
     private boolean newItem;
 
     public Item() {
@@ -26,6 +27,7 @@ public class Item {
         permalink = item.get("permalink");
         thumbnailLink = item.get("thumbnail_link");
         state = item.get("state");
+        city = item.get("city");
     }
 
     public String getId() {
@@ -98,6 +100,14 @@ public class Item {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public boolean isNewItem() {

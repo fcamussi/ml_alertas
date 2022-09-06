@@ -31,6 +31,7 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
                 "permalink TEXT," +
                 "thumbnail_link TEXT," +
                 "thumbnail BLOB DEFAULT NULL," +
+                "city TEXT, " +
                 "state TEXT, " +
                 "new_item INTEGER DEFAULT 0," +
                 "PRIMARY KEY(item_id,search_id)," +
