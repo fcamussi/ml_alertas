@@ -28,7 +28,7 @@ public class ItemViewActivity extends AppCompatActivity {
     private Button btnOpenInML;
     private String permalink;
     private String thumbnailLink;
-    private Bitmap thumbnail;
+    private Bitmap thumbnailBitmap;
     private ActivityResultLauncher<Intent> openInMLLauncher;
 
     @Override
@@ -49,6 +49,11 @@ public class ItemViewActivity extends AppCompatActivity {
         TextView tvDetails2 = findViewById(R.id.item_view_tv_details2);
         btnOpenInML = findViewById(R.id.item_view_btn_open_in_ml);
         tvTitle.setText(item.getTitle());
+        byte[] thumbnail = item.getThumbnail();
+        if (thumbnail != null) {
+            Bitmap thumbnailBitmap = BitmapFactory.decodeByteArray(thumbnail, 0, thumbnail.length);
+            ivThumbnail.setImageBitmap(thumbnailBitmap);
+        }
         String detail1 = String.format(Locale.US, "Provincia: %s", item.getState());
         String detail2 = String.format(Locale.US, "Precio: %s %s",
                 item.getCurrency(),
@@ -66,16 +71,16 @@ public class ItemViewActivity extends AppCompatActivity {
             public void run() {
                 try {
                     InputStream in = new URL(thumbnailLink).openStream();
-                    thumbnail = BitmapFactory.decodeStream(in);
+                    thumbnailBitmap = BitmapFactory.decodeStream(in);
                     in.close();
                 } catch (Exception e) {
-                    thumbnail = null;
+                    thumbnailBitmap = null;
                 }
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
-                        if (thumbnail != null) {
-                            ivThumbnail.setImageBitmap(thumbnail);
+                        if (thumbnailBitmap != null) {
+                            ivThumbnail.setImageBitmap(thumbnailBitmap);
                         }
                     }
                 });
