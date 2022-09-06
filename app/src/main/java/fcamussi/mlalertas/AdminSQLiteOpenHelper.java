@@ -26,7 +26,7 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
                 "item_id TEXT," +
                 "search_id INTEGER," +
                 "title TEXT," +
-                "price TEXT," +
+                "price REAL," +
                 "currency TEXT," +
                 "permalink TEXT," +
                 "thumbnail_link TEXT," +

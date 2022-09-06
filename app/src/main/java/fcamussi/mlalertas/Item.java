@@ -7,7 +7,7 @@ public class Item {
     private String id;
     private int searchId;
     private String title;
-    private String price;
+    private double price;
     private String currency;
     private String permalink;
     private String thumbnailLink;
@@ -22,7 +22,7 @@ public class Item {
     public Item(Map<String, String> item) {
         id = item.get("id");
         title = item.get("title");
-        price = item.get("price");
+        price = Double.parseDouble(item.get("price"));
         currency = item.get("currency");
         permalink = item.get("permalink");
         thumbnailLink = item.get("thumbnail_link");
@@ -54,11 +54,11 @@ public class Item {
         this.title = title;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

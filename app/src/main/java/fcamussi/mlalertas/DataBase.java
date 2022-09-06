@@ -294,7 +294,7 @@ public class DataBase {
         item.setId(cursor.getString(cursor.getColumnIndexOrThrow("item_id")));
         item.setSearchId(cursor.getInt(cursor.getColumnIndexOrThrow("search_id")));
         item.setTitle(cursor.getString(cursor.getColumnIndexOrThrow("title")));
-        item.setPrice(cursor.getString(cursor.getColumnIndexOrThrow("price")));
+        item.setPrice(cursor.getDouble(cursor.getColumnIndexOrThrow("price")));
         item.setCurrency(cursor.getString(cursor.getColumnIndexOrThrow("currency")));
         item.setPermalink(cursor.getString(cursor.getColumnIndexOrThrow("permalink")));
         item.setThumbnailLink(cursor.getString(cursor.getColumnIndexOrThrow("thumbnail_link")));

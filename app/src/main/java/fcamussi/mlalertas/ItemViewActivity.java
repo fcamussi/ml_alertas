@@ -54,10 +54,8 @@ public class ItemViewActivity extends AppCompatActivity {
             Bitmap thumbnailBitmap = BitmapFactory.decodeByteArray(thumbnail, 0, thumbnail.length);
             ivThumbnail.setImageBitmap(thumbnailBitmap);
         }
-        String detail1 = item.getCity() + ", " + item.getState();
-        String detail2 = String.format(Locale.US, "Precio: %s %s",
-                item.getCurrency(),
-                item.getPrice());
+        String detail1 = String.format(Locale.US, "%s, %s", item.getCity() , item.getState());
+        String detail2 = String.format(Locale.US, "%s %.2f", item.getCurrency(), item.getPrice());
         tvDetails1.setText(detail1);
         tvDetails2.setText(detail2);
         permalink = item.getPermalink();

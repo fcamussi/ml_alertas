@@ -38,7 +38,7 @@ public class ItemCursorAdapter extends CursorAdapter {
         ivBell = view.findViewById(R.id.item_item_iv_bell);
         String _id = cursor.getString(cursor.getColumnIndexOrThrow("_id"));
         String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
-        String price = cursor.getString(cursor.getColumnIndexOrThrow("price"));
+        double price = cursor.getDouble(cursor.getColumnIndexOrThrow("price"));
         String currency = cursor.getString(cursor.getColumnIndexOrThrow("currency"));
         String city = cursor.getString(cursor.getColumnIndexOrThrow("city"));
         String state = cursor.getString(cursor.getColumnIndexOrThrow("state"));
@@ -50,8 +50,8 @@ public class ItemCursorAdapter extends CursorAdapter {
             ivThumbnail.setImageBitmap(thumbnailBitmap);
         }
         tvTitle.setText(title);
-        tvDetails1.setText(city + ", " + state);
-        tvDetails2.setText(String.format(Locale.US, "Precio: %s %s", currency, price));
+        tvDetails1.setText(String.format(Locale.US, "%s, %s", city , state));
+        tvDetails2.setText(String.format(Locale.US, "%s %,.2f", currency, price));
         ivBell.setVisibility(newItem ? View.VISIBLE : View.GONE);
     }
 
