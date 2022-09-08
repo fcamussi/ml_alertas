@@ -67,19 +67,8 @@ public class SearchesActivity extends AppCompatActivity {
         dataBase = new DataBase(this);
         pb = findViewById(R.id.searches_pb);
         pb.setIndeterminate(true);
-        /* si el AddSearchWorker está ejecutandose se muestra la barra de progreso */
-        if (addSearchWorkerId != null) {
-            ListenableFuture<WorkInfo> lf = WorkManager.getInstance(this).getWorkInfoById(addSearchWorkerId);
-            try {
-                WorkInfo workInfo = lf.get();
-                if (workInfo.getState() == WorkInfo.State.ENQUEUED ||
-                        workInfo.getState() == WorkInfo.State.RUNNING) {
-                    pb.setVisibility(View.VISIBLE);
-                } else {
-                    pb.setVisibility(View.GONE);
-                }
-            } catch (Exception ignored) {
-            }
+        if (addSearchWorkerIsRunning()) {
+            pb.setVisibility(View.VISIBLE);
         } else {
             pb.setVisibility(View.GONE);
         }
@@ -345,6 +334,22 @@ public class SearchesActivity extends AppCompatActivity {
         cursor = dataBase.getCursorForAdapterSearch();
         adapter.changeCursor(cursor);
         Toast.makeText(this, "Notificaciones desmarcadas", Toast.LENGTH_SHORT).show();
+    }
+
+    private boolean addSearchWorkerIsRunning() {
+        boolean isRunning = false;
+        if (addSearchWorkerId != null) {
+            ListenableFuture<WorkInfo> lf = WorkManager.getInstance(this).getWorkInfoById(addSearchWorkerId);
+            try {
+                WorkInfo workInfo = lf.get();
+                if (workInfo.getState() == WorkInfo.State.ENQUEUED ||
+                        workInfo.getState() == WorkInfo.State.RUNNING) {
+                    isRunning = true;
+                }
+            } catch (Exception ignored) {
+            }
+        }
+        return isRunning;
     }
 
 }
