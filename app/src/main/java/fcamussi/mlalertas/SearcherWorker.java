@@ -103,8 +103,8 @@ public class SearcherWorker extends Worker {
                 sendNotification("¡Nuevos artículos publicados!", String.format(Locale.US,
                         "Hay %d artículos nuevos", itemIdSet.size()));
             }
-            ImageDownloader imageDownloader = new ImageDownloader(getApplicationContext());
-            imageDownloader.download();
+            ThumbnailDownloader thumbnailDownloader = new ThumbnailDownloader(getApplicationContext());
+            thumbnailDownloader.download();
         }
 
         sendBroadcast(Constants.SEARCHER_FINISHED);

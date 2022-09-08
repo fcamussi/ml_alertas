@@ -64,8 +64,8 @@ public class AddSearchWorker extends Worker {
         } finally {
             dataBase.endTransaction();
         }
-        ImageDownloader imageDownloader = new ImageDownloader(getApplicationContext());
-        imageDownloader.download();
+        ThumbnailDownloader thumbnailDownloader = new ThumbnailDownloader(getApplicationContext());
+        thumbnailDownloader.download();
 
         sendBroadcast(Constants.ADD_SEARCH_FINISHED);
         return Result.success();
