@@ -22,7 +22,6 @@ public class ItemsActivity extends AppCompatActivity {
     private ListView lv;
     private ItemCursorAdapter adapter;
     private int searchId;
-    private BroadcastReceiver brCursorRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +65,6 @@ public class ItemsActivity extends AppCompatActivity {
                 adapter.changeCursor(cursor);
             }
         });
-
-        brCursorRefresh = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                cursor = dataBase.getCursorForAdapterItem(searchId);
-                adapter.changeCursor(cursor);
-            }
-        };
-        IntentFilter filter = new IntentFilter(Constants.SEARCHER_FINISHED);
-        this.registerReceiver(brCursorRefresh, filter);
     }
 
     @Override
@@ -83,12 +72,6 @@ public class ItemsActivity extends AppCompatActivity {
         super.onResume();
         cursor = dataBase.getCursorForAdapterItem(searchId);
         adapter.changeCursor(cursor);
-    }
-
-    @Override
-    protected void onDestroy() {
-        unregisterReceiver(brCursorRefresh);
-        super.onDestroy();
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

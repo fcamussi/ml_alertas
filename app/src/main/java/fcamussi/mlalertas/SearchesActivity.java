@@ -28,10 +28,14 @@ import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
+import com.google.common.util.concurrent.ListenableFuture;
+
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class SearchesActivity extends AppCompatActivity {
@@ -51,6 +55,7 @@ public class SearchesActivity extends AppCompatActivity {
     private BroadcastReceiver brAddSearchConnectionFailed;
     private BroadcastReceiver brAddSearchMaxResultCountExceeded;
     private BroadcastReceiver brCursorRefresh;
+    private static UUID addSearchWorkerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +67,22 @@ public class SearchesActivity extends AppCompatActivity {
         dataBase = new DataBase(this);
         pb = findViewById(R.id.searches_pb);
         pb.setIndeterminate(true);
-        pb.setVisibility(View.GONE);
+        /* si el AddSearchWorker está ejecutandose se muestra la barra de progreso */
+        if (addSearchWorkerId != null) {
+            ListenableFuture<WorkInfo> lf = WorkManager.getInstance(this).getWorkInfoById(addSearchWorkerId);
+            try {
+                WorkInfo workInfo = lf.get();
+                if (workInfo.getState() == WorkInfo.State.ENQUEUED ||
+                        workInfo.getState() == WorkInfo.State.RUNNING) {
+                    pb.setVisibility(View.VISIBLE);
+                } else {
+                    pb.setVisibility(View.GONE);
+                }
+            } catch (Exception ignored) {
+            }
+        } else {
+            pb.setVisibility(View.GONE);
+        }
         lv = findViewById(R.id.searches_lv);
         cursor = dataBase.getCursorForAdapterSearch();
         adapter = new SearchCursorAdapter(this, cursor);
@@ -73,7 +93,7 @@ public class SearchesActivity extends AppCompatActivity {
                 result -> {
                     Intent intent = result.getData();
                     resultAddSearch(result.getResultCode(), intent);
-                    actionMenuItemView.setEnabled(true);
+                    actionMenuItemView.setEnabled(true); // para evitar multiples clicks
                 });
 
         configurationLauncher = registerForActivityResult(
@@ -188,8 +208,10 @@ public class SearchesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        cursor = dataBase.getCursorForAdapterSearch();
-        adapter.changeCursor(cursor);
+        if (pb.getVisibility() == View.GONE) {
+            cursor = dataBase.getCursorForAdapterSearch();
+            adapter.changeCursor(cursor);
+        }
     }
 
     @Override
@@ -215,7 +237,7 @@ public class SearchesActivity extends AppCompatActivity {
                     if (actionMenuItemView == null) {
                         actionMenuItemView = findViewById(R.id.menu_searches_add_search);
                     }
-                    actionMenuItemView.setEnabled(false);
+                    actionMenuItemView.setEnabled(false); // para evitar multiples clicks
                     showAddSearch();
                 }
                 return true;
@@ -260,6 +282,7 @@ public class SearchesActivity extends AppCompatActivity {
                     .putString("frequency_id", frequencyId)
                     .build();
             WorkRequest workRequest = new OneTimeWorkRequest.Builder(AddSearchWorker.class).setInputData(workerData).build();
+            addSearchWorkerId = workRequest.getId();
             WorkManager.getInstance(this).enqueue(workRequest);
             pb.setVisibility(View.VISIBLE);
         }

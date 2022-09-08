@@ -59,9 +59,9 @@ public class ItemViewActivity extends AppCompatActivity {
         tvDetails1.setText(detail1);
         tvDetails2.setText(detail2);
         permalink = item.getPermalink();
+        /* descargo y muestro una imagen thumbnail de mejor calidad */
         thumbnailLink = item.getThumbnailLink();
         thumbnailLink = thumbnailLink.substring(0, thumbnailLink.length() - 5) + "H.jpg";
-
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
         executor.execute(new Runnable() {
@@ -85,7 +85,7 @@ public class ItemViewActivity extends AppCompatActivity {
             }
         });
 
-        openInMLLauncher = registerForActivityResult(
+        openInMLLauncher = registerForActivityResult(  // para evitar multiples clicks
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     btnOpenInML.setEnabled(true);
@@ -103,7 +103,7 @@ public class ItemViewActivity extends AppCompatActivity {
     }
 
     public void onClickBtnOpenInML(View view) {
-        btnOpenInML.setEnabled(false);
+        btnOpenInML.setEnabled(false); // para evitar multiples clicks
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(permalink));
         openInMLLauncher.launch(intent);
     }
