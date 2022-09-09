@@ -38,7 +38,7 @@ public class ThumbnailDownloader {
      */
     public void download() {
         DataBase dataBase = new DataBase(context);
-        List<Item> itemList = dataBase.getAllItemThumbnailNull();
+        List<Item> itemList = dataBase.getAllItemThumbnailIsNull();
         ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
         List<Callable<Void>> callableList = new ArrayList<>(itemList.size());
 

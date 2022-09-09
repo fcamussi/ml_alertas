@@ -229,7 +229,7 @@ public class DataBase {
                 "WHERE search_id=" + searchId);
     }
 
-    public List<Item> getAllItemThumbnailNull() {
+    public List<Item> getAllItemThumbnailIsNull() {
         Cursor cursor;
         List<Item> itemList = new ArrayList<>();
         cursor = db.rawQuery("SELECT * " +
