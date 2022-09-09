@@ -22,7 +22,7 @@ public class MLSearcher {
     private String siteId;
     private String agent;
     private boolean filtered;
-    private int maxItemCount;
+    private int maxResultCount;
 
     /**
      * Constructor
@@ -31,7 +31,7 @@ public class MLSearcher {
         siteId = null;
         agent = "MLSearcher";
         filtered = true;
-        maxItemCount = 1000;
+        maxResultCount = 1000;
         wordList = new ArrayList<>();
         itemList = new ArrayList<>();
     }
@@ -95,15 +95,15 @@ public class MLSearcher {
     }
 
     /**
-     * Setea la cantidad máxima de articulos que se exploran en la búsqueda
+     * Setea la cantidad máxima de resultados que se exploran en la búsqueda
      *
-     * @param maxItemCount Cantidad máxima de articulos
+     * @param maxResultCount Cantidad máxima de resultados
      *                     El valor por defecto es 1000, que es la cantidad máxima definida por ML
-     * @throws Exception Si maxItemCount es mayor a 1000
+     * @throws Exception Si maxResultCount es mayor a 1000
      */
-    public void setMaxItemCount(int maxItemCount) throws Exception {
-        if (maxItemCount > 1000) throw new Exception("maxItemCount no puede ser mayor a 1000");
-        this.maxItemCount = maxItemCount;
+    public void setMaxResultCount(int maxResultCount) throws Exception {
+        if (maxResultCount > 1000) throw new Exception("maxResultCount no puede ser mayor a 1000");
+        this.maxResultCount = maxResultCount;
     }
 
     /**
@@ -148,15 +148,22 @@ public class MLSearcher {
         int limit = jsonObj.getJSONObject("paging").getInt("limit");
         int total = jsonObj.getJSONObject("paging").getInt("total");
 
-        if (total > maxItemCount) {
-            total = maxItemCount;
+        if (total > maxResultCount) {
+            total = maxResultCount;
         }
         itemList.clear();
-        addItems(jsonObj.getJSONArray("results"));
+        JSONArray results = jsonObj.getJSONArray("results");
+        addItems(results);
+        int nResult = results.length();
         for (int offset = limit; offset < total; offset += limit) {
             content = url.getContent(buildURLStr(offset));
             jsonObj = new JSONObject(content);
-            addItems(jsonObj.getJSONArray("results"));
+            results = jsonObj.getJSONArray("results");
+            addItems(results);
+            nResult += results.length();
+        }
+        if (nResult != total) {
+            throw new Exception("Falló la obtención de los resultados");
         }
     }
 
