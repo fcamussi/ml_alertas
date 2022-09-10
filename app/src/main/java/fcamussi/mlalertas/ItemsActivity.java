@@ -1,9 +1,6 @@
 package fcamussi.mlalertas;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -12,6 +9,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.List;
 
 import mlsearcher.MLSearcher;
 
@@ -49,13 +48,15 @@ public class ItemsActivity extends AppCompatActivity {
                 startActivity(intent);
                 dataBase.beginTransaction();
                 try {
-                    Item item = dataBase.getItem(itemId, searchId);
-                    item.setNewItem(false);
-                    dataBase.updateItem(item);
-                    if (dataBase.getNewItemCount(searchId) == 0) {
-                        Search search = dataBase.getSearch(searchId);
-                        search.setNewItem(false);
-                        dataBase.updateSearch(search);
+                    List<Item> itemList = dataBase.getItemsById(itemId);
+                    for (Item item : itemList) {
+                        item.setNewItem(false);
+                        dataBase.updateItem(item);
+                        if (dataBase.getNewItemCount(item.getSearchId()) == 0) {
+                            Search search = dataBase.getSearch(item.getSearchId());
+                            search.setNewItem(false);
+                            dataBase.updateSearch(search);
+                        }
                     }
                     dataBase.setTransactionSuccessful();
                 } finally {

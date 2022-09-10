@@ -132,6 +132,24 @@ public class DataBase {
         return item;
     }
 
+    public List<Item> getItemsById(String itemId) {
+        Cursor cursor;
+        List<Item> itemList = new ArrayList<>();
+        cursor = db.rawQuery("SELECT * " +
+                        "FROM items " +
+                        "WHERE item_id = '" + itemId + "'",
+                null);
+        if (cursor.moveToFirst()) {
+            do {
+                Item item = new Item();
+                fillItemFromCursor(item, cursor);
+                itemList.add(item);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return itemList;
+    }
+
     public List<Item> addNewItemsAndRemoveOldItems(int searchId, List<Item> itemList, boolean newItem) {
         /* inserto los encontrados en items_tmp */
         db.execSQL("DELETE FROM items_tmp");

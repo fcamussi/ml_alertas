@@ -98,7 +98,7 @@ public class MLSearcher {
      * Setea la cantidad máxima de resultados que se exploran en la búsqueda
      *
      * @param maxResultCount Cantidad máxima de resultados
-     *                     El valor por defecto es 1000, que es la cantidad máxima definida por ML
+     *                       El valor por defecto es 1000, que es la cantidad máxima definida por ML
      * @throws Exception Si maxResultCount es mayor a 1000
      */
     public void setMaxResultCount(int maxResultCount) throws Exception {

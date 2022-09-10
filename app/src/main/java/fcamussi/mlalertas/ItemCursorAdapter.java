@@ -50,7 +50,7 @@ public class ItemCursorAdapter extends CursorAdapter {
             ivThumbnail.setImageBitmap(thumbnailBitmap);
         }
         tvTitle.setText(title);
-        tvDetails1.setText(String.format(Locale.US, "%s, %s", city , state));
+        tvDetails1.setText(String.format(Locale.US, "%s, %s", city, state));
         tvDetails2.setText(String.format(Locale.US, "%s %,.2f", currency, price));
         ivBell.setVisibility(newItem ? View.VISIBLE : View.GONE);
     }
