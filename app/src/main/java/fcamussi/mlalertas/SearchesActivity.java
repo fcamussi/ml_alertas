@@ -82,7 +82,9 @@ public class SearchesActivity extends AppCompatActivity {
                 result -> {
                     Intent intent = result.getData();
                     resultAddSearch(result.getResultCode(), intent);
-                    actionMenuItemView.setEnabled(true); // para evitar multiples clicks
+                    if (actionMenuItemView != null) {  // para evitar multiples clicks
+                        actionMenuItemView.setEnabled(true);
+                    }
                 });
 
         configurationLauncher = registerForActivityResult(
