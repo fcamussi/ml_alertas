@@ -40,7 +40,7 @@ public class ThumbnailDownloader {
         DataBase dataBase = new DataBase(context);
         List<Item> itemList = dataBase.getAllItemThumbnailIsNull();
         ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
-        List<Callable<Void>> callableList = new ArrayList<>(itemList.size());
+        List<Callable<Void>> callableList = new ArrayList<>();
 
         /* descargamos todas las imágenes */
         for (Item item : itemList) {
