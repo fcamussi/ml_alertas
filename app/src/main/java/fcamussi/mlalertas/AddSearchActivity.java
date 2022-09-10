@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -19,6 +20,8 @@ public class AddSearchActivity extends AppCompatActivity {
     EditText etWords;
     Spinner spinnerSite;
     Spinner spinnerFrequency;
+    ImageView ivWordsInfo;
+    ImageView ivFrequencyInfo;
     SharedPreferences preferences;
     private DataBase dataBase;
 
@@ -34,6 +37,8 @@ public class AddSearchActivity extends AppCompatActivity {
         etWords = findViewById(R.id.add_search_et_words);
         spinnerSite = findViewById(R.id.add_search_sp_site);
         spinnerFrequency = findViewById(R.id.add_search_sp_frequency);
+        ivWordsInfo = findViewById(R.id.add_search_iv_words_info);
+        ivFrequencyInfo = findViewById(R.id.add_search_iv_frequency_info);
         Cursor cursorSite = dataBase.getCursorForAdapterSite();
         SimpleCursorAdapter adapterSite = new SimpleCursorAdapter(this,
                 android.R.layout.simple_spinner_dropdown_item,
@@ -50,6 +55,20 @@ public class AddSearchActivity extends AppCompatActivity {
                 new int[]{android.R.id.text1},
                 0);
         spinnerFrequency.setAdapter(adapterFrequency);
+
+        ivWordsInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getBaseContext(), "info1", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        ivFrequencyInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getBaseContext(), "info2", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         preferences = getSharedPreferences("add_search_activity", Context.MODE_PRIVATE);
         String words = preferences.getString("words", "");

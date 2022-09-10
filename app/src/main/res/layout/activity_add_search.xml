@@ -10,33 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <Spinner
-            android:id="@+id/add_search_sp_frequency"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
-            android:contentDescription="Sitio"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_search_tv_frequency" />
-
-        <EditText
-            android:id="@+id/add_search_et_words"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:hint="Palabras a buscar"
-            android:inputType="textPersonName"
-            android:minHeight="48dp"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <Button
             android:id="@+id/add_search_btn_add"
             android:layout_width="0dp"
@@ -49,7 +22,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_search_sp_frequency" />
+            app:layout_constraintTop_toBottomOf="@+id/ll_frequency" />
 
         <Spinner
             android:id="@+id/add_search_sp_site"
@@ -71,7 +44,7 @@
             android:text="Sitio:"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_search_et_words" />
+            app:layout_constraintTop_toBottomOf="@+id/ll_words" />
 
         <TextView
             android:id="@+id/add_search_tv_frequency"
@@ -83,6 +56,73 @@
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_search_sp_site" />
+
+        <LinearLayout
+            android:id="@+id/ll_words"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/add_search_et_words"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:gravity="center_vertical"
+                android:hint="Palabras a buscar"
+                android:inputType="textPersonName"
+                android:minHeight="48dp"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/add_search_iv_words_info"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0"
+                app:srcCompat="@drawable/information_100x100" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_frequency"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/add_search_tv_frequency">
+
+            <Spinner
+                android:id="@+id/add_search_sp_frequency"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:contentDescription="Sitio"
+                android:gravity="center_vertical"
+                tools:layout_editor_absoluteX="283dp"
+                tools:layout_editor_absoluteY="211dp" />
+
+            <ImageView
+                android:id="@+id/add_search_iv_frequency_info"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0"
+                app:srcCompat="@drawable/information_100x100" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

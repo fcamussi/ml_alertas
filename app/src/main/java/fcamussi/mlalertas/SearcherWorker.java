@@ -124,7 +124,7 @@ public class SearcherWorker extends Worker {
         taskStackBuilder.addNextIntentWithParentStack(intent);
         PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
-                .setSmallIcon(R.drawable.ml_alertas_push_100x100)
+                .setSmallIcon(R.drawable.bell_push_100x100)
                 .setContentTitle(title)
                 .setContentText(text)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

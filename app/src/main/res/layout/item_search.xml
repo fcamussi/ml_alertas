@@ -56,6 +56,6 @@
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ml_alertas_yellow_100x100" />
+        app:srcCompat="@drawable/bell_alert_100x100" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
