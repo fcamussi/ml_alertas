@@ -1,5 +1,6 @@
 package fcamussi.mlalertas;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -59,14 +61,32 @@ public class AddSearchActivity extends AppCompatActivity {
         ivWordsInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getBaseContext(), "info1", Toast.LENGTH_SHORT).show();
+                Dialog dialog = new Dialog(view.getContext());
+                dialog.setContentView(R.layout.popup);
+                TextView tvMessage = dialog.findViewById(R.id.popup_tv_message);
+                String message;
+                message = "Utilice palabras clave.\n" +
+                        "Por ejemplo, si busca un TV marca Sorny modelo HS-123, " +
+                        "puede escribir las palabras:\n" +
+                        "Sorny HS\n" +
+                        "Ó para ser más específico:\n" +
+                        "Sorny HS 123";
+                tvMessage.setText(message);
+                dialog.show();
             }
         });
 
         ivFrequencyInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getBaseContext(), "info2", Toast.LENGTH_SHORT).show();
+                Dialog dialog = new Dialog(view.getContext());
+                dialog.setContentView(R.layout.popup);
+                TextView tvMessage = dialog.findViewById(R.id.popup_tv_message);
+                String message;
+                message = "Tenga en mente que la frecuencia de búsqueda influye en el " +
+                        "consumo de datos y de la batería.";
+                tvMessage.setText(message);
+                dialog.show();
             }
         });
 
