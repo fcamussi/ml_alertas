@@ -60,7 +60,8 @@ public class DataBase {
         List<Search> searchList = new ArrayList<>();
         Cursor cursor;
         cursor = db.rawQuery("SELECT * " +
-                        "FROM searches",
+                        "FROM searches " +
+                        "WHERE deleted=0",
                 null);
         if (cursor.moveToFirst()) {
             do {
@@ -84,8 +85,8 @@ public class DataBase {
                         "WHERE rowid=" + rowid,
                 null);
         cursor.moveToFirst();
-        int search_id = cursor.getInt(cursor.getColumnIndexOrThrow("search_id"));
-        search.setId(search_id);
+        int searchId = cursor.getInt(cursor.getColumnIndexOrThrow("search_id"));
+        search.setId(searchId);
         cursor.close();
         return search;
     }
@@ -220,10 +221,10 @@ public class DataBase {
                 null);
     }
 
-    public int getItemCount(int search_id) {
+    public int getItemCount(int searchId) {
         Cursor cursor = db.rawQuery("SELECT COUNT(*) " +
                         "FROM items " +
-                        "WHERE search_id=" + search_id,
+                        "WHERE search_id=" + searchId,
                 null);
         cursor.moveToFirst();
         int count = cursor.getInt(0);
