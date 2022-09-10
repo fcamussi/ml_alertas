@@ -143,7 +143,7 @@ public class SearchesActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 pb.setVisibility(View.GONE);
-                String msg = "La búsqueda no pudo agregarse porque falló la conexión.";
+                String msg = "Falló la conexión con Mercado Libre.";
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                 alertDialogBuilder.setMessage(msg);
                 alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
