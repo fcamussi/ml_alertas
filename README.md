@@ -14,7 +14,7 @@ Es una aplicación ideal para coleccionistas que buscan artículos dificil de en
 ![screenshot2](https://user-images.githubusercontent.com/75378876/189466358-6349f12f-751e-44d3-b198-4c73f04e90ac.png)
 
 ![screenshot3](https://user-images.githubusercontent.com/75378876/189466359-b039572a-962f-4e9c-8e80-f67b1026f363.png)
-![screenshot4](https://user-images.githubusercontent.com/75378876/189466361-ceec58ce-dcc6-410e-91ae-1ab4715aa467.png)
+![screenshot4](https://user-images.githubusercontent.com/75378876/189504538-709373b5-0a76-46a2-8864-6c85c5a246b8.png)
 
 ![screenshot5](https://user-images.githubusercontent.com/75378876/189466360-9a4642c5-c8f2-494a-8c6b-ea33601046d5.png)
 
