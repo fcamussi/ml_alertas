@@ -46,8 +46,8 @@ public class SearchCursorAdapter extends CursorAdapter {
         boolean newItem = cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0;
         view.setTag(String.valueOf(_id)); // se utiliza el tag de view para almacenar el id de la búsqueda
         tvWords.setText(words);
-        String details1 = String.format(Locale.US, "Sitio: %s | Frequencia: %s", siteId, frequencyId);
-        String details2 = String.format(Locale.US, "Cantidad: %d", itemCount);
+        String details1 = String.format("Sitio: %s | Frequencia: %s", siteId, frequencyId);
+        String details2 = String.format("Cantidad: %d", itemCount);
         tvDetails1.setText(details1);
         tvDetails2.setText(details2);
         ivBell.setVisibility(newItem ? View.VISIBLE : View.GONE); // se activa la campanita si dentro hay un artículo nuevo

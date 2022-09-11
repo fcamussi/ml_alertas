@@ -18,7 +18,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:onClick="onClickBtnAdd"
-            android:text="Agregar"
+            android:text="@string/add"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:contentDescription="Sitio"
+            android:contentDescription="@string/site"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_search_tv_site"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:text="Sitio:"
+            android:text="@string/site_"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ll_words" />
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Frequencia:"
+            android:text="@string/frequency_"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_search_sp_site" />
@@ -75,17 +75,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:autofillHints=""
                 android:ems="10"
                 android:gravity="center_vertical"
-                android:hint="Palabras a buscar"
+                android:hint="@string/words_to_search"
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
                 android:textColorHint="#546E7A"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:autofillHints="" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/add_search_iv_words_info"
@@ -93,7 +93,7 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0"
-                android:contentDescription="Information"
+                android:contentDescription="@string/information"
                 app:srcCompat="@drawable/information_100x100" />
 
         </LinearLayout>
@@ -114,7 +114,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:contentDescription="Sitio"
+                android:contentDescription="@string/frequency"
                 android:gravity="center_vertical"
                 tools:ignore="TouchTargetSizeCheck"
                 tools:layout_editor_absoluteX="283dp"
@@ -126,7 +126,7 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="0"
-                android:contentDescription="Information"
+                android:contentDescription="@string/information"
                 app:srcCompat="@drawable/information_100x100" />
         </LinearLayout>
 

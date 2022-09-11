@@ -5,12 +5,12 @@
     <item
         android:id="@+id/menu_searches_add_search"
         android:icon="@drawable/add_100x100"
-        android:title="Agregar búsqueda"
+        android:title="@string/add_search"
         app:showAsAction="always" />
     <item
         android:id="@+id/menu_searches_unset_notifications"
-        android:title="Desmarcar notificaciones" />
+        android:title="@string/uncheck_notifications" />
     <item
         android:id="@+id/menu_searches_configuration"
-        android:title="Configuración" />
+        android:title="@string/configuration" />
 </menu>

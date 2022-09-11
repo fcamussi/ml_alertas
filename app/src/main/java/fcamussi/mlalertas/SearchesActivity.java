@@ -109,10 +109,9 @@ public class SearchesActivity extends AppCompatActivity {
         lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String msg = "¿Desea eliminar la búsqueda?";
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
-                alertDialogBuilder.setMessage(msg);
-                alertDialogBuilder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setMessage(getString(R.string.want_delete_search));
+                alertDialogBuilder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         int searchId = Integer.parseInt(view.getTag().toString()); // se obtiene el id de la búsqueda del tag del view
@@ -120,7 +119,7 @@ public class SearchesActivity extends AppCompatActivity {
                         dialogInterface.dismiss();
                     }
                 });
-                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
@@ -138,7 +137,7 @@ public class SearchesActivity extends AppCompatActivity {
                 cursor = dataBase.getCursorForAdapterSearch();
                 adapter.changeCursor(cursor);
                 pb.setVisibility(View.GONE);
-                Toast.makeText(context, "Búsqueda agregada", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, getString(R.string.search_added), Toast.LENGTH_SHORT).show();
             }
         };
         IntentFilter filter = new IntentFilter(Constants.ADD_SEARCH_FINISHED);
@@ -148,10 +147,9 @@ public class SearchesActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 pb.setVisibility(View.GONE);
-                String msg = "Falló la conexión con Mercado Libre.";
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-                alertDialogBuilder.setMessage(msg);
-                alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                alertDialogBuilder.setMessage(getString(R.string.connection_failed));
+                alertDialogBuilder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         dialogInterface.dismiss();
@@ -168,10 +166,8 @@ public class SearchesActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 pb.setVisibility(View.GONE);
-                String msg = "Ésta búsqueda produce demasiados resultados. " +
-                        "Por favor, intente ser más específico.";
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-                alertDialogBuilder.setMessage(msg);
+                alertDialogBuilder.setMessage(getString(R.string.search_produces_too_many_results));
                 alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -228,7 +224,7 @@ public class SearchesActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.menu_searches_add_search:
                 if (pb.getVisibility() == View.VISIBLE) { // si la barra de progreso está visible...
-                    Toast.makeText(getBaseContext(), "Espere...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getBaseContext(), getString(R.string.wait_), Toast.LENGTH_SHORT).show();
                 } else {
                     if (actionMenuItemView == null) {
                         actionMenuItemView = findViewById(R.id.menu_searches_add_search);
@@ -299,7 +295,7 @@ public class SearchesActivity extends AppCompatActivity {
             editor.putBoolean("wifi", wifi);
             editor.putBoolean("battery_not_low", batteryNotLow);
             editor.apply();
-            Toast.makeText(this, "Configuración guardada", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.configuration_saved), Toast.LENGTH_SHORT).show();
             enqueueSearcherWorker(wifi, batteryNotLow, true);
         }
     }
@@ -322,7 +318,7 @@ public class SearchesActivity extends AppCompatActivity {
         }
         cursor = dataBase.getCursorForAdapterSearch();
         adapter.changeCursor(cursor);
-        Toast.makeText(this, "Búsqueda eliminada", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.search_deleted), Toast.LENGTH_SHORT).show();
     }
 
     private void unsetNotifications() {
@@ -340,7 +336,7 @@ public class SearchesActivity extends AppCompatActivity {
         }
         cursor = dataBase.getCursorForAdapterSearch();
         adapter.changeCursor(cursor);
-        Toast.makeText(this, "Notificaciones desmarcadas", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.notifications_unchecked), Toast.LENGTH_SHORT).show();
     }
 
     private boolean addSearchWorkerIsRunning() {
