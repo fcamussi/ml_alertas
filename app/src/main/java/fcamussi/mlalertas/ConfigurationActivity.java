@@ -8,6 +8,8 @@ import android.widget.CheckBox;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Objects;
+
 /**
  * Clase ConfigurationActivity
  *
@@ -23,7 +25,7 @@ public class ConfigurationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configuration);
 
-        getSupportActionBar().setTitle("Configuración");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Configuración");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         cbWifi = findViewById(R.id.configuration_cb_wifi);
@@ -46,13 +48,11 @@ public class ConfigurationActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
 }

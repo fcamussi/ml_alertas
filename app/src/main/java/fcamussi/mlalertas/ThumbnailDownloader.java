@@ -44,22 +44,19 @@ public class ThumbnailDownloader {
 
         /* descargamos todas las imágenes */
         for (Item item : itemList) {
-            callableList.add(new Callable<Void>() {
-                @Override
-                public Void call() throws Exception {
-                    try {
-                        InputStream is = new URL(item.getThumbnailLink()).openStream();
-                        Bitmap bitmap = BitmapFactory.decodeStream(is);
-                        is.close();
-                        ByteArrayOutputStream os = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 0, os);
-                        item.setThumbnail(os.toByteArray());
-                        os.close();
-                    } catch (IOException e) {
-                        item.setThumbnail(null);
-                    }
-                    return null;
+            callableList.add(() -> {
+                try {
+                    InputStream is = new URL(item.getThumbnailLink()).openStream();
+                    Bitmap bitmap = BitmapFactory.decodeStream(is);
+                    is.close();
+                    ByteArrayOutputStream os = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 0, os);
+                    item.setThumbnail(os.toByteArray());
+                    os.close();
+                } catch (IOException e) {
+                    item.setThumbnail(null);
                 }
+                return null;
             });
         }
         try {

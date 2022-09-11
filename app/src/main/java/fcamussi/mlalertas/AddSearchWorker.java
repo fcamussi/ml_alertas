@@ -3,6 +3,7 @@ package fcamussi.mlalertas;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -23,6 +24,7 @@ public class AddSearchWorker extends Worker {
         super(context, params);
     }
 
+    @NonNull
     @Override
     public Result doWork() {
         String words = getInputData().getString("words");
@@ -32,6 +34,7 @@ public class AddSearchWorker extends Worker {
         MLSearcher mlSearcher = new MLSearcher();
 
         mlSearcher.setSiteId(siteId);
+        assert words != null;
         List<String> wordList = MLSearcher.stringToStringList(words);
         mlSearcher.setWords(wordList);
         mlSearcher.setAgent(Constants.AGENT);

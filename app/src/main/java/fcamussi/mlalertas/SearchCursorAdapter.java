@@ -9,8 +9,6 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Locale;
-
 /**
  * Clase SearchCursorAdapter
  *
@@ -47,7 +45,7 @@ public class SearchCursorAdapter extends CursorAdapter {
         view.setTag(String.valueOf(_id)); // se utiliza el tag de view para almacenar el id de la búsqueda
         tvWords.setText(words);
         String details1 = String.format(context.getString(R.string.site_) + " %s | " +
-                context.getString(R.string.frequency_) + " %s",
+                        context.getString(R.string.frequency_) + " %s",
                 siteId, frequencyId);
         String details2 = String.format(context.getString(R.string.quantity_) + " %d", itemCount);
         tvDetails1.setText(details1);

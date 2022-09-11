@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.Objects;
+
 /**
  * Clase AddSearchActivity
  *
@@ -30,22 +32,23 @@ public class AddSearchActivity extends AppCompatActivity {
     ImageView ivWordsInfo;
     ImageView ivFrequencyInfo;
     SharedPreferences preferences;
-    private DataBase dataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_search);
 
-        getSupportActionBar().setTitle(getString(R.string.add_search));
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getString(R.string.add_search));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        dataBase = new DataBase(this);
+        DataBase dataBase = new DataBase(this);
         etWords = findViewById(R.id.add_search_et_words);
         spinnerSite = findViewById(R.id.add_search_sp_site);
         spinnerFrequency = findViewById(R.id.add_search_sp_frequency);
         ivWordsInfo = findViewById(R.id.add_search_iv_words_info);
         ivFrequencyInfo = findViewById(R.id.add_search_iv_frequency_info);
+
+        /* Site adapter */
         Cursor cursorSite = dataBase.getCursorForAdapterSite();
         SimpleCursorAdapter adapterSite = new SimpleCursorAdapter(this,
                 android.R.layout.simple_spinner_dropdown_item,
@@ -54,6 +57,8 @@ public class AddSearchActivity extends AppCompatActivity {
                 new int[]{android.R.id.text1},
                 0);
         spinnerSite.setAdapter(adapterSite);
+
+        /* Frequency adapter */
         Cursor cursorFrequency = dataBase.getCursorForAdapterFrequency();
         SimpleCursorAdapter adapterFrequency = new SimpleCursorAdapter(this,
                 android.R.layout.simple_spinner_dropdown_item,
@@ -63,26 +68,20 @@ public class AddSearchActivity extends AppCompatActivity {
                 0);
         spinnerFrequency.setAdapter(adapterFrequency);
 
-        ivWordsInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dialog dialog = new Dialog(view.getContext());
-                dialog.setContentView(R.layout.popup);
-                TextView tvMessage = dialog.findViewById(R.id.popup_tv_message);
-                tvMessage.setText(getString(R.string.words_information));
-                dialog.show();
-            }
+        ivWordsInfo.setOnClickListener(view -> {
+            Dialog dialog = new Dialog(view.getContext());
+            dialog.setContentView(R.layout.popup);
+            TextView tvMessage = dialog.findViewById(R.id.popup_tv_message);
+            tvMessage.setText(getString(R.string.words_information));
+            dialog.show();
         });
 
-        ivFrequencyInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Dialog dialog = new Dialog(view.getContext());
-                dialog.setContentView(R.layout.popup);
-                TextView tvMessage = dialog.findViewById(R.id.popup_tv_message);
-                tvMessage.setText(getString(R.string.frequency_information));
-                dialog.show();
-            }
+        ivFrequencyInfo.setOnClickListener(view -> {
+            Dialog dialog = new Dialog(view.getContext());
+            dialog.setContentView(R.layout.popup);
+            TextView tvMessage = dialog.findViewById(R.id.popup_tv_message);
+            tvMessage.setText(getString(R.string.frequency_information));
+            dialog.show();
         });
 
         preferences = getSharedPreferences("add_search_activity", Context.MODE_PRIVATE);
@@ -118,13 +117,11 @@ public class AddSearchActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
 }

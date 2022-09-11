@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -13,13 +12,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.work.Constraints;
@@ -35,6 +34,7 @@ import androidx.work.WorkRequest;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -54,7 +54,6 @@ public class SearchesActivity extends AppCompatActivity {
     private DataBase dataBase;
     private Cursor cursor;
     private ProgressBar pb;
-    private ListView lv;
     private SearchCursorAdapter adapter;
     private BroadcastReceiver brAddSearchFinished;
     private BroadcastReceiver brAddSearchConnectionFailed;
@@ -67,7 +66,7 @@ public class SearchesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searches);
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.mipmap.ic_launcher);
         dataBase = new DataBase(this);
         pb = findViewById(R.id.searches_pb);
@@ -77,7 +76,7 @@ public class SearchesActivity extends AppCompatActivity {
         } else {
             pb.setVisibility(View.GONE);
         }
-        lv = findViewById(R.id.searches_lv);
+        ListView lv = findViewById(R.id.searches_lv);
         cursor = dataBase.getCursorForAdapterSearch();
         adapter = new SearchCursorAdapter(this, cursor);
         lv.setAdapter(adapter);
@@ -99,36 +98,22 @@ public class SearchesActivity extends AppCompatActivity {
                     resultConfiguration(result.getResultCode(), intent);
                 });
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                showItems(Integer.parseInt(view.getTag().toString())); // se obtiene el id de la búsqueda del tag del view
-            }
+        lv.setOnItemClickListener((adapterView, view, i, l) -> {
+            showItems(Integer.parseInt(view.getTag().toString())); // se obtiene el id de la búsqueda del tag del view
         });
 
-        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
-                alertDialogBuilder.setMessage(getString(R.string.want_delete_search));
-                alertDialogBuilder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        int searchId = Integer.parseInt(view.getTag().toString()); // se obtiene el id de la búsqueda del tag del view
-                        setDeletedSearch(searchId);
-                        dialogInterface.dismiss();
-                    }
-                });
-                alertDialogBuilder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-                return true;
-            }
+        lv.setOnItemLongClickListener((adapterView, view, i, l) -> {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(view.getContext());
+            alertDialogBuilder.setMessage(getString(R.string.want_delete_search));
+            alertDialogBuilder.setPositiveButton(getString(R.string.yes), (dialogInterface, i1) -> {
+                int searchId = Integer.parseInt(view.getTag().toString()); // se obtiene el id de la búsqueda del tag del view
+                setDeletedSearch(searchId);
+                dialogInterface.dismiss();
+            });
+            alertDialogBuilder.setNegativeButton(getString(R.string.no), (dialogInterface, i12) -> dialogInterface.dismiss());
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+            return true;
         });
 
         brAddSearchFinished = new BroadcastReceiver() {
@@ -149,12 +134,7 @@ public class SearchesActivity extends AppCompatActivity {
                 pb.setVisibility(View.GONE);
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                 alertDialogBuilder.setMessage(getString(R.string.connection_failed));
-                alertDialogBuilder.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
+                alertDialogBuilder.setPositiveButton(getString(R.string.ok), (dialogInterface, i) -> dialogInterface.dismiss());
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
             }
@@ -168,12 +148,7 @@ public class SearchesActivity extends AppCompatActivity {
                 pb.setVisibility(View.GONE);
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
                 alertDialogBuilder.setMessage(getString(R.string.search_produces_too_many_results));
-                alertDialogBuilder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                });
+                alertDialogBuilder.setPositiveButton("Aceptar", (dialogInterface, i) -> dialogInterface.dismiss());
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
             }
@@ -215,33 +190,32 @@ public class SearchesActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         getMenuInflater().inflate(R.menu.menu_searches, menu);
         return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_searches_add_search:
-                if (pb.getVisibility() == View.VISIBLE) { // si la barra de progreso está visible...
-                    Toast.makeText(getBaseContext(), getString(R.string.wait_), Toast.LENGTH_SHORT).show();
-                } else {
-                    if (actionMenuItemView == null) {
-                        actionMenuItemView = findViewById(R.id.menu_searches_add_search);
-                    }
-                    actionMenuItemView.setEnabled(false); // para evitar multiples clicks
-                    showAddSearch();
+        int itemId = item.getItemId();
+        if (itemId == R.id.menu_searches_add_search) {
+            if (pb.getVisibility() == View.VISIBLE) { // si la barra de progreso está visible...
+                Toast.makeText(getBaseContext(), getString(R.string.wait_), Toast.LENGTH_SHORT).show();
+            } else {
+                if (actionMenuItemView == null) {
+                    actionMenuItemView = findViewById(R.id.menu_searches_add_search);
                 }
-                return true;
-            case R.id.menu_searches_unset_notifications:
-                unsetNotifications();
-                return true;
-            case R.id.menu_searches_configuration:
-                showConfiguration();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+                actionMenuItemView.setEnabled(false); // para evitar multiples clicks
+                showAddSearch();
+            }
+            return true;
+        } else if (itemId == R.id.menu_searches_unset_notifications) {
+            unsetNotifications();
+            return true;
+        } else if (itemId == R.id.menu_searches_configuration) {
+            showConfiguration();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     private void enqueueSearcherWorker(boolean wifi, boolean batteryNotLow, boolean replace) {

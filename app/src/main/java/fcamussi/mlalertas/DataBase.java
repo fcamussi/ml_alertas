@@ -181,7 +181,7 @@ public class DataBase {
                         "WHERE search_id=" + searchId + ") AND search_id=" + searchId,
                 null);
         /* los agrego a newItemList para retornarlos */
-        List<Item> newItemList = new ArrayList();
+        List<Item> newItemList = new ArrayList<>();
         if (cursor.moveToFirst()) {
             do {
                 Item item = new Item();

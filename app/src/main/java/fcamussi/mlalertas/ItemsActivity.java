@@ -4,13 +4,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
+import java.util.Objects;
 
 import mlsearcher.MLSearcher;
 
@@ -23,7 +22,6 @@ public class ItemsActivity extends AppCompatActivity {
 
     private DataBase dataBase;
     private Cursor cursor;
-    private ListView lv;
     private ItemCursorAdapter adapter;
     private int searchId;
 
@@ -34,43 +32,40 @@ public class ItemsActivity extends AppCompatActivity {
 
         searchId = getIntent().getIntExtra("search_id", 0);
         dataBase = new DataBase(this);
-        lv = findViewById(R.id.items_lv);
+        ListView lv = findViewById(R.id.items_lv);
         cursor = dataBase.getCursorForAdapterItem(searchId);
         adapter = new ItemCursorAdapter(this, cursor);
         lv.setAdapter(adapter);
         Search search = dataBase.getSearch(searchId);
-        getSupportActionBar().setTitle(MLSearcher.stringListToString(search.getWordList()));
+        Objects.requireNonNull(getSupportActionBar()).setTitle(MLSearcher.stringListToString(search.getWordList()));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String itemId = view.getTag().toString(); // se obtiene el id del artículo del tag del view
-                Intent intent = new Intent(getBaseContext(), ItemViewActivity.class);
-                intent.putExtra("item_id", itemId);
-                intent.putExtra("search_id", searchId);
-                startActivity(intent);
-                /* desmarco notificación del artículo visto */
-                dataBase.beginTransaction();
-                try {
-                    List<Item> itemList = dataBase.getItemsById(itemId);
-                    for (Item item : itemList) {
-                        item.setNewItem(false);
-                        dataBase.updateItem(item);
-                        if (dataBase.getNewItemCount(item.getSearchId()) == 0) {
-                            Search search = dataBase.getSearch(item.getSearchId());
-                            search.setNewItem(false);
-                            dataBase.updateSearch(search);
-                        }
+        lv.setOnItemClickListener((adapterView, view, i, l) -> {
+            String itemId = view.getTag().toString(); // se obtiene el id del artículo del tag del view
+            Intent intent = new Intent(getBaseContext(), ItemViewActivity.class);
+            intent.putExtra("item_id", itemId);
+            intent.putExtra("search_id", searchId);
+            startActivity(intent);
+            /* desmarco notificación del artículo visto */
+            dataBase.beginTransaction();
+            try {
+                List<Item> itemList = dataBase.getItemsById(itemId);
+                for (Item item : itemList) {
+                    item.setNewItem(false);
+                    dataBase.updateItem(item);
+                    if (dataBase.getNewItemCount(item.getSearchId()) == 0) {
+                        Search search1 = dataBase.getSearch(item.getSearchId());
+                        search1.setNewItem(false);
+                        dataBase.updateSearch(search1);
                     }
-                    dataBase.setTransactionSuccessful();
-                } finally {
-                    dataBase.endTransaction();
                 }
-                cursor = dataBase.getCursorForAdapterItem(searchId);
-                adapter.changeCursor(cursor);
+                dataBase.setTransactionSuccessful();
+            } finally {
+                dataBase.endTransaction();
             }
+            cursor = dataBase.getCursorForAdapterItem(searchId);
+            adapter.changeCursor(cursor);
         });
     }
 
@@ -82,13 +77,11 @@ public class ItemsActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
 }

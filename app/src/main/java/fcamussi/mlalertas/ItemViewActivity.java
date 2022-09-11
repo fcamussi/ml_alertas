@@ -1,5 +1,6 @@
 package fcamussi.mlalertas;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,7 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -45,7 +46,7 @@ public class ItemViewActivity extends AppCompatActivity {
         int searchId = getIntent().getIntExtra("search_id", 0);
         DataBase dataBase = new DataBase(this);
         Item item = dataBase.getItem(itemId, searchId);
-        getSupportActionBar().setTitle(item.getTitle());
+        Objects.requireNonNull(getSupportActionBar()).setTitle(item.getTitle());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         TextView tvTitle = findViewById(R.id.item_view_tv_title);
@@ -59,8 +60,8 @@ public class ItemViewActivity extends AppCompatActivity {
             Bitmap thumbnailBitmap = BitmapFactory.decodeByteArray(thumbnail, 0, thumbnail.length);
             ivThumbnail.setImageBitmap(thumbnailBitmap);
         }
-        String detail1 = String.format("%s, %s", item.getCity() , item.getState());
-        String detail2 = String.format("%s %,.2f", item.getCurrency(), item.getPrice());
+        String detail1 = String.format("%s, %s", item.getCity(), item.getState());
+        @SuppressLint("DefaultLocale") String detail2 = String.format("%s %,.2f", item.getCurrency(), item.getPrice());
         tvDetails1.setText(detail1);
         tvDetails2.setText(detail2);
         permalink = item.getPermalink();
@@ -69,42 +70,32 @@ public class ItemViewActivity extends AppCompatActivity {
         thumbnailLink = thumbnailLink.substring(0, thumbnailLink.length() - 5) + "H.jpg";
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Handler handler = new Handler(Looper.getMainLooper());
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    InputStream in = new URL(thumbnailLink).openStream();
-                    thumbnailBitmap = BitmapFactory.decodeStream(in);
-                    in.close();
-                } catch (Exception e) {
-                    thumbnailBitmap = null;
-                }
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (thumbnailBitmap != null) {
-                            ivThumbnail.setImageBitmap(thumbnailBitmap);
-                        }
-                    }
-                });
+        executor.execute(() -> {
+            try {
+                InputStream in = new URL(thumbnailLink).openStream();
+                thumbnailBitmap = BitmapFactory.decodeStream(in);
+                in.close();
+            } catch (Exception e) {
+                thumbnailBitmap = null;
             }
+            handler.post(() -> {
+                if (thumbnailBitmap != null) {
+                    ivThumbnail.setImageBitmap(thumbnailBitmap);
+                }
+            });
         });
 
         openInMLLauncher = registerForActivityResult(  // para evitar multiples clicks
                 new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    btnOpenInML.setEnabled(true);
-                });
+                result -> btnOpenInML.setEnabled(true));
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     public void onClickBtnOpenInML(View view) {

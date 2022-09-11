@@ -1,5 +1,6 @@
 package fcamussi.mlalertas;
 
+import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
@@ -16,7 +18,6 @@ import androidx.work.WorkerParameters;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -39,6 +40,8 @@ public class SearcherWorker extends Worker {
         createNotificationChannel();
     }
 
+    @SuppressLint("DefaultLocale")
+    @NonNull
     @Override
     public Result doWork() {
         DataBase dataBase = new DataBase(getApplicationContext());
@@ -113,12 +116,12 @@ public class SearcherWorker extends Worker {
             thumbnailDownloader.download();
         }
 
-        sendBroadcast(Constants.SEARCHER_FINISHED);
+        sendBroadcast();
         return Result.success();
     }
 
-    private void sendBroadcast(String broadcastMsg) {
-        Intent intent = new Intent(broadcastMsg);
+    private void sendBroadcast() {
+        Intent intent = new Intent(Constants.SEARCHER_FINISHED);
         intent.setPackage(getApplicationContext().getPackageName()); // para que solo ésta app lo reciba
         getApplicationContext().sendBroadcast(intent);
     }

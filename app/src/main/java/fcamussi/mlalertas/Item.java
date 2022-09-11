@@ -1,6 +1,7 @@
 package fcamussi.mlalertas;
 
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Clase Item
@@ -35,7 +36,7 @@ public class Item {
     public Item(Map<String, String> item) {
         id = item.get("id");
         title = item.get("title");
-        price = Double.parseDouble(item.get("price"));
+        price = Double.parseDouble(Objects.requireNonNull(item.get("price")));
         currency = item.get("currency");
         permalink = item.get("permalink");
         thumbnailLink = item.get("thumbnail_link");

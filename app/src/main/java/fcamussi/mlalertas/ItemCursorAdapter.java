@@ -1,5 +1,6 @@
 package fcamussi.mlalertas;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -32,6 +33,7 @@ public class ItemCursorAdapter extends CursorAdapter {
         return LayoutInflater.from(context).inflate(R.layout.item_item, viewGroup, false);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ImageView ivThumbnail = view.findViewById(R.id.item_item_iv_thumbnail);
