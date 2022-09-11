@@ -70,7 +70,7 @@ public class ThumbnailDownloader {
         dataBase.beginTransaction();
         try {
             for (Item item : itemList) {
-                Item itemUpdated = dataBase.getItem(item.getId(), item.getSearchId());
+                Item itemUpdated = dataBase.getItem(item.getId(), item.getSearchId()); // obtenemos una versión actualizada de item
                 itemUpdated.setThumbnail(item.getThumbnail());
                 dataBase.updateItem(itemUpdated);
             }
