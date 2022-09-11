@@ -39,7 +39,8 @@ public class Item {
         price = Double.parseDouble(Objects.requireNonNull(item.get("price")));
         currency = item.get("currency");
         permalink = item.get("permalink");
-        thumbnailLink = item.get("thumbnail_link");
+        /* si empieza con http:// reemplazo por https:// */
+        thumbnailLink = item.get("thumbnail_link").replaceFirst("(?i)^http://", "https://");
         state = item.get("state");
         city = item.get("city");
     }
