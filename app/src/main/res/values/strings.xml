@@ -22,7 +22,7 @@
     <string name="add_search">Add search</string>
     <string name="uncheck_notifications">Uncheck notifications</string>
     <string name="configuration">Configuration</string>
-    <string name="words_information">"Use keywords. For example, if you are looking for a Sorny model HS-123 TV, you can type the words:\nSorny HS\nOr to be more specific:\nSorny HS 123"</string>
+    <string name="words_information">"Use keywords. For example, if you are looking for a Panaphonic model HS-123 TV, you can type the words:\nPanaphonic HS\nOr to be more specific:\nPanaphonic HS 123"</string>
     <string name="frequency_information">"Keep in mind that a low frequency consumes more data and battery."</string>
     <string name="must_enter_least_one_word">"You must enter at least one word"</string>
     <string name="search_added">Search added"</string>
@@ -36,4 +36,5 @@
     <string name="yes">Yes</string>
     <string name="connection_failed">The connection with Mercado Libre failed.</string>
     <string name="search_produces_too_many_results">This search produces too many results. Please try to be more specific.</string>
+    <string name="quantity_">Quantity:</string>
 </resources>
