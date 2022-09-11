@@ -14,6 +14,11 @@ import java.util.List;
 
 import mlsearcher.MLSearcher;
 
+/**
+ * Clase ItemsActivity
+ *
+ * @author Fernando Camussi
+ */
 public class ItemsActivity extends AppCompatActivity {
 
     private DataBase dataBase;
@@ -41,11 +46,12 @@ public class ItemsActivity extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                String itemId = view.getTag().toString();
+                String itemId = view.getTag().toString(); // se obtiene el id del artículo del tag del view
                 Intent intent = new Intent(getBaseContext(), ItemViewActivity.class);
                 intent.putExtra("item_id", itemId);
                 intent.putExtra("search_id", searchId);
                 startActivity(intent);
+                /* desmarco notificación del artículo visto */
                 dataBase.beginTransaction();
                 try {
                     List<Item> itemList = dataBase.getItemsById(itemId);

@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Clase para obtener los sitios (paises) y los estados (provincias)
+ * Clase para obtener los sitios (paises)
  *
  * @author Fernando Camussi
  */
@@ -34,7 +34,7 @@ public class MLSite {
     }
 
     /**
-     * Consulta y almacena los sitios y los estados
+     * Consulta y almacena los sitios
      *
      * @throws Exception Si falla la consulta
      */

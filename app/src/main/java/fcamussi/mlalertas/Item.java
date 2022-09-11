@@ -2,6 +2,11 @@ package fcamussi.mlalertas;
 
 import java.util.Map;
 
+/**
+ * Clase para almacenar artículo
+ *
+ * @author Fernando Camussi
+ */
 public class Item {
 
     private String id;
@@ -16,9 +21,17 @@ public class Item {
     private String city;
     private boolean newItem;
 
+    /**
+     * Constructor
+     */
     public Item() {
     }
 
+    /**
+     * Constructor
+     *
+     * @param item artículo de tipo Map<String, String> retornado en MLSearcher
+     */
     public Item(Map<String, String> item) {
         id = item.get("id");
         title = item.get("title");

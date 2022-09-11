@@ -12,6 +12,11 @@ import java.util.Map;
 
 import mlsearcher.MLSearcher;
 
+/**
+ * Clase AddSearchWorker para agregar una nueva búsqueda
+ *
+ * @author Fernando Camussi
+ */
 public class AddSearchWorker extends Worker {
 
     public AddSearchWorker(Context context, WorkerParameters params) {
@@ -40,7 +45,7 @@ public class AddSearchWorker extends Worker {
             sendBroadcast(Constants.ADD_SEARCH_CONNECTION_FAILED);
             return Result.success();
         }
-        List<Item> foundItems = new ArrayList<>();
+        List<Item> foundItems = new ArrayList<>(); /* para cargar los items de la búsqueda */
         for (Map<String, String> item : mlSearcher.getFoundItems()) {
             foundItems.add(new Item(item));
         }

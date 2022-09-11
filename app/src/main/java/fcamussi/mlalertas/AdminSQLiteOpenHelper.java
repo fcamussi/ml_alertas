@@ -4,6 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * Clase AdminSQLiteOpenHelper
+ *
+ * @author Fernando Camussi
+ */
 public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
 
     public AdminSQLiteOpenHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {

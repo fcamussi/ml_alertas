@@ -2,6 +2,11 @@ package fcamussi.mlalertas;
 
 import java.util.List;
 
+/**
+ * Clase para almacenar búsqueda
+ *
+ * @author Fernando Camussi
+ */
 public class Search {
 
     private int id;

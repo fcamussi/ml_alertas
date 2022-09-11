@@ -11,6 +11,11 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
+/**
+ * Clase SearchCursorAdapter
+ *
+ * @author Fernando Camussi
+ */
 public class SearchCursorAdapter extends CursorAdapter {
 
     TextView tvWords;
@@ -39,13 +44,13 @@ public class SearchCursorAdapter extends CursorAdapter {
         String frequencyId = cursor.getString(cursor.getColumnIndexOrThrow("frequency_id"));
         int itemCount = cursor.getInt(cursor.getColumnIndexOrThrow("item_count"));
         boolean newItem = cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0;
-        view.setTag(String.valueOf(_id));
+        view.setTag(String.valueOf(_id)); // se utiliza el tag de view para almacenar el id de la búsqueda
         tvWords.setText(words);
         String details1 = String.format(Locale.US, "Sitio: %s | Frequencia: %s", siteId, frequencyId);
         String details2 = String.format(Locale.US, "Cantidad: %d", itemCount);
         tvDetails1.setText(details1);
         tvDetails2.setText(details2);
-        ivBell.setVisibility(newItem ? View.VISIBLE : View.GONE);
+        ivBell.setVisibility(newItem ? View.VISIBLE : View.GONE); // se activa la campanita si dentro hay un artículo nuevo
     }
 
 }

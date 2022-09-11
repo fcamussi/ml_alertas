@@ -38,6 +38,11 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Clase SearchesActivity
+ *
+ * @author Fernando Camussi
+ */
 public class SearchesActivity extends AppCompatActivity {
 
     SharedPreferences preferences;
@@ -97,7 +102,7 @@ public class SearchesActivity extends AppCompatActivity {
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                showItems(Integer.parseInt(view.getTag().toString()));
+                showItems(Integer.parseInt(view.getTag().toString())); // se obtiene el id de la búsqueda del tag del view
             }
         });
 
@@ -110,7 +115,7 @@ public class SearchesActivity extends AppCompatActivity {
                 alertDialogBuilder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        int searchId = Integer.parseInt(view.getTag().toString());
+                        int searchId = Integer.parseInt(view.getTag().toString()); // se obtiene el id de la búsqueda del tag del view
                         setDeletedSearch(searchId);
                         dialogInterface.dismiss();
                     }
@@ -199,7 +204,7 @@ public class SearchesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (pb.getVisibility() == View.GONE) {
+        if (pb.getVisibility() == View.GONE) { // si la barra de progreso no está visible...
             cursor = dataBase.getCursorForAdapterSearch();
             adapter.changeCursor(cursor);
         }
@@ -222,7 +227,7 @@ public class SearchesActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_searches_add_search:
-                if (pb.getVisibility() == View.VISIBLE) {
+                if (pb.getVisibility() == View.VISIBLE) { // si la barra de progreso está visible...
                     Toast.makeText(getBaseContext(), "Espere...", Toast.LENGTH_SHORT).show();
                 } else {
                     if (actionMenuItemView == null) {
@@ -309,7 +314,7 @@ public class SearchesActivity extends AppCompatActivity {
         dataBase.beginTransaction();
         try {
             Search search = dataBase.getSearch(searchId);
-            search.setDeleted(true);
+            search.setDeleted(true); /* se marca como borrada, SearcherWorker se encarga de borrarla */
             dataBase.updateSearch(search);
             dataBase.setTransactionSuccessful();
         } finally {

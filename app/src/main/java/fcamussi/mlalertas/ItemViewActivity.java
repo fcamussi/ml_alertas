@@ -23,6 +23,11 @@ import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Clase ItemViewActivity
+ *
+ * @author Fernando Camussi
+ */
 public class ItemViewActivity extends AppCompatActivity {
 
     private Button btnOpenInML;
@@ -50,7 +55,7 @@ public class ItemViewActivity extends AppCompatActivity {
         btnOpenInML = findViewById(R.id.item_view_btn_open_in_ml);
         tvTitle.setText(item.getTitle());
         byte[] thumbnail = item.getThumbnail();
-        if (thumbnail != null) {
+        if (thumbnail != null) { // muestro la imagen
             Bitmap thumbnailBitmap = BitmapFactory.decodeByteArray(thumbnail, 0, thumbnail.length);
             ivThumbnail.setImageBitmap(thumbnailBitmap);
         }

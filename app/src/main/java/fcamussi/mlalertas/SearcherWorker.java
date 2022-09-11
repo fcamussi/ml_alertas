@@ -23,6 +23,12 @@ import java.util.UUID;
 
 import mlsearcher.MLSearcher;
 
+/**
+ * Clase SearcherWorker para realizar las búsquedas de forma periódica y notificar
+ * mediante una notificación push si se encuentra un artículo nuevo
+ *
+ * @author Fernando Camussi
+ */
 public class SearcherWorker extends Worker {
 
     final static String CHANNEL_ID = UUID.randomUUID().toString();
@@ -55,9 +61,9 @@ public class SearcherWorker extends Worker {
                 try {
                     mlSearcher.searchItems();
                 } catch (Exception e) {
-                    continue;
+                    continue; // si falla por cualquier motivo continúa con la siguiente
                 }
-                List<Item> foundItems = new ArrayList<>();
+                List<Item> foundItems = new ArrayList<>(); /* para cargar los items de la búsqueda */
                 for (Map<String, String> item : mlSearcher.getFoundItems()) {
                     foundItems.add(new Item(item));
                 }
@@ -67,7 +73,7 @@ public class SearcherWorker extends Worker {
                     List<Item> itemList = dataBase.addNewItemsAndRemoveOldItems(search.getId(),
                             foundItems,
                             true);
-                    if (itemList.size() > 0) {
+                    if (itemList.size() > 0) { // hay nuevos
                         search.setNewItem(true);
                         newItemList.addAll(itemList);
                     }

@@ -13,6 +13,11 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
+/**
+ * Clase ItemCursorAdapter
+ *
+ * @author Fernando Camussi
+ */
 public class ItemCursorAdapter extends CursorAdapter {
 
     TextView tvTitle;
@@ -44,15 +49,15 @@ public class ItemCursorAdapter extends CursorAdapter {
         String state = cursor.getString(cursor.getColumnIndexOrThrow("state"));
         byte[] thumbnail = cursor.getBlob(cursor.getColumnIndexOrThrow("thumbnail"));
         boolean newItem = cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0;
-        view.setTag(_id);
-        if (thumbnail != null) {
+        view.setTag(_id); // se utiliza el tag de view para almacenar el id del artículo
+        if (thumbnail != null) { // se muestra la imagen
             Bitmap thumbnailBitmap = BitmapFactory.decodeByteArray(thumbnail, 0, thumbnail.length);
             ivThumbnail.setImageBitmap(thumbnailBitmap);
         }
         tvTitle.setText(title);
         tvDetails1.setText(String.format(Locale.US, "%s, %s", city, state));
         tvDetails2.setText(String.format(Locale.US, "%s %,.2f", currency, price));
-        ivBell.setVisibility(newItem ? View.VISIBLE : View.GONE);
+        ivBell.setVisibility(newItem ? View.VISIBLE : View.GONE); // se activa la campanita si es un artículo nuevo
     }
 
 }
