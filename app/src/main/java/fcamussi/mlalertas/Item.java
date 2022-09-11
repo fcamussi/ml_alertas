@@ -3,7 +3,7 @@ package fcamussi.mlalertas;
 import java.util.Map;
 
 /**
- * Clase para almacenar artículo
+ * Clase Item
  *
  * @author Fernando Camussi
  */

@@ -17,6 +17,11 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Clase AddSearchActivity
+ *
+ * @author Fernando Camussi
+ */
 public class AddSearchActivity extends AppCompatActivity {
 
     EditText etWords;

@@ -8,6 +8,11 @@ import android.widget.CheckBox;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * Clase ConfigurationActivity
+ *
+ * @author Fernando Camussi
+ */
 public class ConfigurationActivity extends AppCompatActivity {
 
     CheckBox cbWifi;

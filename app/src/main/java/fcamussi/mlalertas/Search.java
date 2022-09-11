@@ -3,7 +3,7 @@ package fcamussi.mlalertas;
 import java.util.List;
 
 /**
- * Clase para almacenar búsqueda
+ * Clase Search
  *
  * @author Fernando Camussi
  */

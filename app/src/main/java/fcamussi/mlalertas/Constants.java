@@ -1,5 +1,10 @@
 package fcamussi.mlalertas;
 
+/**
+ * Clase Constants
+ *
+ * @author Fernando Camussi
+ */
 public class Constants {
     public final static String AGENT = "ML Alertas (Android)";
     public final static int SEARCHER_FREQUENCY_MINUTES = 15;

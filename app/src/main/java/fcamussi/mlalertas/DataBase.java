@@ -10,12 +10,17 @@ import java.util.List;
 
 import mlsearcher.MLSearcher;
 
+/**
+ * Clase DataBase
+ *
+ * @author Fernando Camussi
+ */
 public class DataBase {
 
     private static SQLiteDatabase db = null;
 
     public DataBase(Context context) {
-        if (db == null) {
+        if (db == null) { // para crear una sola instancia
             AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(context, "DB", null, 1);
             db = admin.getWritableDatabase();
         }

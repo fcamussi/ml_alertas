@@ -1,5 +1,10 @@
 package fcamussi.mlalertas;
 
+/**
+ * Clase Frequency
+ *
+ * @author Fernando Camussi
+ */
 public class Frequency {
 
     private String id;
