@@ -39,12 +39,12 @@ public class Url {
         }
         urlConn.setRequestProperty("Accept", ""); // para que ML retorne el JSON de forma raw
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConn.getInputStream()));
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuilder = new StringBuilder();
         String line;
         while ((line = bufferedReader.readLine()) != null) {
-            stringBuffer.append(line);
+            stringBuilder.append(line);
         }
-        return stringBuffer.toString();
+        return stringBuilder.toString();
     }
 
 }

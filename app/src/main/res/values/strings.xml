@@ -8,7 +8,7 @@
     <string name="title">Title</string>
     <string name="details1">Details one</string>
     <string name="details2">Details two</string>
-    <string name="open_in_mercado_libre">Open in Mercado Libre</string>
+    <string name="view_on_mercado_libre">View on Mercado Libre</string>
     <string name="save">Save</string>
     <string name="wifi">Don\'t search in background if it\'s not connected to a Wi-Fi network</string>
     <string name="battery_not_low">Don\'t search in background if the battery is low</string>

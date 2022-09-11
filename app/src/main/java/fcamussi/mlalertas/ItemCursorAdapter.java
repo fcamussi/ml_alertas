@@ -11,8 +11,6 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.Locale;
-
 /**
  * Clase ItemCursorAdapter
  *

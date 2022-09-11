@@ -66,7 +66,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:onClick="onClickBtnOpenInML"
-            android:text="@string/open_in_mercado_libre"
+            android:text="@string/view_on_mercado_libre"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

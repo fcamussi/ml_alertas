@@ -130,8 +130,7 @@ public class MLSearcher {
         url.setAgent(agent);
         String content = url.getContent(buildURLStr(0));
         JSONObject jsonObj = new JSONObject(content);
-        int total = jsonObj.getJSONObject("paging").getInt("total");
-        return total;
+        return jsonObj.getJSONObject("paging").getInt("total");
     }
 
     /**
