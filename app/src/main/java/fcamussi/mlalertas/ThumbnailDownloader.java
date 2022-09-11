@@ -56,7 +56,7 @@ public class ThumbnailDownloader {
                 } catch (IOException e) {
                     item.setThumbnail(null);
                 }
-                return null;
+                return null; // porque el callable espera un tipo Void
             });
         }
         try {
