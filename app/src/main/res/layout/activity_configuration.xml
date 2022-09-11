@@ -34,7 +34,8 @@
             android:text="No hacer búsquedas en segundo plando si no se está conectado a una red Wi-Fi"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <CheckBox
             android:id="@+id/configuration_cb_battery_not_low"
@@ -46,7 +47,8 @@
             android:text="No hacer búsquedas en segundo plano si la batería está baja"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/configuration_cb_wifi" />
+            app:layout_constraintTop_toBottomOf="@+id/configuration_cb_wifi"
+            tools:ignore="TouchTargetSizeCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
