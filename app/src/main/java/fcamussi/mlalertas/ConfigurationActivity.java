@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ public class ConfigurationActivity extends AppCompatActivity {
 
     CheckBox cbWifi;
     CheckBox cbBatteryNotLow;
+    Button btnSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,9 @@ public class ConfigurationActivity extends AppCompatActivity {
 
         cbWifi = findViewById(R.id.configuration_cb_wifi);
         cbBatteryNotLow = findViewById(R.id.configuration_cb_battery_not_low);
+        btnSave = findViewById(R.id.configuration_btn_save);
+
+        btnSave.setOnClickListener(this::onClickBtnSave);
 
         boolean wifi = getIntent().getBooleanExtra("wifi", true);
         boolean batteryNotLow = getIntent().getBooleanExtra("battery_not_low", true);

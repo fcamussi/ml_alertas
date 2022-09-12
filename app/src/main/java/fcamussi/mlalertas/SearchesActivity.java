@@ -45,6 +45,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class SearchesActivity extends AppCompatActivity {
 
+    private static UUID addSearchWorkerId;
     SharedPreferences preferences;
     boolean wifi;
     boolean batteryNotLow;
@@ -59,7 +60,6 @@ public class SearchesActivity extends AppCompatActivity {
     private BroadcastReceiver brAddSearchConnectionFailed;
     private BroadcastReceiver brAddSearchMaxResultCountExceeded;
     private BroadcastReceiver brCursorRefresh;
-    private static UUID addSearchWorkerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -169,7 +169,7 @@ public class SearchesActivity extends AppCompatActivity {
         preferences = getSharedPreferences("searches_activity", Context.MODE_PRIVATE);
         wifi = preferences.getBoolean("wifi", false);
         batteryNotLow = preferences.getBoolean("battery_not_low", true);
-        enqueueSearcherWorker(wifi, batteryNotLow, false); // replace=true para reemplazar el SearchWorker
+        enqueueSearcherWorker(wifi, batteryNotLow, true); // replace=true para reemplazar el SearchWorker
     }
 
     @Override
@@ -226,7 +226,7 @@ public class SearchesActivity extends AppCompatActivity {
         PeriodicWorkRequest workRequest = new PeriodicWorkRequest.Builder(SearcherWorker.class,
                 Constants.SEARCHER_FREQUENCY_MINUTES, TimeUnit.MINUTES)
                 .setConstraints(constraints)
-                .setInitialDelay(Constants.SEARCHER_FREQUENCY_MINUTES, TimeUnit.MINUTES)
+                //.setInitialDelay(Constants.SEARCHER_FREQUENCY_MINUTES, TimeUnit.MINUTES)
                 .build();
         WorkManager.getInstance(this).enqueueUniquePeriodicWork("PeriodicSearchWorker",
                 replace ? ExistingPeriodicWorkPolicy.REPLACE : ExistingPeriodicWorkPolicy.KEEP, workRequest);

@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
@@ -31,6 +32,7 @@ public class AddSearchActivity extends AppCompatActivity {
     Spinner spinnerFrequency;
     ImageView ivWordsInfo;
     ImageView ivFrequencyInfo;
+    Button btnAdd;
     SharedPreferences preferences;
 
     @Override
@@ -47,6 +49,7 @@ public class AddSearchActivity extends AppCompatActivity {
         spinnerFrequency = findViewById(R.id.add_search_sp_frequency);
         ivWordsInfo = findViewById(R.id.add_search_iv_words_info);
         ivFrequencyInfo = findViewById(R.id.add_search_iv_frequency_info);
+        btnAdd = findViewById(R.id.add_search_btn_add);
 
         /* Site adapter */
         Cursor cursorSite = dataBase.getCursorForAdapterSite();
@@ -84,10 +87,12 @@ public class AddSearchActivity extends AppCompatActivity {
             dialog.show();
         });
 
+        btnAdd.setOnClickListener(this::onClickBtnAdd);
+
         preferences = getSharedPreferences("add_search_activity", Context.MODE_PRIVATE);
         String words = preferences.getString("words", "");
         int spinnerSiteIndex = preferences.getInt("spinner_site_index", 0);
-        int spinnerFrequencyIndex = preferences.getInt("spinner_frequency_index", spinnerFrequency.getCount()-1);
+        int spinnerFrequencyIndex = preferences.getInt("spinner_frequency_index", spinnerFrequency.getCount() - 1);
         etWords.setText(words);
         spinnerSite.setSelection(spinnerSiteIndex);
         spinnerFrequency.setSelection(spinnerFrequencyIndex);

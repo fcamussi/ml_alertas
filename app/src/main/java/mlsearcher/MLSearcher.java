@@ -85,7 +85,7 @@ public class MLSearcher {
     }
 
     /**
-     * Setea si se hace un filtrado para que las palabras estén contenidas dentro del título
+     * Setea si se hace un filtrado para que las palabras estén contenidas dentro del título + marca + modelo
      *
      * @param filtered true para filtrar, false para no filtrar
      *                 Por defecto es true
@@ -177,30 +177,48 @@ public class MLSearcher {
 
     /* Métodos privados */
 
-    private void addItems(JSONArray jsonArr) throws Exception {
-        for (int c = 0; c < jsonArr.length(); c++) {
-            String id = jsonArr.getJSONObject(c).get("id").toString();
-            String title = jsonArr.getJSONObject(c).get("title").toString();
-            String price = jsonArr.getJSONObject(c).get("price").toString();
-            String currency = jsonArr.getJSONObject(c).get("currency_id").toString();
-            String permalink = jsonArr.getJSONObject(c).get("permalink").toString();
-            String thumbnailLink = jsonArr.getJSONObject(c).get("thumbnail").toString();
-            String city = jsonArr.getJSONObject(c).getJSONObject("address").get("city_name").toString();
-            String state = jsonArr.getJSONObject(c).getJSONObject("address").get("state_name").toString();
+    private void addItems(JSONArray results) throws Exception {
+        for (int c = 0; c < results.length(); c++) {
+            JSONObject jsonObj = results.getJSONObject(c);
+            String id = jsonObj.get("id").toString();
+            String title = jsonObj.get("title").toString();
+            String brand = "";
+            String model = "";
+            JSONArray attributes = jsonObj.getJSONArray("attributes");
+            for (int d = 0; d < attributes.length(); d++) {
+                JSONObject jsonObj2 = attributes.getJSONObject(d);
+                if (jsonObj2.get("id").toString().equals("BRAND")) {
+                    brand = jsonObj2.get("value_name").toString();
+                }
+                if (jsonObj2.get("id").toString().equals("MODEL")) {
+                    model = jsonObj2.get("value_name").toString();
+                }
+            }
+            String price = jsonObj.get("price").toString();
+            String currency = jsonObj.get("currency_id").toString();
+            String permalink = jsonObj.get("permalink").toString();
+            String thumbnailLink = jsonObj.get("thumbnail").toString();
+            String city = jsonObj.getJSONObject("address").get("city_name").toString();
+            String state = jsonObj.getJSONObject("address").get("state_name").toString();
+
             Map<String, String> item = new HashMap<>();
             item.put("id", id);
             item.put("title", title);
+            item.put("brand", brand);
+            item.put("model", model);
             item.put("price", price);
             item.put("currency", currency);
             item.put("permalink", permalink);
             item.put("thumbnail_link", thumbnailLink);
             item.put("city", city);
             item.put("state", state);
-            if (filtered) { /* Chequea que cada palabra esté contenida en el título del artículo */
+
+            if (filtered) { /* Chequea que cada palabra esté contenida en el título + marca + modelo del artículo */
                 boolean match = true;
-                title = title.toLowerCase();
+                String data = title + " " + brand + " " + model;
+                data = data.toLowerCase();
                 for (String word : wordList) {
-                    if (!title.contains(word)) {
+                    if (!data.contains(word)) {
                         match = false;
                         break;
                     }

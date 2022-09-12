@@ -13,6 +13,8 @@ public class Item {
     private String id;
     private int searchId;
     private String title;
+    private String brand;
+    private String model;
     private double price;
     private String currency;
     private String permalink;
@@ -36,11 +38,14 @@ public class Item {
     public Item(Map<String, String> item) {
         id = item.get("id");
         title = item.get("title");
+        brand = item.get("brand");
+        model = item.get("model");
         price = Double.parseDouble(Objects.requireNonNull(item.get("price")));
         currency = item.get("currency");
         permalink = item.get("permalink");
         /* si empieza con http:// reemplazo por https:// */
-        thumbnailLink = item.get("thumbnail_link").replaceFirst("(?i)^http://", "https://");
+        thumbnailLink = Objects.requireNonNull(item.get("thumbnail_link"))
+                .replaceFirst("(?i)^http://", "https://");
         state = item.get("state");
         city = item.get("city");
     }
@@ -67,6 +72,22 @@ public class Item {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public double getPrice() {

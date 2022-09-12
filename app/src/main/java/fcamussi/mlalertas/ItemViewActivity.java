@@ -31,7 +31,7 @@ import java.util.concurrent.Executors;
  */
 public class ItemViewActivity extends AppCompatActivity {
 
-    private Button btnOpenInML;
+    private Button btnViewOnML;
     private String permalink;
     private String thumbnailLink;
     private Bitmap thumbnailBitmap;
@@ -53,17 +53,27 @@ public class ItemViewActivity extends AppCompatActivity {
         ImageView ivThumbnail = findViewById(R.id.item_view_iv_thumbnail);
         TextView tvDetails1 = findViewById(R.id.item_view_tv_details1);
         TextView tvDetails2 = findViewById(R.id.item_view_tv_details2);
-        btnOpenInML = findViewById(R.id.item_view_btn_open_in_ml);
+        TextView tvDetails3 = findViewById(R.id.item_view_tv_details3);
+        btnViewOnML = findViewById(R.id.item_view_btn_view_on_ml);
         tvTitle.setText(item.getTitle());
         byte[] thumbnail = item.getThumbnail();
         if (thumbnail != null) { // muestro la imagen
             Bitmap thumbnailBitmap = BitmapFactory.decodeByteArray(thumbnail, 0, thumbnail.length);
             ivThumbnail.setImageBitmap(thumbnailBitmap);
         }
-        String detail1 = String.format("%s, %s", item.getCity(), item.getState());
-        @SuppressLint("DefaultLocale") String detail2 = String.format("%s %,.2f", item.getCurrency(), item.getPrice());
+        String detail1 = "";
+        if (!item.getBrand().isEmpty()) {
+            detail1 += String.format("%s: %s", getString(R.string.brand), item.getBrand());
+        }
+        if (!item.getModel().isEmpty()) {
+            if (!detail1.isEmpty()) detail1 += " | ";
+            detail1 += String.format("%s: %s", getString(R.string.model), item.getModel());
+        }
+        String detail2 = String.format("%s, %s", item.getCity(), item.getState());
+        @SuppressLint("DefaultLocale") String detail3 = String.format("%s %,.2f", item.getCurrency(), item.getPrice());
         tvDetails1.setText(detail1);
         tvDetails2.setText(detail2);
+        tvDetails3.setText(detail3);
         permalink = item.getPermalink();
         /* descargo y muestro una imagen thumbnail de mejor calidad */
         thumbnailLink = item.getThumbnailLink();
@@ -87,7 +97,9 @@ public class ItemViewActivity extends AppCompatActivity {
 
         openInMLLauncher = registerForActivityResult(  // para evitar multiples clicks
                 new ActivityResultContracts.StartActivityForResult(),
-                result -> btnOpenInML.setEnabled(true));
+                result -> btnViewOnML.setEnabled(true));
+
+        btnViewOnML.setOnClickListener(this::onClickBtnOpenInML);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -99,7 +111,7 @@ public class ItemViewActivity extends AppCompatActivity {
     }
 
     public void onClickBtnOpenInML(View view) {
-        btnOpenInML.setEnabled(false); // para evitar multiples clicks
+        btnViewOnML.setEnabled(false); // para evitar multiples clicks
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(permalink));
         openInMLLauncher.launch(intent);
     }

@@ -31,6 +31,8 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
                 "item_id TEXT," +
                 "search_id INTEGER," +
                 "title TEXT," +
+                "brand TEXT," +
+                "model TEXT," +
                 "price REAL," +
                 "currency TEXT," +
                 "permalink TEXT," +
@@ -69,8 +71,6 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE frequencies(" +
                 "frequency_id TEXT PRIMARY KEY," +
                 "minutes INTEGER)");
-        db.execSQL("INSERT INTO frequencies(frequency_id,minutes) VALUES('15M',15)");
-        db.execSQL("INSERT INTO frequencies(frequency_id,minutes) VALUES('30M',30)");
         db.execSQL("INSERT INTO frequencies(frequency_id,minutes) VALUES('1H',60)");
         db.execSQL("INSERT INTO frequencies(frequency_id,minutes) VALUES('2H',120)");
         db.execSQL("INSERT INTO frequencies(frequency_id,minutes) VALUES('4H',240)");

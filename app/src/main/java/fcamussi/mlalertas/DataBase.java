@@ -164,6 +164,8 @@ public class DataBase {
             register.put("item_id", item.getId());
             register.put("search_id", searchId);
             register.put("title", item.getTitle());
+            register.put("brand", item.getBrand());
+            register.put("model", item.getModel());
             register.put("price", item.getPrice());
             register.put("currency", item.getCurrency());
             register.put("permalink", item.getPermalink());
@@ -213,6 +215,8 @@ public class DataBase {
         register.put("item_id", item.getId());
         register.put("search_id", item.getSearchId());
         register.put("title", item.getTitle());
+        register.put("brand", item.getBrand());
+        register.put("model", item.getModel());
         register.put("price", item.getPrice());
         register.put("currency", item.getCurrency());
         register.put("permalink", item.getPermalink());
@@ -318,6 +322,8 @@ public class DataBase {
         item.setId(cursor.getString(cursor.getColumnIndexOrThrow("item_id")));
         item.setSearchId(cursor.getInt(cursor.getColumnIndexOrThrow("search_id")));
         item.setTitle(cursor.getString(cursor.getColumnIndexOrThrow("title")));
+        item.setBrand(cursor.getString(cursor.getColumnIndexOrThrow("brand")));
+        item.setModel(cursor.getString(cursor.getColumnIndexOrThrow("model")));
         item.setPrice(cursor.getDouble(cursor.getColumnIndexOrThrow("price")));
         item.setCurrency(cursor.getString(cursor.getColumnIndexOrThrow("currency")));
         item.setPermalink(cursor.getString(cursor.getColumnIndexOrThrow("permalink")));
