@@ -187,10 +187,10 @@ public class MLSearcher {
             JSONArray attributes = jsonObj.getJSONArray("attributes");
             for (int d = 0; d < attributes.length(); d++) {
                 JSONObject jsonObj2 = attributes.getJSONObject(d);
-                if (jsonObj2.get("id").toString().equals("BRAND")) {
+                if (jsonObj2.get("id").toString().equals("BRAND") && !jsonObj2.isNull("value_name")) {
                     brand = jsonObj2.get("value_name").toString();
                 }
-                if (jsonObj2.get("id").toString().equals("MODEL")) {
+                if (jsonObj2.get("id").toString().equals("MODEL") && !jsonObj2.isNull("value_name")) {
                     model = jsonObj2.get("value_name").toString();
                 }
             }
