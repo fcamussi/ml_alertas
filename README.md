@@ -18,5 +18,14 @@ Es una aplicación ideal para coleccionistas que buscan artículos dificil de en
 
 ![screenshot5](https://user-images.githubusercontent.com/75378876/189466360-9a4642c5-c8f2-494a-8c6b-ea33601046d5.png)
 
+## Características
+
+- Elección de país para cada búsqueda
+- Intervalos de tiempo configurable para cada búsqueda
+- Notficación push cuando se encuentra un nuevo artículo
+- Opción de no buscar en segundo plano si no se está conectado a una red Wi-Fi
+- Opción de no buscar si la batería está baja
+- Multilenguaje: Inglés, Español, Portugués
+
 ## Requisitos para la compilación
 - Android Studio
