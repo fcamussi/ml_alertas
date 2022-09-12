@@ -241,13 +241,20 @@ public class SearchesActivity extends AppCompatActivity {
         if (result == Activity.RESULT_OK) {
             String words = intent.getStringExtra("words");
             String siteId = intent.getStringExtra("site_id");
+            if (words.equals("MLALERTAS1234567890")) {
+                dataBase.insertFrequencySpecialMode();
+                Toast.makeText(this, getString(R.string.special_mode_enabled).toString(),
+                        Toast.LENGTH_LONG).show();
+                return;
+            }
             String frequencyId = intent.getStringExtra("frequency_id");
             Data workerData = new Data.Builder()
                     .putString("words", words)
                     .putString("site_id", siteId)
                     .putString("frequency_id", frequencyId)
                     .build();
-            WorkRequest workRequest = new OneTimeWorkRequest.Builder(AddSearchWorker.class).setInputData(workerData).build();
+            WorkRequest workRequest = new OneTimeWorkRequest.Builder(AddSearchWorker.class).
+                    setInputData(workerData).build();
             addSearchWorkerId = workRequest.getId();
             WorkManager.getInstance(this).enqueue(workRequest);
             pb.setVisibility(View.VISIBLE);

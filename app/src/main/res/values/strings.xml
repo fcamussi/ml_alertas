@@ -34,4 +34,5 @@
     <string name="connection_failed">The connection with Mercado Libre failed.</string>
     <string name="search_produces_too_many_results">This search produces too many results. Please try to be more specific.</string>
     <string name="quantity_">Quantity:</string>
+    <string name="special_mode_enabled">Special mode enabled</string>
 </resources>

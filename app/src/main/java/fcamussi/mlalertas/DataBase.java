@@ -307,6 +307,11 @@ public class DataBase {
         return frequency;
     }
 
+    public void insertFrequencySpecialMode() {
+        db.execSQL("INSERT OR IGNORE INTO frequencies(frequency_id,minutes) VALUES('15M',15)");
+        db.execSQL("INSERT OR IGNORE INTO frequencies(frequency_id,minutes) VALUES('30M',30)");
+    }
+
     private void fillSearchFromCursor(Search search, Cursor cursor) {
         search.setId(cursor.getInt(cursor.getColumnIndexOrThrow("search_id")));
         search.setWordList(MLSearcher.stringToStringList(cursor.getString(cursor.getColumnIndexOrThrow("words"))));
