@@ -243,7 +243,7 @@ public class SearchesActivity extends AppCompatActivity {
             String siteId = intent.getStringExtra("site_id");
             if (words.equals("MLALERTAS1234567890")) {
                 dataBase.insertFrequencySpecialMode();
-                Toast.makeText(this, getString(R.string.special_mode_enabled).toString(),
+                Toast.makeText(this, getString(R.string.special_mode_enabled),
                         Toast.LENGTH_LONG).show();
                 return;
             }
