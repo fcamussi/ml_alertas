@@ -20,7 +20,7 @@ Es una aplicación ideal para coleccionistas que buscan artículos dificil de en
 
 ## Características
 
-- Elección de país para cada búsqueda
+- Opción de país para cada búsqueda
 - Intervalos de tiempo configurable para cada búsqueda
 - Notficación push cuando se encuentra un nuevo artículo
 - Opción de no buscar en segundo plano si no se está conectado a una red Wi-Fi
