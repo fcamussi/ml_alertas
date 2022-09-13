@@ -33,6 +33,7 @@ import mlsearcher.MLSearcher;
 public class SearcherWorker extends Worker {
 
     final static String CHANNEL_ID = UUID.randomUUID().toString();
+    final static String CHANNEL_NAME = "channel_notification";
     final static int NOTIFICATION_ID = 1;
 
     public SearcherWorker(Context context, WorkerParameters params) {
@@ -146,9 +147,8 @@ public class SearcherWorker extends Worker {
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getApplicationContext().getString(R.string.channel_notification);
             int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
             NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
