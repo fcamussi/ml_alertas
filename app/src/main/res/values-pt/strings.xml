@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ML Alertas</string>
+    <string name="bell">Sino</string>
+    <string name="thumbnail">Miniatura</string>
+    <string name="brand">Marca</string>
+    <string name="model">Modelo</string>
+    <string name="view_on_mercado_libre">Veja no Mercado Livre</string>
+    <string name="save">Salvar</string>
+    <string name="wifi">Não pesquise em segundo plano se não estiver conectado a uma rede Wi-Fi</string>
+    <string name="battery_not_low">Não pesquise em segundo plano se a bateria estiver fraca</string>
+    <string name="add">Adicionar</string>
+    <string name="site">Local</string>
+    <string name="site_">Local:</string>
+    <string name="frequency">Frequência</string>
+    <string name="frequency_">Frequência:</string>
+    <string name="words_to_search">Palavras para pesquisar</string>
+    <string name="information">informação</string>
+    <string name="add_search">Adicionar pesquisa</string>
+    <string name="uncheck_notifications">Desmarque notificações</string>
+    <string name="configuration">Configuração</string>
+    <string name="frequency_information">Tenha em mente que uma frequência baixa consome mais dados e bateria.</string>
+    <string name="words_information">Use palavras-chave. Por exemplo, se você estiver procurando por uma TV marca Panaphonic modelo HS-123, você pode digitar as palavras:\nPanaphonic HS\nOu para ser mais específico:\nPanaphonic HS 123</string>
+    <string name="must_enter_least_one_word">Você deve digitar pelo menos uma palavra</string>
+    <string name="search_added">Pesquisa adicionada</string>
+    <string name="wait_">Esperar…</string>
+    <string name="configuration_saved">Configuração salva</string>
+    <string name="search_deleted">Pesquisa excluída</string>
+    <string name="notifications_unchecked">Notificações desmarcadas</string>
+    <string name="want_delete_search">Deseja excluir a pesquisa?</string>
+    <string name="ok">Aceitar</string>
+    <string name="no">Não</string>
+    <string name="yes">Sim</string>
+    <string name="connection_failed">A conexão com o Mercado Livre falhou.</string>
+    <string name="search_produces_too_many_results">Esta pesquisa produz muitos resultados. Por favor, tente ser mais específico.</string>
+    <string name="quantity_">Quantidade:</string>
+    <string name="special_mode_enabled">Modo especial ativado</string>
+</resources>
