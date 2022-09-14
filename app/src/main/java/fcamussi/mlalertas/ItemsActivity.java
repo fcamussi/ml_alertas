@@ -36,8 +36,8 @@ public class ItemsActivity extends AppCompatActivity {
         cursor = dataBase.getCursorForAdapterItem(searchId);
         adapter = new ItemCursorAdapter(this, cursor);
         lv.setAdapter(adapter);
-        Search search = dataBase.getSearch(searchId);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(MLSearcher.stringListToString(search.getWordList()));
+        String title = MLSearcher.stringListToString(dataBase.getSearch(searchId).getWordList());
+        Objects.requireNonNull(getSupportActionBar()).setTitle(title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -55,9 +55,9 @@ public class ItemsActivity extends AppCompatActivity {
                     item.setNewItem(false);
                     dataBase.updateItem(item);
                     if (dataBase.getNewItemCount(item.getSearchId()) == 0) {
-                        Search search1 = dataBase.getSearch(item.getSearchId());
-                        search1.setNewItem(false);
-                        dataBase.updateSearch(search1);
+                        Search search = dataBase.getSearch(item.getSearchId());
+                        search.setNewItem(false);
+                        dataBase.updateSearch(search);
                     }
                 }
                 dataBase.setTransactionSuccessful();

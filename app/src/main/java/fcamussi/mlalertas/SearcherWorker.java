@@ -80,6 +80,10 @@ public class SearcherWorker extends Worker {
                     if (itemList.size() > 0) { // hay nuevos
                         search.setNewItem(true);
                         newItemList.addAll(itemList);
+                    } else { // puede que haya desaparecido uno marcado como nuevo
+                        if (dataBase.getNewItemCount(search.getId()) <=  0) {
+                            search.setNewItem(false);
+                        }
                     }
                     search.setItemCount(dataBase.getItemCount(search.getId()));
                     search.setMinutesCountdown(frequency.getMinutes()); // se resetea el countdown
