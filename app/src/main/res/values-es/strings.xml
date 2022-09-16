@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">ML Alertas</string>
+    <string name="new_item_notification">Notificación de artículo nuevo</string>
     <string name="bell">Campana</string>
     <string name="thumbnail">Miniatura</string>
     <string name="brand">Marca</string>
@@ -35,4 +36,7 @@
     <string name="search_produces_too_many_results">Ésta búsqueda produce demasiados resultados. Por favor, intente ser más específico.</string>
     <string name="quantity_">Cantidad:</string>
     <string name="special_mode_enabled">Modo especial activado</string>
+    <string name="new_item_published">¡Nuevo artículo publicado!</string>
+    <string name="new_items_published">¡Nuevos artículos publicados!</string>
+    <string name="there_are_X_new_items">Hay %d artículos nuevos</string>
 </resources>

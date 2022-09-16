@@ -1,17 +1,11 @@
 package fcamussi.mlalertas;
 
 import android.annotation.SuppressLint;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
+import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -20,7 +14,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import mlsearcher.MLSearcher;
 
@@ -32,20 +25,21 @@ import mlsearcher.MLSearcher;
  */
 public class SearcherWorker extends Worker {
 
-    final static String CHANNEL_ID = UUID.randomUUID().toString();
-    final static String CHANNEL_NAME = "channel_notification";
-    final static int NOTIFICATION_ID = 1;
+    Context context;
 
     public SearcherWorker(Context context, WorkerParameters params) {
         super(context, params);
-        createNotificationChannel();
+        this.context = context;
     }
 
     @SuppressLint("DefaultLocale")
     @NonNull
     @Override
     public Result doWork() {
-        DataBase dataBase = new DataBase(getApplicationContext());
+        DataBase dataBase = new DataBase(context);
+        Notification notification = new Notification(context,
+                "NIN",
+                context.getString(R.string.new_item_notification));
         MLSearcher mlSearcher = new MLSearcher();
         List<Item> newItemList = new ArrayList<>();
 
@@ -81,7 +75,7 @@ public class SearcherWorker extends Worker {
                         search.setNewItem(true);
                         newItemList.addAll(itemList);
                     } else { // puede que haya desaparecido uno marcado como nuevo
-                        if (dataBase.getNewItemCount(search.getId()) <=  0) {
+                        if (dataBase.getNewItemCount(search.getId()) <= 0) {
                             search.setNewItem(false);
                         }
                     }
@@ -110,15 +104,25 @@ public class SearcherWorker extends Worker {
             for (Item item : newItemList) {
                 itemIdSet.add(item.getId());
             }
+            ThumbnailDownloader thumbnailDownloader = new ThumbnailDownloader(context);
+            thumbnailDownloader.download();
+
+            /* incremento el último notificationId y lo guardo en preferencias */
+            SharedPreferences preferences = context.getSharedPreferences("searcher_worker", Context.MODE_PRIVATE);
+            int notificationId = preferences.getInt("notification_id", 0);
+            SharedPreferences.Editor editor = preferences.edit();
+            notificationId++;
+            editor.putInt("notification_id", notificationId);
+            editor.apply();
+
             if (itemIdSet.size() == 1) {
-                sendNotification("¡Nuevo artículo publicado!", newItemList.get(0).getTitle());
+                notification.send(notificationId, context.getString(R.string.new_item_published),
+                        newItemList.get(0).getTitle());
             }
             if (itemIdSet.size() > 1) {
-                sendNotification("¡Nuevos artículos publicados!",
-                        String.format("Hay %d artículos nuevos", itemIdSet.size()));
+                notification.send(notificationId, context.getString(R.string.new_items_published),
+                        String.format(context.getString(R.string.there_are_X_new_items), itemIdSet.size()));
             }
-            ThumbnailDownloader thumbnailDownloader = new ThumbnailDownloader(getApplicationContext());
-            thumbnailDownloader.download();
         }
 
         sendBroadcast();
@@ -127,35 +131,8 @@ public class SearcherWorker extends Worker {
 
     private void sendBroadcast() {
         Intent intent = new Intent(Constants.SEARCHER_FINISHED);
-        intent.setPackage(getApplicationContext().getPackageName()); // para que solo ésta app lo reciba
-        getApplicationContext().sendBroadcast(intent);
-    }
-
-    private void sendNotification(String title, String text) {
-        /* Crea la notificación */
-        Intent intent = new Intent(getApplicationContext(), SearchesActivity.class);
-        TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(getApplicationContext());
-        taskStackBuilder.addNextIntentWithParentStack(intent);
-        PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
-                .setSmallIcon(R.drawable.bell_push_100x100)
-                .setContentTitle(title)
-                .setContentText(text)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true);
-        /* Muestra la notificación */
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(getApplicationContext());
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
-    }
-
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance);
-            NotificationManager notificationManager = getApplicationContext().getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
+        intent.setPackage(context.getPackageName()); // para que solo ésta app lo reciba
+        context.sendBroadcast(intent);
     }
 
 }
