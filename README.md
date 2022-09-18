@@ -10,13 +10,14 @@ Es una aplicación ideal para coleccionistas que buscan artículos dificil de en
 
 ## Capturas
 
-![screenshot1](https://user-images.githubusercontent.com/75378876/189788294-cc9e93dd-8d57-4db5-b755-e168f13190f6.png)
-![screenshot2](https://user-images.githubusercontent.com/75378876/189788301-acef15e3-491f-409c-b49d-d7835eb4c8ce.png)
+![screenshot1](https://user-images.githubusercontent.com/75378876/190887590-30b7168e-6233-4434-9951-dcb017c3deb0.png)
+![screenshot2](https://user-images.githubusercontent.com/75378876/190887591-46fc3e2e-392a-4a43-9d94-ff84e5acc456.png)
 
-![screenshot3](https://user-images.githubusercontent.com/75378876/189788310-1d74c010-7b43-4c54-909e-983426bcd75f.png)
-![screenshot4](https://user-images.githubusercontent.com/75378876/189788336-f6c0b1f7-3112-4ab2-bc3c-1d4d1b57ff89.png)
+![screenshot3](https://user-images.githubusercontent.com/75378876/190887594-e8df084e-b5aa-44b7-8010-ea6da4c3950e.png)
+![screenshot4](https://user-images.githubusercontent.com/75378876/190887595-7f36f374-e3a0-405e-8e78-91429aac1024.png)
 
-![screenshot5](https://user-images.githubusercontent.com/75378876/189788357-82196b2b-e523-4307-a8ac-b48a81c52810.png)
+![screenshot5](https://user-images.githubusercontent.com/75378876/190887596-5c09cb44-d699-44ee-ad29-c350c3d4b3bf.png)
+
 
 ## Características
 
