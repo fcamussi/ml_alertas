@@ -13,6 +13,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:textColorHint="#78909C"
+        android:textSize="15sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/item_item_iv_thumbnail"
@@ -26,6 +27,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:textColorHint="#616161"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/item_item_iv_thumbnail"
         app:layout_constraintTop_toBottomOf="@+id/item_item_tv_title" />
@@ -39,6 +41,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:textColorHint="#616161"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/item_item_iv_bell"
         app:layout_constraintStart_toEndOf="@+id/item_item_iv_thumbnail"
