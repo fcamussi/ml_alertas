@@ -21,7 +21,7 @@
     <string name="uncheck_notifications">Desmarcar notificaciones</string>
     <string name="configuration">Configuración</string>
     <string name="frequency_information">Tenga en cuenta que una frecuencia baja consume más datos y batería.</string>
-    <string name="words_information">Utilice palabras clave. Por ejemplo, si está buscando un TV marca Panaphonic modelo HS-123, puede escribir las palabras:\nPanaphonic HS\nÓ para ser más específico:\nPanaphonic HS 123</string>
+    <string name="words_information">Utilice palabras clave. Por ejemplo, si está buscando un TV marca Panaphonic modelo HS-123, puede escribir las palabras:\nPANAPHONIC HS\nÓ para ser más específico:\nPANAPHONIC HS 123</string>
     <string name="must_enter_least_one_word">Debe ingresar al menos una palabra</string>
     <string name="search_added">Búsqueda agregada</string>
     <string name="wait_">Espere…</string>
