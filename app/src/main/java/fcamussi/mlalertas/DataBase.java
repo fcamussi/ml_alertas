@@ -42,7 +42,8 @@ public class DataBase {
         Cursor cursor;
         cursor = db.rawQuery("SELECT search_id AS _id,words,site_id,frequency_id,item_count,new_item " +
                         "FROM searches " +
-                        "WHERE deleted=0",
+                        "WHERE deleted=0 " +
+                        "ORDER BY updated DESC",
                 null);
         return cursor;
     }
@@ -105,6 +106,7 @@ public class DataBase {
         register.put("minutes_countdown", search.getMinutesCountdown());
         register.put("item_count", search.getItemCount());
         register.put("new_item", search.isNewItem());
+        register.put("updated", search.getUpdated());
         register.put("deleted", search.isDeleted());
         db.update("searches", register, "search_id=" + search.getId(), null);
     }
@@ -320,6 +322,7 @@ public class DataBase {
         search.setMinutesCountdown(cursor.getInt(cursor.getColumnIndexOrThrow("minutes_countdown")));
         search.setItemCount(cursor.getInt(cursor.getColumnIndexOrThrow("item_count")));
         search.setNewItem(cursor.getInt(cursor.getColumnIndexOrThrow("new_item")) > 0);
+        search.setUpdated(cursor.getLong(cursor.getColumnIndexOrThrow("updated")));
         search.setDeleted(cursor.getInt(cursor.getColumnIndexOrThrow("deleted")) > 0);
     }
 

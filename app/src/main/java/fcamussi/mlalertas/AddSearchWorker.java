@@ -8,6 +8,7 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -67,6 +68,7 @@ public class AddSearchWorker extends Worker {
             search = dataBase.addSearch(search);
             dataBase.addNewItemsAndRemoveOldItems(search.getId(), foundItems, false);
             search.setItemCount(dataBase.getItemCount(search.getId()));
+            search.setUpdated(new Date().getTime());
             dataBase.updateSearch(search);
             dataBase.setTransactionSuccessful();
         } finally {

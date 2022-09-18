@@ -16,6 +16,7 @@ public class Search {
     private int minutesCountdown;
     private int itemCount;
     private boolean newItem;
+    private long updated;
     private boolean deleted;
 
     public int getId() {
@@ -72,6 +73,14 @@ public class Search {
 
     public void setNewItem(boolean newItem) {
         this.newItem = newItem;
+    }
+
+    public long getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(long updated) {
+        this.updated = updated;
     }
 
     public boolean isDeleted() {

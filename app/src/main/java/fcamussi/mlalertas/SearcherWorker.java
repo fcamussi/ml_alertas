@@ -10,6 +10,7 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +74,7 @@ public class SearcherWorker extends Worker {
                             true);
                     if (itemList.size() > 0) { // hay nuevos
                         search.setNewItem(true);
+                        search.setUpdated(new Date().getTime());
                         newItemList.addAll(itemList);
                     } else { // puede que haya desaparecido uno marcado como nuevo
                         if (dataBase.getNewItemCount(search.getId()) <= 0) {
