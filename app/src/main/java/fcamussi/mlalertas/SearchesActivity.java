@@ -225,7 +225,7 @@ public class SearchesActivity extends AppCompatActivity {
 
     private void showAddSearch() {
         Intent intent = new Intent(this, AddSearchActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // para evitar multiples clicks
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP); // para evitar multiples clicks
         addSearchLauncher.launch(intent);
     }
 

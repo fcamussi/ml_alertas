@@ -29,7 +29,6 @@ import java.util.concurrent.Executors;
  */
 public class ItemViewActivity extends AppCompatActivity {
 
-    private Button btnViewOnML;
     private String permalink;
     private String thumbnailLink;
     private Bitmap thumbnailBitmap;
@@ -51,7 +50,7 @@ public class ItemViewActivity extends AppCompatActivity {
         TextView tvDetails1 = findViewById(R.id.item_view_tv_details1);
         TextView tvDetails2 = findViewById(R.id.item_view_tv_details2);
         TextView tvDetails3 = findViewById(R.id.item_view_tv_details3);
-        btnViewOnML = findViewById(R.id.item_view_btn_view_on_ml);
+        Button btnViewOnML = findViewById(R.id.item_view_btn_view_on_ml);
         tvTitle.setText(item.getTitle());
         byte[] thumbnail = item.getThumbnail();
         if (thumbnail != null) { // muestro la imagen
