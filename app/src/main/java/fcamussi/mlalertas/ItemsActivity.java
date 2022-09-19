@@ -46,6 +46,7 @@ public class ItemsActivity extends AppCompatActivity {
             Intent intent = new Intent(getBaseContext(), ItemViewActivity.class);
             intent.putExtra("item_id", itemId);
             intent.putExtra("search_id", searchId);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // para evitar multiples clicks
             startActivity(intent);
             /* desmarco notificación del artículo visto */
             dataBase.beginTransaction();

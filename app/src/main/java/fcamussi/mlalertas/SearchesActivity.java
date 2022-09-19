@@ -20,7 +20,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -49,7 +48,6 @@ public class SearchesActivity extends AppCompatActivity {
     SharedPreferences preferences;
     boolean wifi;
     boolean batteryNotLow;
-    ActionMenuItemView actionMenuItemView;
     private ActivityResultLauncher<Intent> addSearchLauncher;
     private ActivityResultLauncher<Intent> configurationLauncher;
     private DataBase dataBase;
@@ -86,9 +84,6 @@ public class SearchesActivity extends AppCompatActivity {
                 result -> {
                     Intent intent = result.getData();
                     resultAddSearch(result.getResultCode(), intent);
-                    if (actionMenuItemView != null) {  // para evitar multiples clicks
-                        actionMenuItemView.setEnabled(true);
-                    }
                 });
 
         configurationLauncher = registerForActivityResult(
@@ -201,10 +196,6 @@ public class SearchesActivity extends AppCompatActivity {
             if (pb.getVisibility() == View.VISIBLE) { // si la barra de progreso está visible...
                 Toast.makeText(getBaseContext(), getString(R.string.wait_), Toast.LENGTH_SHORT).show();
             } else {
-                if (actionMenuItemView == null) {
-                    actionMenuItemView = findViewById(R.id.menu_searches_add_search);
-                }
-                actionMenuItemView.setEnabled(false); // para evitar multiples clicks
                 showAddSearch();
             }
             return true;
@@ -234,6 +225,7 @@ public class SearchesActivity extends AppCompatActivity {
 
     private void showAddSearch() {
         Intent intent = new Intent(this, AddSearchActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // para evitar multiples clicks
         addSearchLauncher.launch(intent);
     }
 
@@ -284,6 +276,7 @@ public class SearchesActivity extends AppCompatActivity {
     private void showItems(int search_id) {
         Intent intent = new Intent(this, ItemsActivity.class);
         intent.putExtra("search_id", search_id);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // para evitar multiples clicks
         startActivity(intent);
     }
 

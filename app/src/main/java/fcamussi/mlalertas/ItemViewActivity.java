@@ -14,8 +14,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.InputStream;
@@ -35,7 +33,6 @@ public class ItemViewActivity extends AppCompatActivity {
     private String permalink;
     private String thumbnailLink;
     private Bitmap thumbnailBitmap;
-    private ActivityResultLauncher<Intent> openInMLLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,11 +91,6 @@ public class ItemViewActivity extends AppCompatActivity {
                 }
             });
         });
-
-        openInMLLauncher = registerForActivityResult(  // para evitar multiples clicks
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> btnViewOnML.setEnabled(true));
-
         btnViewOnML.setOnClickListener(this::onClickBtnOpenInML);
     }
 
@@ -111,9 +103,9 @@ public class ItemViewActivity extends AppCompatActivity {
     }
 
     public void onClickBtnOpenInML(View view) {
-        btnViewOnML.setEnabled(false); // para evitar multiples clicks
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(permalink));
-        openInMLLauncher.launch(intent);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); // para evitar multiples clicks
+        startActivity(intent);
     }
 
 }
