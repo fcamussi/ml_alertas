@@ -298,7 +298,7 @@ public class SearchesActivity extends AppCompatActivity {
     private void unsetNotifications() {
         dataBase.beginTransaction();
         try {
-            List<Search> searchList = dataBase.getAllSearches();
+            List<Search> searchList = dataBase.getAllSearches(false);
             for (Search search : searchList) {
                 search.setNewItem(false);
                 dataBase.updateSearch(search);

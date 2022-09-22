@@ -62,12 +62,12 @@ public class DataBase {
         return search;
     }
 
-    public List<Search> getAllSearches() {
+    public List<Search> getAllSearches(boolean deleted) {
         List<Search> searchList = new ArrayList<>();
         Cursor cursor;
         cursor = db.rawQuery("SELECT * " +
                         "FROM searches " +
-                        "WHERE deleted=0",
+                        "WHERE deleted=" + (deleted ? 1 : 0),
                 null);
         if (cursor.moveToFirst()) {
             do {

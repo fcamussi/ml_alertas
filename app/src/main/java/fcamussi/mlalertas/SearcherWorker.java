@@ -45,7 +45,7 @@ public class SearcherWorker extends Worker {
         List<Item> newItemList = new ArrayList<>();
 
         mlSearcher.setAgent(Constants.AGENT);
-        List<Search> searches = dataBase.getAllSearches();
+        List<Search> searches = dataBase.getAllSearches(true);
         for (Search search : searches) {
             if (search.isDeleted()) { // fue marcado para ser borrado
                 dataBase.deleteSearch(search.getId());
