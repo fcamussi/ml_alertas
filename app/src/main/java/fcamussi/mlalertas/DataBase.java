@@ -67,7 +67,7 @@ public class DataBase {
         Cursor cursor;
         cursor = db.rawQuery("SELECT * " +
                         "FROM searches " +
-                        "WHERE deleted=" + (deleted ? 1 : 0),
+                        (deleted ? "" : "WHERE deleted=0"),
                 null);
         if (cursor.moveToFirst()) {
             do {
