@@ -9,6 +9,8 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -35,6 +37,8 @@ import com.google.common.util.concurrent.ListenableFuture;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -296,21 +300,27 @@ public class SearchesActivity extends AppCompatActivity {
     }
 
     private void unsetNotifications() {
-        dataBase.beginTransaction();
-        try {
-            List<Search> searchList = dataBase.getAllSearches(false);
-            for (Search search : searchList) {
-                search.setNewItem(false);
-                dataBase.updateSearch(search);
-                dataBase.unsetAllNewItem(search.getId());
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Handler handler = new Handler(Looper.getMainLooper());
+        executor.execute(() -> {
+            dataBase.beginTransaction();
+            try {
+                List<Search> searchList = dataBase.getAllSearches(false);
+                for (Search search : searchList) {
+                    search.setNewItem(false);
+                    dataBase.updateSearch(search);
+                    dataBase.unsetAllNewItem(search.getId());
+                }
+                dataBase.setTransactionSuccessful();
+            } finally {
+                dataBase.endTransaction();
             }
-            dataBase.setTransactionSuccessful();
-        } finally {
-            dataBase.endTransaction();
-        }
-        cursor = dataBase.getCursorForAdapterSearch();
-        adapter.changeCursor(cursor);
-        Toast.makeText(this, getString(R.string.notifications_unchecked), Toast.LENGTH_SHORT).show();
+            handler.post(() -> {
+                cursor = dataBase.getCursorForAdapterSearch();
+                adapter.changeCursor(cursor);
+                Toast.makeText(this, getString(R.string.notifications_unchecked), Toast.LENGTH_SHORT).show();
+            });
+        });
     }
 
     private boolean addSearchWorkerIsRunning() {
