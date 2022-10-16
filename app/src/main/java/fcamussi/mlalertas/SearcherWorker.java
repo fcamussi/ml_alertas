@@ -55,6 +55,10 @@ public class SearcherWorker extends Worker {
             int minutesCountdown = search.getMinutesCountdown();
             minutesCountdown -= Constants.SEARCHER_FREQUENCY_MINUTES;
             if (minutesCountdown <= 0) { // es momento de hacer la búsqueda
+                try {
+                    Thread.sleep(1000); // espero un segundo para evitar congestionamiento
+                } catch (InterruptedException ignored) {
+                }
                 mlSearcher.setSiteId(search.getSiteId());
                 mlSearcher.setWords(search.getWordList());
                 try {
