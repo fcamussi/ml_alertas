@@ -1,6 +1,9 @@
 package fcamussi.mlalertas;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -24,6 +27,7 @@ public class ItemsActivity extends AppCompatActivity {
     private Cursor cursor;
     private ItemCursorAdapter adapter;
     private int searchId;
+    private BroadcastReceiver brSearcherFinished;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,16 @@ public class ItemsActivity extends AppCompatActivity {
             cursor = dataBase.getCursorForAdapterItem(searchId);
             adapter.changeCursor(cursor);
         });
+
+        brSearcherFinished = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                cursor = dataBase.getCursorForAdapterItem(searchId);
+                adapter.changeCursor(cursor);
+            }
+        };
+        IntentFilter filter = new IntentFilter(Constants.SEARCHER_FINISHED);
+        this.registerReceiver(brSearcherFinished, filter);
     }
 
     @Override
@@ -75,6 +89,12 @@ public class ItemsActivity extends AppCompatActivity {
         super.onResume();
         cursor = dataBase.getCursorForAdapterItem(searchId);
         adapter.changeCursor(cursor);
+    }
+
+    @Override
+    protected void onDestroy() {
+        unregisterReceiver(brSearcherFinished);
+        super.onDestroy();
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {

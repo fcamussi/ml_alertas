@@ -61,7 +61,7 @@ public class SearchesActivity extends AppCompatActivity {
     private BroadcastReceiver brAddSearchFinished;
     private BroadcastReceiver brAddSearchConnectionFailed;
     private BroadcastReceiver brAddSearchMaxResultCountExceeded;
-    private BroadcastReceiver brCursorRefresh;
+    private BroadcastReceiver brSearcherFinished;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +155,7 @@ public class SearchesActivity extends AppCompatActivity {
         filter = new IntentFilter(Constants.ADD_SEARCH_MAX_RESULT_COUNT_EXCEEDED);
         this.registerReceiver(brAddSearchMaxResultCountExceeded, filter);
 
-        brCursorRefresh = new BroadcastReceiver() {
+        brSearcherFinished = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 cursor = dataBase.getCursorForAdapterSearch();
@@ -163,7 +163,7 @@ public class SearchesActivity extends AppCompatActivity {
             }
         };
         filter = new IntentFilter(Constants.SEARCHER_FINISHED);
-        this.registerReceiver(brCursorRefresh, filter);
+        this.registerReceiver(brSearcherFinished, filter);
 
         preferences = getSharedPreferences("searches_activity", Context.MODE_PRIVATE);
         wifi = preferences.getBoolean("wifi", false);
@@ -185,7 +185,7 @@ public class SearchesActivity extends AppCompatActivity {
         unregisterReceiver(brAddSearchFinished);
         unregisterReceiver(brAddSearchConnectionFailed);
         unregisterReceiver(brAddSearchMaxResultCountExceeded);
-        unregisterReceiver(brCursorRefresh);
+        unregisterReceiver(brSearcherFinished);
         super.onDestroy();
     }
 
