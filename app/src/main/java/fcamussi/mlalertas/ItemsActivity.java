@@ -27,7 +27,7 @@ public class ItemsActivity extends AppCompatActivity {
     private Cursor cursor;
     private ItemCursorAdapter adapter;
     private int searchId;
-    private BroadcastReceiver brSearcherFinished;
+    private BroadcastReceiver brCursorRefresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,15 +73,17 @@ public class ItemsActivity extends AppCompatActivity {
             adapter.changeCursor(cursor);
         });
 
-        brSearcherFinished = new BroadcastReceiver() {
+        brCursorRefresh = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 cursor = dataBase.getCursorForAdapterItem(searchId);
                 adapter.changeCursor(cursor);
             }
         };
-        IntentFilter filter = new IntentFilter(Constants.SEARCHER_FINISHED);
-        this.registerReceiver(brSearcherFinished, filter);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Constants.ADD_SEARCH_FINISHED);
+        filter.addAction(Constants.SEARCHER_FINISHED);
+        this.registerReceiver(brCursorRefresh, filter);
     }
 
     @Override
@@ -93,7 +95,7 @@ public class ItemsActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        unregisterReceiver(brSearcherFinished);
+        unregisterReceiver(brCursorRefresh);
         super.onDestroy();
     }
 
