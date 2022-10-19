@@ -28,6 +28,13 @@ public class Notification {
         }
     }
 
+    static public void cancelAll(Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
+            notificationManager.cancelAll();
+        }
+    }
+
     public void send(int notificationId, String title, String text) {
         /* Crea la notificación */
         Intent intent = new Intent(context, SearchesActivity.class);

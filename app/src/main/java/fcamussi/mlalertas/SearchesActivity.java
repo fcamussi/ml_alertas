@@ -318,6 +318,7 @@ public class SearchesActivity extends AppCompatActivity {
             handler.post(() -> {
                 cursor = dataBase.getCursorForAdapterSearch();
                 adapter.changeCursor(cursor);
+                Notification.cancelAll(getBaseContext());
                 Toast.makeText(this, getString(R.string.notifications_unchecked), Toast.LENGTH_SHORT).show();
             });
         });
